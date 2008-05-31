@@ -65,7 +65,7 @@ function show_UserTippForm()
 
  // pruefe ob jemand vertreten werden soll und darf
  if ($_GET["cs_stellv"] > 0 ) {
-   $sql="select ID, stellvertreter, user_nicename from $cs_users inner join wp_users on ID=userid where userid=".$_GET["cs_stellv"].";";
+   $sql="select ID, stellvertreter, user_nicename from $cs_users inner join $wp_users on ID=userid where userid=".$_GET["cs_stellv"].";";
    $r2 = $wpdb->get_row($sql);
    
    if ($r2->stellvertreter == $uid ) {
@@ -84,7 +84,7 @@ function show_UserTippForm()
  // lesen fuer welcher anderen user der user als vertreter eingetragen ist
  // aber nur wenn nicht bereits eine stellvertreter regelung genutzt wird
  if ( $uid == $userdata->ID) {
-   $sql0="select * from  $cs_users inner join wp_users on ID=userid where stellvertreter=$uid";
+   $sql0="select * from  $cs_users inner join $wp_users on ID=userid where stellvertreter=$uid";
    $r1=$wpdb->get_results($sql0);
  }
  
@@ -311,7 +311,7 @@ function show_UserTippForm()
  
  // userliste fuer select aufbauen
  $user1_select_html="";
- $sql="select ID,user_nicename from wp_users order by user_nicename;";
+ $sql="select ID,user_nicename from $wp_users order by user_nicename;";
  $results1 = $wpdb->get_results($sql);
  $user1_select_html .= "<option value='-1'>-</option>";
  foreach($results1 as $res) {

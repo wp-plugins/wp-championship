@@ -170,7 +170,7 @@ function get_ranking() {
   global $wpdb;
 
   //select fuer ranking der tipper
-  $sql = "select b.user_nicename, a.userid,sum(a.points) as points from $cs_tipp a inner join wp_users b on a.userid=b.ID where points <> -1 group by b.user_nicename, a.userid order by points DESC;";
+  $sql = "select b.user_nicename, a.userid,sum(a.points) as points from $cs_tipp a inner join $wp_users b on a.userid=b.ID where points <> -1 group by b.user_nicename, a.userid order by points DESC;";
   $res = $wpdb->get_results($sql);
 
   return $res;
@@ -185,6 +185,8 @@ function get_team_clification($groupid='', $count=0)
   include("globals.php");
   global $wpdb;
 
+  $wpdb->show_errors(true);
+
   // punktvergabe fuer match einlesen
   $cs_pts_winner=get_option("cs_pts_winner");
   $cs_pts_looser=get_option("cs_pts_looser");
@@ -192,7 +194,7 @@ function get_team_clification($groupid='', $count=0)
 
   $sql1= <<<EOD
    create temporary table if not exists cs_tt
-	 select groupid,name,tid,icon,
+         select groupid,name,tid,icon,qualified,
 	 sum(result1) as tore,
 	 sum(result2) as gegentore, 
 	 sum( case winner when 0 then $cs_pts_deuce when 1 then $cs_pts_winner else $cs_pts_looser end)  as points
@@ -200,9 +202,9 @@ function get_team_clification($groupid='', $count=0)
 	 inner join $cs_team 
 	 on tid=tid1
 	 where winner <>-1 and tid1<>0 and round='V'
-	 group by groupid,name,icon
+         group by groupid,name,icon,qualified
 	 UNION 
-	 select groupid,name,tid,icon,
+         select groupid,name,tid,icon,qualified,
 	 sum(result2) as tore,
 	 sum(result1) as gegentore, 
 	 sum( case winner when 0 then $cs_pts_deuce when 2 then $cs_pts_winner else $cs_pts_looser end)  as points
@@ -210,23 +212,25 @@ function get_team_clification($groupid='', $count=0)
 	 inner join $cs_team 
 	 on tid=tid2
 	 where winner <>-1 and tid2<>0 and round='V'
-	 group by groupid,name,icon
+         group by groupid,name,icon,qualified
 	 UNION
-         select distinct groupid,name,tid,icon,0 as tore,0 as gegentore,0 as points
+         select distinct groupid,name,tid,icon,qualified, 
+         0 as tore,0 as gegentore,0 as points
 	 from $cs_match inner join $cs_team on tid=tid1
 	 where winner =-1 and tid1<>0 and round ='V'
 	 UNION
-         select distinct groupid,name,tid,icon,0 as tore,0 as gegentore,0 as points
+         select distinct groupid,name,tid,icon, qualified,
+         0 as tore,0 as gegentore,0 as points
 	 from $cs_match inner join $cs_team on tid=tid2
 	 where winner =-1 and tid2<>0 and round='V';
 EOD;
  
- $sql2= "select groupid, name,tid,icon,sum(tore) as store,sum(gegentore) as sgegentore, sum(points) as spoints from cs_tt ";
+ $sql2= "select groupid, name,tid,icon,qualified, sum(tore) as store,sum(gegentore) as sgegentore, sum(points) as spoints from cs_tt ";
  
  if ($groupid !="")
    $sql2.=" where groupid = '$groupid' ";
  
- $sql2 .= "group by groupid,name,icon order by groupid,spoints DESC,store DESC,sgegentore DESC";
+ $sql2 .= "group by groupid,name,icon order by groupid,qualified,spoints DESC,store DESC,sgegentore DESC";
  
  if ($count !=0)
    $sql2 .= " limit 0,$count;";
@@ -262,15 +266,12 @@ function team2text($teamcode) {
 function update_finals() {
   include("globals.php");
   global $wpdb;
-
-  // gibt es noch aktualisierungsbedarf = saetze in cs_team mit name like #
-
-  $sql="select count(*) as anz from $cs_team where name like '#%';";
-  $res = $wpdb->get_row($sql);
   
-  if ($res->anz == 0)
-    return;
-  
+
+  // Pseudo ids wieder aktivieren = alle Teams in finalrunde zuruecksetzen
+  $sql="update  $cs_match set tid1=ptid1, tid2=ptid2 where round='F';";
+  $wpdb->query($sql);
+
 
   // ermittle fertige gruppen mit platzierung
   // und teamcode finalrunde
@@ -386,7 +387,7 @@ function mailservice()
   global $wpdb;
   
   // email adressen holen
-  $sql="select user_nicename, user_email from wp_users inner join $cs_users on ID=userid where mailservice=1;";
+  $sql="select user_nicename, user_email from $wp_users inner join $cs_users on ID=userid where mailservice=1;";
   $res_email=$wpdb->get_results($sql);
   
 

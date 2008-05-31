@@ -59,17 +59,22 @@ function cs_admin_users()
     if ( $_POST['isadmin']=="" )
       $_POST['isadmin']="0";
 
-    // FIXME: ergänzen; prüfen ob der spieler bereits vorhanden ist, 
-    //        falls ja fehlerhinweis und kein insert durchführen
-    //
+
     // insert new user into database
     if ( $action == "savenew" ) {
-      $sql = "insert into ". $cs_table_prefix ."users values (". $_POST['user'] . "," . $_POST['isadmin'] . "," . $_POST['mailservice'] . "," . $_POST['stellv'] . ",".$_POST['champtipp'].",'1900-01-01 00:00:00');";
-      $results = $wpdb->query($sql);
-      if ( $results == 1 )
-	admin_message ( __('Mitspieler erfolgreich angelegt.',"wpcs") );
-      else
-	admin_message( __('Datenbankfehler; Vorgang abgebrochen.',"wpcs") );
+      $sql="select count(*) as anz from $cs_users where userid=".$_POST['user'].";";
+      $results = $wpdb->get_row($sql);
+      
+      if ($results->anz == 0) {
+
+	$sql = "insert into ". $cs_table_prefix ."users values (". $_POST['user'] . "," . $_POST['isadmin'] . "," . $_POST['mailservice'] . "," . $_POST['stellv'] . ",".$_POST['champtipp'].",'1900-01-01 00:00:00');";
+	$results = $wpdb->query($sql);
+	if ( $results == 1 )
+	  admin_message ( __('Mitspieler erfolgreich angelegt.',"wpcs") );
+	else
+	  admin_message( __('Datenbankfehler; Vorgang abgebrochen.',"wpcs") );
+      } else 
+	admin_message ( __('Mitspieler bereits vorhanden.',"wpcs") );
     }
     
     // update team 
@@ -119,7 +124,7 @@ function cs_admin_users()
   
   $stellv_select_html='<option value="-1">-</option>';
   $user_select_html='';
-  $sql="select ID,user_nicename from wp_users order by user_nicename;";
+  $sql="select ID,user_nicename from $wp_users order by user_nicename;";
   $results1 = $wpdb->get_results($sql);
   foreach($results1 as $res) {
     $stellv_select_html .= "<option value='".$res->ID."' ";
@@ -180,7 +185,7 @@ function cs_admin_users()
   $out .= '<th scope="col" width="90" style="text-align: center">'.__('Sieger-Tipp',"wpcs").'</th>'."\n";
   $out .= '<th colspan="2" style="text-align: center">'.__('Aktion',"wpcs").'</th>'."\n";
   // match loop
-  $sql="select * from $cs_users a inner join wp_users b on a.userid=b.ID left outer join  $cs_team c on a.champion = c.tid order by b.user_nicename;";
+  $sql="select * from $cs_users a inner join $wp_users b on a.userid=b.ID left outer join  $cs_team c on a.champion = c.tid order by b.user_nicename;";
   $results = $wpdb->get_results($sql);
 
   foreach($results as $res) {

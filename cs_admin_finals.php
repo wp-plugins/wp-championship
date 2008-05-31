@@ -114,7 +114,7 @@ function cs_admin_finals()
       $r0 = $wpdb->get_row($sql);
       $tid2 = $r0->tid2;
  
-      $sql = "insert into ". $cs_table_prefix ."match values (0,'F'," . $tid1 . "," . $tid2 . ",'" . $_POST['location'] . "','" . $_POST['matchtime'] . "',-1,-1,-1);";
+      $sql = "insert into ". $cs_table_prefix ."match values (0,'F'," . $tid1 . "," . $tid2 . ",'" . $_POST['location'] . "','" . $_POST['matchtime'] . "',-1,-1,-1,$tid1,$tid2);";
       $results = $wpdb->query($sql);
       if ( $results == 1 )
 	admin_message ( __('Finalbegegnung erfolgreich angelegt.',"wpcs") );
@@ -133,7 +133,7 @@ function cs_admin_finals()
       $r0 = $wpdb->get_row($sql);
       $tid2 = $r0->tid2;
 
-      $sql = "update ".$cs_table_prefix."match set tid1=" . $tid1 . ", tid2=" . $tid2 . ",location='" . $_POST['location'] . "',matchtime='" . $_POST['matchtime'] . "' where mid=".$_POST['mid'].";";
+      $sql = "update ".$cs_table_prefix."match set tid1=" . $tid1 . ", tid2=" . $tid2 . ",location='" . $_POST['location'] . "',matchtime='" . $_POST['matchtime'] . "', ptid1=$tid1, ptid2=$tid2 where mid=".$_POST['mid'].";";
       $results = $wpdb->query($sql);
       if ( $results == 1 )
 	admin_message( __('Finalbegegnung erfolgreich gespeichert.',"wpcs") );
@@ -160,7 +160,7 @@ function cs_admin_finals()
     $results = $wpdb->get_row($sql);
 
     // select stored data for preselection in form
-    $sql="select * from  $cs_team where tid=".$results->tid1.";";
+    $sql="select * from  $cs_team where tid=".$results->ptid1.";";
     $r0 = $wpdb->get_row($sql);
     
     $g1=-1; $p1=-1; $w1=-1; $m1=-1;
@@ -173,7 +173,7 @@ function cs_admin_finals()
       $p1 =  substr($r0->name,2);
     }
 
-    $sql="select * from  $cs_team where tid=".$results->tid2.";";
+    $sql="select * from  $cs_team where tid=".$results->ptid2.";";
     $r1 = $wpdb->get_row($sql);
     
     $g2=-1; $p2=-1; $w2=-1; $m2=-1;
@@ -261,7 +261,7 @@ function cs_admin_finals()
   $out .= '<th scope="col" width="90" style="text-align: center">'.__('Datum / Zeit',"wpcs").'</th>'."\n";
   $out .= '<th colspan="2" style="text-align: center">'.__('Aktion',"wpcs").'</th>'."\n";
   // match loop
-  $sql="select a.mid as mid,b.name as team1,c.name as team2,a.location as location,a.matchtime as matchtime from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round='F' order by mid;";
+  $sql="select a.mid as mid,b.name as team1,c.name as team2,a.location as location,a.matchtime as matchtime from $cs_match a inner join $cs_team b on a.ptid1=b.tid inner join $cs_team c on a.ptid2=c.tid where a.round='F' order by mid;";
   $results = $wpdb->get_results($sql);
   foreach($results as $res) {
     $out .= "<tr><td align=\"center\">".$res->mid."</td><td>".team2text($res->team1)."</td>";

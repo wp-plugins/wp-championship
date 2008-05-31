@@ -88,10 +88,24 @@ function cs_admin()
    }
 
    if ( $action == "delresults" and $_POST['delresults_ok']==1) {
+     // Ergebnisse  entfernen
      $sql="update  $cs_match set result1=-1, result2=-1, winner=-1;";
      $wpdb->query($sql);
-     
+     // Pseudo ids wieder aktivieren
+     $sql="update  $cs_match set tid1=ptid1, tid2=ptid2 where round='F';";
+     $wpdb->query($sql);
+     // manuelle platzierungen entfernen
+     $sql="update  $cs_team set qualified=0 where qualified <>0;";
+     $wpdb->query($sql);
      admin_message(__("Alle Ergebnisse wurden gelöscht","wpcs"));
+   }
+
+   if ( $action == "deltables" and $_POST['deltables_ok']==1) {
+     // Tabellen  entfernen
+     $sql="drop table $cs_users, $cs_match, $cs_team, $cs_tipp;";
+     $wpdb->query($sql);
+     
+     admin_message(__("Alle wp-championship Tabellen wurden gelöscht","wpcs"));
    }
 
   // load options
@@ -187,7 +201,13 @@ $out .= '<td width="67%"><input name="cs_pts_tendency" id="cs_pts_tendency" type
  $out .= '<td width="67%"><input name="delresults_ok" id="delresults_ok" type="checkbox" value="1"  />';
  // button zum loeschen der ergebnisse
  $out .= '&nbsp;&nbsp;&nbsp;<input type="submit" name="delresults" value="'.__('Ergebnisse löschen','wpcs').' &raquo;" /></td></tr>'."\n";
-  
+
+// bestätigungsfeld um die tabellen zu löschen
+ $out .= '<tr><th width="33%" scope="row" valign="top"><label for="deltabless_ok">'.__('Alle Tabellen aus der Datenbank entfernen?',"wpcs").':</label></th>'."\n";
+ $out .= '<td width="67%"><input name="deltables_ok" id="deltables_ok" type="checkbox" value="1"  />';
+ // button zum loeschen der tabellen
+ $out .= '&nbsp;&nbsp;&nbsp;<input type="submit" name="deltables" value="'.__('Tabellen entfernen','wpcs').' &raquo;" /></td></tr>'."\n";
+    
   $out .= '</table>'."\n";
   
   // add submit button to form

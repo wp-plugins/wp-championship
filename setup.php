@@ -89,6 +89,30 @@ function wp_championship_install()
       $results = $wpdb->query($sql);  
     }
 
+  // -----------------------------------------------------------------
+  // U P D A T E - table structure v0.8
+  // -----------------------------------------------------------------
+  $sql="select ptid1 from $cs_match;";
+  $results = $wpdb->query($sql);  
+  
+  if ($results == 0) {
+    // add columns for pseudo teamids
+    $sql="alter table $cs_match add column ptid1 int NOT NULL after winner";
+    $results = $wpdb->query($sql);
+
+    $sql="alter table $cs_match add column ptid2 int NOT NULL after ptid1";
+    $results = $wpdb->query($sql);
+
+    $sql="update $cs_match inner join $cs_team on tid1=tid set ptid1=tid1 where name like '#%';";
+    $results = $wpdb->query($sql);
+    $sql="update $cs_match inner join $cs_team on tid2=tid set ptid2=tid2 where name like '#%';";
+    $results = $wpdb->query($sql);
+    
+  }
+  
+  
+  // Optionen / Parameter
+
   // Option: Anzahl der Gruppen in der Vorrunde; Werte: 1-12; 
   // Gibt die Anzahl der Gruppen in der Vorrunde an. Default: 8
   $cs_groups=get_option("cs_groups");

@@ -56,19 +56,24 @@ function cs_admin_team()
     // and/or set default values
     if ( $_POST['team_name']=="" )
       $errflag=1;
+    else if ( substr($_POST['team_name'],0,1)=="#" )
+      $errflag=2;
+    
     if ( $_POST['team_icon']=="" )
       $_POST['team_icon']="default.ico";
     if ( $_POST['qualified']=="" )
       $_POST['qualified']=0;
-    else
-      $_POST['qualified']=1; 
+    
     
     // send a message about mandatory data
     if ( $errflag == 1 )
       admin_message ( __( 'Der Name der Mannschaft darf nicht leer sein.',"wpcs" ) );
 
+    if ( $errflag == 2 )
+      admin_message ( __( 'Der Name der Mannschaft darf nicht mit # beginnen.',"wpcs" ) );
+
     // error in update form data causes to reprint the update form
-    if ( $errflag == 1 and $action == "update" )
+    if ( $errflag >0 and $action == "update" )
       $action = "edit";
     
     // insert new team into database
@@ -141,13 +146,22 @@ function cs_admin_team()
   }
 
   $out .= '</select></td>	</tr>';
-  $out .= '<tr><th scope="row" valign="top"><label for="qualified">'.__('qualifiziert','wpcs').'</label></th>'."\n";
+   $out .= '<tr><th scope="row" valign="top"><label for="qualified">'.__('Platzierung der Vorrunde','wpcs').'</label></th>'."\n";
   
-  $out .= '<td><input name="qualified" id="qualified" type="checkbox"';
-  if ( $results->qualified == true )
-    $out .= ' checked ';
-  $out .= ' /></td></tr></table>'."\n";
-  
+  $sql="select count(*) as anz from $cs_team where groupid='".$results->groupid.
+"';";
+  $res1 = $wpdb->get_row($sql);
+  $out .= '<td><select name="qualified" id="qualified" class="postform">'."\n";
+  // build qualified selection box 
+  for ($i = 0; $i <= $res1->anz; $i++) {
+    $out .= '<option value="'.$i.'"';
+    if ( $i == $results->qualified )
+      $out .= ' selected';
+    $out .= '>'.$i.'</option>';
+  }
+
+  $out .= '</select></td></tr></table>'."\n";
+
   // add submit button to form
   if ( $action == 'edit' ) 
     $out .= '<p class="submit"><input type="submit" name="update" value="'.__('Mannschaft speichern','wpcs').' &raquo;" /></p></form></div>'."\n";
@@ -171,7 +185,7 @@ function cs_admin_team()
   $out .= '<th colspan="2" style="text-align: center">'.__('Aktion',"wpcs").'</th>'."</tr></thead>\n";
   // teams loop
   $iconpath = get_option("siteurl") . "/wp-content/plugins/wp-championship/icons/";
-  $sql="select * from  $cs_team order by tid;";
+  $sql="select * from  $cs_team where name not like '#%' order by tid;";
   $results = $wpdb->get_results($sql);
   foreach($results as $res) {
     $out .= "<tr><td align=\"center\">".$res->tid."</td><td>".$res->name."</td>";

@@ -19,6 +19,8 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+$wpdb =& $GLOBALS['wpdb'];
+
 // table prefix - change here once to get a different one
 $cs_table_prefix="cs_";
 
@@ -27,5 +29,5 @@ $cs_match = $cs_table_prefix . "match";
 $cs_team  = $cs_table_prefix . "team";
 $cs_users = $cs_table_prefix . "users";
 $cs_tipp  = $cs_table_prefix . "tipp";
-
+$wp_users = $wpdb->prefix . "users"; 
 ?>
