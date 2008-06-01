@@ -2,7 +2,7 @@
 Tags: championship,
 Requires at least: 2.5
 Tested up to: 2.5.1
-Stable tag: 0.8
+Stable tag: 0.9
 
 wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer 
 
@@ -71,8 +71,9 @@ Author URI: http://www.tuxlog.de
 		corrected spelling errors
 
 2008-05-31 v0.8 read correct wordpress table prefix,
-	   	added possibility to remove wp-cahmionship db tables,
+	   	added possibility to remove wp-championship db tables,
 		the finals will now be calculated each time a results is changed,
 		you can overrule pre-elimination classification manual by setting
 		the standing in the match dialog,
 		when creating a new user in user dialog check if user allready exists
+2008-06-01 v0.9 fixed mistake in em2008.sql, fixed problem creating matches

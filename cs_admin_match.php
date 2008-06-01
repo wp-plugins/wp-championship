@@ -36,6 +36,8 @@ function cs_admin_match()
   // get sql object
   $wpdb =& $GLOBALS['wpdb'];
 
+  //$wpdb->show_errors(true);
+
   // find out what we have to do
   $action = "";
   if ( isset( $_POST['submit'] ) )
@@ -70,7 +72,7 @@ function cs_admin_match()
     
     // insert new match into database
     if ( $errflag==0 and $action == "savenew" ) {
-      $sql = "insert into ". $cs_table_prefix ."match values (0,'V'," . $_POST['team1'] . "," . $_POST['team2'] . ",'" . $_POST['location'] . "','" . $_POST['matchtime'] . "',-1,-1,-1);";
+      $sql = "insert into ". $cs_table_prefix ."match values (0,'V'," . $_POST['team1'] . "," . $_POST['team2'] . ",'" . $_POST['location'] . "','" . $_POST['matchtime'] . "',-1,-1,-1,-1,-1);";
       $results = $wpdb->query($sql);
       if ( $results == 1 )
 	admin_message ( __('Begegnung erfolgreich angelegt.',"wpcs") );
