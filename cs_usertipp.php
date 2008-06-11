@@ -94,7 +94,7 @@ function show_UserTippForm()
    $is_admin=true;
  
  // ermittle aktuelle uhrzeit
- $currtime=date("Y-m-d H:i:s");
+ $currtime=date("Y-m-d H:i:s", get_the_time("U"));
 
  // begruessung ausgeben
  $out .= __("Willkommen ","wpcs").($uid == $userdata->ID ? $userdata->user_nicename : $r2->user_nicename) .",<br />";
@@ -197,14 +197,19 @@ function show_UserTippForm()
 	 $mid=substr($key,4);
 	 
 	 // pruefe ob satz bereits vorhanden
-	 $sql1="select count(*) as anz from $cs_tipp where userid=$uid and mid=$mid;";
-	 $r1 = $wpdb->get_results($sql1);
+	 $sql1="select * from $cs_tipp where userid=$uid and mid=$mid;";
+	 $r1 = $wpdb->get_row($sql1);
 	 
-	 if ($r1[0]->anz > 0) 
-	   $sql2="update  $cs_tipp set result1=". (int) $_POST['gt1_'.$mid].", result2=".(int) $_POST['gt2_'.$mid].", tipptime='$currtime' where userid=$uid and mid=$mid;";
-	 else 
+	 if ($r1) {
+	   if ( $r1->result1 != (int) $_POST['gt1_'.$mid] or	
+		$r1->result2 != (int) $_POST['gt2_'.$mid] )  {
+	     $sql2="update  $cs_tipp set result1=". (int) $_POST['gt1_'.$mid].", result2=".(int) $_POST['gt2_'.$mid].", tipptime='$currtime' where userid=$uid and mid=$mid;";
+	     $r2 = $wpdb->query($sql2);
+	   }
+	 } else {
 	   $sql2="insert into  $cs_tipp values ($uid, $mid, ".(int) $_POST['gt1_'.$mid].", ". (int)$_POST['gt2_'.$mid].",'$currtime',-1);";
-	 $r2 = $wpdb->query($sql2);
+	   $r2 = $wpdb->query($sql2);
+	 }
        }
      }
      $out .= __("Die Tipps wurden erfolgreich gespeichert.","wpcs")."<br/>";
@@ -213,6 +218,7 @@ function show_UserTippForm()
      
    if ( $is_admin) {
      $errflag=0;
+     $have_results=0;
      // eingegebene ergebnisse plausibiliseren
      foreach ($_POST as $key => $value) {
        $mkey = substr($key,0,4);
@@ -267,11 +273,19 @@ function show_UserTippForm()
 	     $winner = 2;
 	   else $winner = 0; 
 	   
-	   $sql3="update  $cs_match set result1=". (int) $_POST['rt1_'.$mid].", result2=".(int) $_POST['rt2_'.$mid].", winner=".$winner." where mid=$mid;";
-	   $r3 = $wpdb->query($sql3);
+	   $sql4="select count(*) as anz from cs_match where result1=". (int) $_POST['rt1_'.$mid]." and result2=".(int) $_POST['rt2_'.$mid]." and winner=$winner and mid=$mid;";
+	   $r4 = $wpdb->get_row($sql4);
+	   // wenn dieser satz noch nicht aktuell ist, dann speichern wir ihn
+	   if ($r4->anz == 0) {
+	     $have_results=1;
+	     
+	     $sql3="update  $cs_match set result1=". (int) $_POST['rt1_'.$mid].", result2=".(int) $_POST['rt2_'.$mid].", winner=".$winner." where mid=$mid;";
+	     $r3 = $wpdb->query($sql3);
+	   }
 	 }
        }
-       $out .= __("Die Ergebnisse wurden erfolgreich gespeichert.","wpcs")."<br/>";
+       if ($have_results)
+	 $out .= __("Die Ergebnisse wurden erfolgreich gespeichert.","wpcs")."<br/>";
      }
    
      // punkt nach eingabe neu berechnen
@@ -279,7 +293,8 @@ function show_UserTippForm()
      // finalrunde eintraege aktualisieren
      update_finals();
      // mailservice durchfuehren (verschickt mails an alle die sie haben wollten)
-     mailservice();
+     if ($have_results)
+       mailservice();
    } // end is_admin
 
 
@@ -360,7 +375,11 @@ function show_UserTippForm()
 
  // persönliche Einstellungen
  $out .= "<table border='1' width='650px' cellpadding='0'>\n";
+ //
+ // FIXME parameter ob stellvertreter moeglich oder nicht
+ //
  $out .= "<tr><td>".__("Stellvertreter:","wpcs")." <select name='stellvertreter'>".$user1_select_html."</select></td><td><input type='checkbox' name='mailservice' value='1'";
+ //$out .= "<tr><td>&nbsp;<input type='hidden' name='stellvertreter' value='-' /></td><td><input type='checkbox' name='mailservice' value='1'";
  $out .= ($r0[0]->mailservice==1?'checked':'') ." /> ".__("Mailservice","wpcs")."</td></tr>";
  $out .='<tr><td align="center" colspan="2">'.__("Sieger-Tipp","wpcs");
 

@@ -2,7 +2,7 @@
 Tags: championship,
 Requires at least: 2.5
 Tested up to: 2.5.1
-Stable tag: 0.9
+Stable tag: 1.0
 
 wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer 
 
@@ -11,7 +11,7 @@ wp-championship is a plugin for wordpress letting you play a guessing game of a 
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de
 Description:  wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer
-Version: 0.7
+Version: 1.0
 Author: Hans Matzen <webmaster at tuxlog dot de>
 Author URI: http://www.tuxlog.de
 */
@@ -77,3 +77,12 @@ Author URI: http://www.tuxlog.de
 		the standing in the match dialog,
 		when creating a new user in user dialog check if user allready exists
 2008-06-01 v0.9 fixed mistake in em2008.sql, fixed problem creating matches
+
+2008-06-11 v1.0	send mails only when admin is entering results (not when 
+		admin entered tipps), added mailservice trigger in admin 
+		dialog, corrected order in group classification, consider 
+		wordpress timezone for time checking, store only new or 
+		changed tipps, corrected pulldown menu for champion tipp 
+		in user dialog, fixed points calculation for tendency and 
+		tied games (when no tipp was entered points for tied games 
+		were added)
