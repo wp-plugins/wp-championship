@@ -45,6 +45,10 @@ function cs_admin()
 	$action = "deltipps";
   else if ( isset( $_POST['delresults'] ) )
 	$action = "delresults";
+  else if ( isset( $_POST['deltables'] ) )
+	$action = "deltables";
+ else if ( isset( $_POST['mailservice1'] ) )
+	$action = "mailservice1";
 
   // update options
   //
@@ -107,7 +111,12 @@ function cs_admin()
      
      admin_message(__("Alle wp-championship Tabellen wurden gelöscht","wpcs"));
    }
-
+   
+   if ( $action == "mailservice1" and $_POST['mailservice_ok']==1) {
+     mailservice();
+     admin_message(__("Die Mails wurden verschickt.","wpcs"));
+   }
+   
   // load options
   $cs_groups = get_option("cs_groups");
   $cs_pts_winner = get_option("cs_pts_winner");
@@ -189,6 +198,12 @@ $out .= '<td width="67%"><input name="cs_pts_tendency" id="cs_pts_tendency" type
   // field for champion tipp ponts
   $out .= '<tr><th width="33%" scope="row" valign="top"><label for="cs_pts_champ">'.__('Punkte für richtigen Sieger-Tipp',"wpcs").':</label></th>'."\n";
  $out .= '<td width="67%"><input name="cs_pts_champ" id="cs_pts_champ" type="text" value="'.$cs_pts_champ.'" size="3" /></td></tr>'."\n";
+
+ // bestätigungs feld um die mailservice auszuloesen
+ $out .= '<tr><th width="33%" scope="row" valign="top"><label for="mailservice_ok">'.__('Mailservice einmal auslösen?',"wpcs").':</label></th>'."\n";
+ $out .= '<td width="67%"><input name="mailservice_ok" id="mailservice_ok" type="checkbox" value="1"  />';
+ // button zum ausloesen des mailservice
+ $out .= '&nbsp;&nbsp;&nbsp;<input type="submit" name="mailservice1" value="'.__('Mailservice auslösen','wpcs').' &raquo;" /></td></tr>'."\n";
 
  // bestätigungs feld um die tipps zu löschen
  $out .= '<tr><th width="33%" scope="row" valign="top"><label for="deltipps_ok">'.__('Alle Tipps löschen?',"wpcs").':</label></th>'."\n";

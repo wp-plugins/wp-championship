@@ -77,7 +77,7 @@ function cs_admin_users()
 	admin_message ( __('Mitspieler bereits vorhanden.',"wpcs") );
     }
     
-    // update team 
+    // update users 
     if (  $action == "update" ) {
       $sql = "update ".$cs_table_prefix."users set admin=" . $_POST['isadmin'] . ", mailservice=" . $_POST['mailservice'] . ",stellvertreter=" . $_POST['stellv'] . ",champion=" . $_POST['champtipp'] . " where userid=".$_POST['user'].";";
       $results = $wpdb->query($sql);
@@ -100,7 +100,7 @@ function cs_admin_users()
   }
 
  
-  // output teams add/modify form
+  // output user add/modify form
   if ( $action == 'edit' ) {
     // select data to modify
     $sql= "select * from  $cs_users where userid=".$_GET['userid'].";";
@@ -113,16 +113,18 @@ function cs_admin_users()
   $out = "";
 
   $champtipp_select_html='<option value="-1">-</option>';
-  $sql="select tid,name,champion from $cs_team left outer join $cs_users on tid=champion where name not like '#%'order by name;";
+  //$sql="select tid,name,champion from $cs_team left outer join $cs_users on tid=champion where name not like '#%'order by name;";
+  
+  $sql="select tid,name from $cs_team where name not like '#%' order by name;";
   $results1 = $wpdb->get_results($sql);
   foreach($results1 as $res) {
     $champtipp_select_html .= "<option value='".$res->tid."' ";
-    if ($res->champion == $results->champion and $res->champion <>"")
+    if ($res->tid == $results->champion) // and $res->champion <>"")
       $champtipp_select_html .="selected='selected'";
     $champtipp_select_html .=">".$res->name."</option>\n";
   }
   
-  $stellv_select_html='<option value="-1">-</option>';
+  $stellv_select_html='<option value="0">-</option>';
   $user_select_html='';
   $sql="select ID,user_nicename from $wp_users order by user_nicename;";
   $results1 = $wpdb->get_results($sql);

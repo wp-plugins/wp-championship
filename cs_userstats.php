@@ -44,18 +44,18 @@ function show_UserStats()
 {
   include("globals.php");
   global $wpdb,$userdata;
-
+  
   // initialisiere ausgabe variable
   $out = "";
-
+  
   // pruefe ob anwender angemeldet ist, wenn nicht gebe hinweis aus
   // und beende die funktion
- if ( !is_user_logged_in()){
-   $out .= __("Sie sind nicht angemeldet.","wpcs")."<br />";
-   $out .= __("Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website","wpcs")."<br />";
-   return $out;
- }
-
+  if ( !is_user_logged_in()){
+    $out .= __("Sie sind nicht angemeldet.","wpcs")."<br />";
+    $out .= __("Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website","wpcs")."<br />";
+    return $out;
+  }
+  
  // for debugging
  //$wpdb->show_errors(true);
 

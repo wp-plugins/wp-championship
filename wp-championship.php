@@ -3,7 +3,7 @@
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de/wp-championship
 Description: wp-championship is championship plugin for worpress designed for the EM 2008.
-Version: 0.8
+Version: 1.0
 Author: Hans Matzen <webmaster at tuxlog.de>
 Author URI: http://www.tuxlog.de
 */

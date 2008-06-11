@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `cs_match` (
 -- Daten fÃ¼r Tabelle `cs_match`
 --
 
-INSERT INTO `cs_match` (`mid`, `round`, `tid1`, `tid2`, `location`, `matchtime`, `result1`, `result2`, `winner`) VALUES
+INSERT INTO `cs_match` (`mid`, `round`, `tid1`, `tid2`, `location`, `matchtime`, `result1`, `result2`, `winner`, `ptid1`, `ptid2`) VALUES
 (92, 'V', 14, 16, 'Innsbruck', '2008-06-18 20:45:00', -1, -1, -1,0,0),
 (91, 'V', 15, 13, 'Salzburg', '2008-06-18 20:45:00', -1, -1, -1,0,0),
 (90, 'V', 15, 14, 'Salzburg', '2008-06-14 20:45:00', -1, -1, -1,0,0),
