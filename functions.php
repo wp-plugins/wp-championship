@@ -115,28 +115,28 @@ function calc_points($new=false)
  // sql vor mysql 5.0
  //$sql= "update $cs_tipp  b set points=5 where mid in ( select a.mid from $cs_match a where a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and a.result1=b.result1 and a.result2=b.result2) and b.points = -1;";
  // sql for mysql 4.x
- $sql = "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1=b.result1 and a.result2=b.result2 and a.result1 <> -1 and a.result2 <> -1 set b.points= $cs_pts_tipp where b.points  =-1";
+ $sql = "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1=b.result1 and a.result2=b.result2 and a.result1 <> -1 and a.result2 <> -1 set b.points= $cs_pts_tipp where b.points  =-1 and b.result1>-1 and b.result2>-1;";
  $res = $wpdb->query($sql);
  
  // tordifferenz
  // mysql 5.0
  // $sql= "update  $cs_tipp b set points=3 where mid in ( select a.mid from $cs_match  a where a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and abs(a.result1 - a.result2) = abs(b.result1 - b.result2)) and b.points = -1;";
  // mysql 4.x
- $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and abs(a.result1 - a.result2) = abs(b.result1 - b.result2) and ( (a.result1>a.result2 and b.result1>b.result2) or (a.result1<a.result2 and b.result1<b.result2 ) or (a.result1=a.result2 and b.result1=b.result2) )set points= $cs_pts_supertipp where b.points = -1;";
+ $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and abs(a.result1 - a.result2) = abs(b.result1 - b.result2) and ( (a.result1>a.result2 and b.result1>b.result2) or (a.result1<a.result2 and b.result1<b.result2 ) or (a.result1=a.result2 and b.result1=b.result2) )set points= $cs_pts_supertipp where b.points = -1 and b.result1>-1 and b.result2>-1;";
  $res = $wpdb->query($sql);
  
  // tendenz
  // mysql 5.0
  //$sql= "update $cs_tipp b set points=1 where mid in ( select a.mid from $cs_match a where a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( (a.result1<a.result2 and b.result1<b.result2) or (a.result1=a.result2 and b.result1=b.result2) or (a.result1>a.result2 and b.result1>b.result2)  )) and b.points = -1;";
  // mysql 4.x
- $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( (a.result1<a.result2 and b.result1<b.result2) or (a.result1=a.result2 and b.result1=b.result2) or (a.result1>a.result2 and b.result1>b.result2)  ) set points= $cs_pts_tendency where b.points = -1;";
+ $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( (a.result1<a.result2 and b.result1<b.result2) or (a.result1=a.result2 and b.result1=b.result2) or (a.result1>a.result2 and b.result1>b.result2)  ) set points= $cs_pts_tendency where b.points = -1 and b.result1>-1 and b.result2>-1;";
  $res = $wpdb->query($sql);
  
  // falscher tipp (setzt alle restlichen auf 0)
  // mysql 5.0
  //$sql= "update  $cs_tipp b set points=0 where mid in ( select a.mid from  a where a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 ) and b.points = -1;";
  // mysql 4.x
- $sql= "update $cs_tipp b inner join $cs_match a on  a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1  set points=0 where b.points = -1;";
+ $sql= "update $cs_tipp b inner join $cs_match a on  a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1  set points=0 where b.points = -1 and b.result1>-1 and b.result2>-1;";
  $res = $wpdb->query($sql);
  
  // champion tipp addieren auf finalspiel
@@ -185,7 +185,7 @@ function get_team_clification($groupid='', $count=0)
   include("globals.php");
   global $wpdb;
 
-  $wpdb->show_errors(true);
+  //$wpdb->show_errors(true);
 
   // punktvergabe fuer match einlesen
   $cs_pts_winner=get_option("cs_pts_winner");
@@ -225,16 +225,18 @@ function get_team_clification($groupid='', $count=0)
 	 where winner =-1 and tid2<>0 and round='V';
 EOD;
  
- $sql2= "select groupid, name,tid,icon,qualified, sum(tore) as store,sum(gegentore) as sgegentore, sum(points) as spoints from cs_tt ";
+ $sql2= "select groupid, name,tid,icon,qualified, sum(tore) as store,sum(gegentore) as sgegentore, sum(points) as spoints, (sum(tore)-sum(gegentore)) as tdiff from cs_tt ";
  
  if ($groupid !="")
    $sql2.=" where groupid = '$groupid' ";
  
- $sql2 .= "group by groupid,name,icon order by groupid,qualified,spoints DESC,store DESC,sgegentore DESC";
+ $sql2 .= "group by groupid,name,icon order by groupid,qualified,spoints DESC,tdiff DESC"; 
  
  if ($count !=0)
-   $sql2 .= " limit 0,$count;";
- 
+   $sql2 .= " limit 0,$count";
+
+ $sql2 .= ";";
+
  $sql3= "drop temporary table cs_tt;";
  
  $wpdb->query($sql1);
