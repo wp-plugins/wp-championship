@@ -56,7 +56,7 @@ function show_UserTippForm()
    return $out;
  }
  // for debugging
- //$wpdb->show_errors(true);
+ $wpdb->show_errors(true);
 
  // lese anwenderdaten ein
  get_currentuserinfo();
@@ -106,7 +106,7 @@ function show_UserTippForm()
   if ( $uid == $userdata->ID) {
     $out .= "<p>".__("Du bist als Stellvertreter eingetragen worden von:","wpcs");
     foreach ($r1 as $res) {
-      $out .= "<a href='".get_page_link()."&cs_stellv=".$res->ID."'>".$res->user_nicename."</a>&nbsp;";
+      $out .= "<a href='".get_page_link()."%26cs_stellv=".$res->ID."'>".$res->user_nicename."</a>&nbsp;";
     }
     $out .="</p>";
   }
@@ -374,13 +374,13 @@ function show_UserTippForm()
  $out .= "<div class='submit' align='right'><input type='submit' name='update' value='".__("Änderungen speichern","wpcs")."' /></div>";
 
  // persönliche Einstellungen
- $out .= "<table border='1' width='650px' cellpadding='0'>\n";
+ $out .= "<table border='1' width='650' cellpadding='0'>\n";
  //
  // FIXME parameter ob stellvertreter moeglich oder nicht
  //
  $out .= "<tr><td>".__("Stellvertreter:","wpcs")." <select name='stellvertreter'>".$user1_select_html."</select></td><td><input type='checkbox' name='mailservice' value='1'";
  //$out .= "<tr><td>&nbsp;<input type='hidden' name='stellvertreter' value='-' /></td><td><input type='checkbox' name='mailservice' value='1'";
- $out .= ($r0[0]->mailservice==1?'checked':'') ." /> ".__("Mailservice","wpcs")."</td></tr>";
+ $out .= ($r0[0]->mailservice==1?'checked="checked"':'') ." /> ".__("Mailservice","wpcs")."</td></tr>";
  $out .='<tr><td align="center" colspan="2">'.__("Sieger-Tipp","wpcs");
 
  // weltmeistertipp kann nur bis tunierbeginn abgegeben werden
@@ -388,9 +388,10 @@ function show_UserTippForm()
  $mr=$wpdb->get_row($sql);
 
  // if ( time() > mktime ( 18, 0, 0, 6, 7, 2008, 1) )
- if ( time() > $mr->mintime )
-   $out .= '<input name="champion" value='.$champion_team.' readonly</td></tr>';
- else
+ if ( time() > $mr->mintime ) {
+   $out .= '<select name="championshow" disabled="disabled">'.$team1_select_html.'</select>';
+   $out .= '<input type="hidden" name="champion" value="'.$r0[0]->champion.'" /></td></tr>';
+ } else
    $out .= '<select name="champion">'.$team1_select_html.'</select></td></tr>';
  $out .= "</table>";
 
@@ -399,7 +400,7 @@ function show_UserTippForm()
 
  //$out .= "<div class='wrap'>";
  $out .= "<h2>".__("Vorrundenspiele","wpcs")."</h2>\n"; 
- $out .= "<table border='1' width='650px' cellpadding='0'><thead><tr>\n";
+ $out .= "<table border='1' width='650' cellpadding='0'><thead><tr>\n";
  //$out .= '<th scope="col" style="text-align: center">Spiel-Nr.</th>'."\n";
  $out .= '<th scope="col" style="text-align: center">'.__("Gruppe","wpcs").'</th>'."\n";
  $out .= '<th width="20">&nbsp;</th>'."\n";
@@ -441,7 +442,7 @@ $out .= '</thead>'."\n";
    if ($lastmatchround =='V' and $res->round=='F') {
      $out .= '</table>'."<p>&nbsp;</p>\n";
      $out .= "<h2>".__("Finalrunde","wpcs")."</h2>\n"; 
-     $out .= "<table border='1' width='650px' cellpadding='0'><thead><tr>\n";
+     $out .= "<table border='1' width='650' cellpadding='0'><thead><tr>\n";
      $out .= '<th scope="col" style="text-align: center">Spielnr.</th>'."\n";
      $out .= '<th width="20">&nbsp;</th>'."\n";
      $out .= '<th scope="col" style="text-align: center">'.__('Begegnung',"wpcs")."</th>"."\n";
@@ -450,6 +451,7 @@ $out .= '</thead>'."\n";
      $out .= '<th scope="col" style="text-align: center">'.__("Datum<br />Zeit","wpcs").'</th>'."\n";
      $out .= '<th align="center">'.__("Tipp<br />Ergebnis","wpcs").'</th>';
      $out .= '<th align="center">'.__("Punkte","wpcs").'</th></tr>';
+     $out .= '</thead>'."\n";
    }
 
    // start des spiels als unix timestamp
@@ -470,18 +472,18 @@ $out .= '</thead>'."\n";
    if ($res->result1!=-1 or time() > $match_start)
      $out .= $_POST['gt1_'.$res->mid]." : ";
    else
-     $out .= "<input name='gt1_".$res->mid."' id='gt1_'".$res->mid." type='text' value='".$_POST['gt1_'.$res->mid]."' size='1' maxlength='2' />";
+     $out .= "<input name='gt1_".$res->mid."' id='gt1_".$res->mid."' type='text' value='".$_POST['gt1_'.$res->mid]."' size='1' maxlength='2' />";
    if ($res->result2 != -1 or time() > $match_start)
      $out .= $_POST['gt2_'.$res->mid];
     else
-      $out .= " : <input name='gt2_".$res->mid."' id='gt2_'".$res->mid." type='text' value='".$_POST['gt2_'.$res->mid]."' size='1' maxlength='2' />";
+      $out .= " : <input name='gt2_".$res->mid."' id='gt2_".$res->mid."' type='text' value='".$_POST['gt2_'.$res->mid]."' size='1' maxlength='2' />";
 
    $out .= "<br />";
 
    // der admin darf ergebnisse erfassen, alle anderen duerfen sie nur sehen
    if ( $is_admin ) {
-     $out .= "<input name='rt1_".$res->mid."' id='rt1_".$res->mid."' type=text size='1' value='".($res->result1==-1 ? "-" : $res->result1)."' /> : ";
-     $out .= "<input name='rt2_".$res->mid."' id='rt2_".$res->mid."' type=text size='1' value='".($res->result2==-1 ? "-" : $res->result2)."' />";
+     $out .= "<input name='rt1_".$res->mid."' id='rt1_".$res->mid."' type='text' size='1' value='".($res->result1==-1 ? "-" : $res->result1)."' /> : ";
+     $out .= "<input name='rt2_".$res->mid."' id='rt2_".$res->mid."' type='text' size='1' value='".($res->result2==-1 ? "-" : $res->result2)."' />";
      $out .= "</td>"; 
    } else
      $out .= ($res->result1==-1 ? "-" : $res->result1) . ":" . ($res->result2==-1 ? "-" : $res->result2) . "</td>";
@@ -491,9 +493,9 @@ $out .= '</thead>'."\n";
    // gruppenwechsel versorgen
    $lastmatchround = $res->round;
  }
- $out .= '</table>'."\n<p>&nbsp;";
+ $out .= '</table>'."\n&nbsp;";
 
- $out .= "<div class='submit' align='right'><input type='submit' name='update' value='".__("Änderungen speichern","wpcs")."' /></div></form>";
+ $out .= "<div class='submit' align='right'><input type='submit' name='update' value='".__("Änderungen speichern","wpcs")."' /></div></form><p>&nbsp;";
 
 
  return $out;

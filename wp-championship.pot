@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-10 06:37+0200\n"
+"POT-Creation-Date: 2008-06-16 07:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,8 +76,8 @@ msgid "Mannschaft 2"
 msgstr ""
 
 #: cs_admin_finals.php:235 cs_admin_finals.php:260 cs_admin_match.php:147
-#: cs_admin_match.php:172 cs_userstats.php:189 cs_usertipp.php:408
-#: cs_usertipp.php:449
+#: cs_admin_match.php:172 cs_userstats.php:189 cs_usertipp.php:409
+#: cs_usertipp.php:450
 msgid "Ort"
 msgstr ""
 
@@ -246,14 +246,14 @@ msgid "Einstellungen speichern"
 msgstr ""
 
 #: cs_admin_stats.php:49 cs_userstats.php:96
-msgid "Der Gewinner des Tuniers heißt:"
+msgid "Der Gewinner des Turniers heißt:"
 msgstr ""
 
-#: cs_admin_stats.php:54 cs_userstats.php:100 functions.php:398
+#: cs_admin_stats.php:54 cs_userstats.php:100 functions.php:400
 msgid "Aktueller Punktestand"
 msgstr ""
 
-#: cs_admin_stats.php:58 cs_userstats.php:104 functions.php:402
+#: cs_admin_stats.php:58 cs_userstats.php:104 functions.php:404
 msgid "Punktestand"
 msgstr ""
 
@@ -302,7 +302,7 @@ msgid "Symbol / Wappen"
 msgstr ""
 
 #: cs_admin_team.php:137 cs_admin_team.php:183 cs_userstats.php:141
-#: cs_usertipp.php:404
+#: cs_usertipp.php:405
 msgid "Gruppe"
 msgstr ""
 
@@ -319,7 +319,7 @@ msgid "Mannschaften"
 msgstr ""
 
 #: cs_admin_team.php:184
-msgid "qualifiziert"
+msgid "Platzierung"
 msgstr ""
 
 #: cs_admin_users.php:73
@@ -392,7 +392,7 @@ msgstr ""
 
 #: cs_userstats.php:81
 msgid ""
-"auf dieser Seite siehst du den aktuellen Stand des Tuniers und des "
+"auf dieser Seite siehst du den aktuellen Stand des Turniers und des "
 "Tippspiels."
 msgstr ""
 
@@ -400,11 +400,11 @@ msgstr ""
 msgid "Du bist Tippspiel-Administrator."
 msgstr ""
 
-#: cs_userstats.php:102 functions.php:259 functions.php:400
+#: cs_userstats.php:102 functions.php:261 functions.php:402
 msgid "Platz"
 msgstr ""
 
-#: cs_userstats.php:103 functions.php:401
+#: cs_userstats.php:103 functions.php:403
 msgid "Spieler"
 msgstr ""
 
@@ -424,23 +424,23 @@ msgstr ""
 msgid "Gegentore"
 msgstr ""
 
-#: cs_userstats.php:146 cs_usertipp.php:411 cs_usertipp.php:452
+#: cs_userstats.php:146 cs_usertipp.php:412 cs_usertipp.php:453
 msgid "Punkte"
 msgstr ""
 
-#: cs_userstats.php:183 cs_usertipp.php:443 wp-championship.php:85
+#: cs_userstats.php:183 cs_usertipp.php:444 wp-championship.php:85
 msgid "Finalrunde"
 msgstr ""
 
-#: cs_userstats.php:185 functions.php:257
+#: cs_userstats.php:185 functions.php:259
 msgid "Spielnr."
 msgstr ""
 
-#: cs_userstats.php:187 cs_usertipp.php:406 cs_usertipp.php:447
+#: cs_userstats.php:187 cs_usertipp.php:407 cs_usertipp.php:448
 msgid "Begegnung"
 msgstr ""
 
-#: cs_userstats.php:190 cs_usertipp.php:409 cs_usertipp.php:450
+#: cs_userstats.php:190 cs_usertipp.php:410 cs_usertipp.php:451
 msgid "Datum<br />Zeit"
 msgstr ""
 
@@ -474,7 +474,7 @@ msgstr ""
 msgid "Du bist als Stellvertreter eingetragen worden von:"
 msgstr ""
 
-#: cs_usertipp.php:119 cs_usertipp.php:374 cs_usertipp.php:496
+#: cs_usertipp.php:119 cs_usertipp.php:374 cs_usertipp.php:498
 msgid "Änderungen speichern"
 msgstr ""
 
@@ -518,15 +518,15 @@ msgstr ""
 msgid "Stellvertreter:"
 msgstr ""
 
-#: cs_usertipp.php:401
+#: cs_usertipp.php:402
 msgid "Vorrundenspiele"
 msgstr ""
 
-#: cs_usertipp.php:410
+#: cs_usertipp.php:411
 msgid "Tipp"
 msgstr ""
 
-#: cs_usertipp.php:451
+#: cs_usertipp.php:452
 msgid "Tipp<br />Ergebnis"
 msgstr ""
 
@@ -538,31 +538,31 @@ msgstr ""
 msgid "Winner QF, Match #"
 msgstr ""
 
-#: functions.php:257
+#: functions.php:259
 msgid "Gewinner"
 msgstr ""
 
-#: functions.php:257
+#: functions.php:259
 msgid "Verlierer"
 msgstr ""
 
-#: functions.php:259
+#: functions.php:261
 msgid "Gruppe "
 msgstr ""
 
-#: functions.php:397
+#: functions.php:399
 msgid "EM-Tippspiel Mailservice"
 msgstr ""
 
-#: functions.php:431 functions.php:433
+#: functions.php:433 functions.php:435
 msgid "Die email an "
 msgstr ""
 
-#: functions.php:431
+#: functions.php:433
 msgid " wurde versendet.<br />"
 msgstr ""
 
-#: functions.php:433
+#: functions.php:435
 msgid "konnte <b>nicht</b> versendet werden"
 msgstr ""
 

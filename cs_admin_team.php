@@ -141,7 +141,7 @@ function cs_admin_team()
     $charone=substr($groupstr,$i,1);
     $out .= '<option value="'.$charone.'"';
     if ( $charone == $results->groupid )
-      $out .= ' selected';
+      $out .= ' selected="selected"';
     $out .= '>'.$charone.'</option>';
   }
 
@@ -156,7 +156,7 @@ function cs_admin_team()
   for ($i = 0; $i <= $res1->anz; $i++) {
     $out .= '<option value="'.$i.'"';
     if ( $i == $results->qualified )
-      $out .= ' selected';
+      $out .= ' selected="selected"';
     $out .= '>'.$i.'</option>';
   }
 
@@ -181,7 +181,7 @@ function cs_admin_team()
   $out .= '<th scope="col">'.__('Name',"wpcs")."</th>"."\n";
   $out .= '<th scope="col">'.__("Symbol / Wappen","wpcs").'</th>'."\n";
   $out .= '<th scope="col" width="90" style="text-align: center">'.__('Gruppe',"wpcs").'</th>'."\n";
-  $out .= '<th scope="col" width="90" style="text-align: center">'.__('qualifiziert',"wpcs").'</th>'."\n";
+  $out .= '<th scope="col" width="90" style="text-align: center">'.__('Platzierung',"wpcs").'</th>'."\n";
   $out .= '<th colspan="2" style="text-align: center">'.__('Aktion',"wpcs").'</th>'."</tr></thead>\n";
   // teams loop
   $iconpath = get_option("siteurl") . "/wp-content/plugins/wp-championship/icons/";

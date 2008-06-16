@@ -218,7 +218,7 @@ $out .= '<td width="67%"><input name="cs_pts_tendency" id="cs_pts_tendency" type
  $out .= '&nbsp;&nbsp;&nbsp;<input type="submit" name="delresults" value="'.__('Ergebnisse löschen','wpcs').' &raquo;" /></td></tr>'."\n";
 
 // bestätigungsfeld um die tabellen zu löschen
- $out .= '<tr><th width="33%" scope="row" valign="top"><label for="deltabless_ok">'.__('Alle Tabellen aus der Datenbank entfernen?',"wpcs").':</label></th>'."\n";
+ $out .= '<tr><th width="33%" scope="row" valign="top"><label for="deltables_ok">'.__('Alle Tabellen aus der Datenbank entfernen?',"wpcs").':</label></th>'."\n";
  $out .= '<td width="67%"><input name="deltables_ok" id="deltables_ok" type="checkbox" value="1"  />';
  // button zum loeschen der tabellen
  $out .= '&nbsp;&nbsp;&nbsp;<input type="submit" name="deltables" value="'.__('Tabellen entfernen','wpcs').' &raquo;" /></td></tr>'."\n";

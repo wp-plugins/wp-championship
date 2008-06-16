@@ -78,7 +78,7 @@ function show_UserStats()
 
  // begruessung ausgeben
  $out .= __("Willkommen ","wpcs").$userdata->user_nicename .",<br />";
- $out .= __("auf dieser Seite siehst du den aktuellen Stand des Tuniers und des Tippspiels.","wpcs")."<br /></p>";
+ $out .= __("auf dieser Seite siehst du den aktuellen Stand des Turniers und des Tippspiels.","wpcs")."<br /></p>";
  
 
  // ausgabe der optionen und der tipptabelle
@@ -93,12 +93,12 @@ function show_UserStats()
  // anzeigen der gewinnermannschaft falls tunier schon beendet
  $cswinner = get_cswinner();
  if ( $cswinner ) 
-   $out.= "<hr>".__("Der Gewinner des Tuniers heißt:","wpcs")."<b>$cswinner</b><hr>";
+   $out.= "<hr>".__("Der Gewinner des Turniers heißt:","wpcs")."<b>$cswinner</b><hr>";
  
  // ausgabe des aktuellen punktestandes und des ranges
  $rank = get_ranking();
  $out .= "<h2>".__("Aktueller Punktestand","wpcs")."</h2>\n";
- $out .= "<table border='1' width='500px' cellpadding='0'><tr>\n";
+ $out .= "<table border='1' width='500' cellpadding='0'><tr>\n";
  $out .= '<th scope="col" style="text-align: center">'.__("Platz","wpcs").'</th>'."\n";
  $out .= '<th scope="col" style="text-align: center">'.__("Spieler","wpcs").'</th>'."\n";
  $out .= '<th width="20">'.__("Punktestand","wpcs").'</th>'."</tr>\n";
@@ -139,7 +139,7 @@ function show_UserStats()
        $out .= '</table><p>&nbsp;</p>';
      
      $out .= "<h2>".__("Gruppe","wpcs")." ".$res->groupid."</h2>\n"; 
-     $out .= "<table border='1' width='500px' cellpadding='0'><thead><tr>\n";
+     $out .= "<table border='1' width='500' cellpadding='0'><thead><tr>\n";
      $out .= '<th style="text-align: center">'.__('Mannschaft',"wpcs")."</th>"."\n";
      $out .= '<th style="text-align: center">'.__('Tore',"wpcs").'</th>'."\n";
      $out .= '<th scope="col" style="text-align: center">'.__("Gegentore","wpcs").'</th>'."\n";
@@ -181,7 +181,7 @@ EOD;
 
  // tabellen kopf ausgeben
  $out .= "<h2>".__("Finalrunde","wpcs")."</h2>\n"; 
- $out .= "<table border='1' width='600px' cellpadding='0'><thead><tr>\n";
+ $out .= "<table border='1' width='600' cellpadding='0'><thead><tr>\n";
  $out .= '<th width="20">'.__("Spielnr.","wpcs").'</th>'."\n";
  $out .= '<th>&nbsp;</th>';
  $out .= '<th scope="col" style="text-align: center">'.__('Begegnung',"wpcs")."</th>"."\n";

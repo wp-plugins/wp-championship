@@ -230,11 +230,13 @@ EOD;
  if ($groupid !="")
    $sql2.=" where groupid = '$groupid' ";
  
- $sql2 .= "group by groupid,name,icon order by groupid,qualified,spoints DESC,tdiff DESC;"; 
+ $sql2 .= "group by groupid,name,icon order by groupid,qualified,spoints DESC,tdiff DESC"; 
  
  if ($count !=0)
-   $sql2 .= " limit 0,$count;";
- 
+   $sql2 .= " limit 0,$count";
+
+ $sql2 .= ";";
+
  $sql3= "drop temporary table cs_tt;";
  
  $wpdb->query($sql1);
