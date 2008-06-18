@@ -56,7 +56,7 @@ function show_UserTippForm()
    return $out;
  }
  // for debugging
- $wpdb->show_errors(true);
+ //$wpdb->show_errors(true);
 
  // lese anwenderdaten ein
  get_currentuserinfo();
@@ -67,7 +67,7 @@ function show_UserTippForm()
  if ($_GET["cs_stellv"] > 0 ) {
    $sql="select ID, stellvertreter, user_nicename from $cs_users inner join $wp_users on ID=userid where userid=".$_GET["cs_stellv"].";";
    $r2 = $wpdb->get_row($sql);
-   
+
    if ($r2->stellvertreter == $uid ) {
      $out .= "<b>".__("Du bist als Stellvertreter aktiv für ","wpcs").$r2->user_nicename.".</b><br />";
      $out .= "<b>".__("Um wieder Deine eigenen Tipps zu bearbeiten, rufe diese Seite (EM-Tipp) einfach neu auf.","wpcs")."</b><br />";
@@ -106,7 +106,7 @@ function show_UserTippForm()
   if ( $uid == $userdata->ID) {
     $out .= "<p>".__("Du bist als Stellvertreter eingetragen worden von:","wpcs");
     foreach ($r1 as $res) {
-      $out .= "<a href='".get_page_link()."%26cs_stellv=".$res->ID."'>".$res->user_nicename."</a>&nbsp;";
+      $out .= "<a href='".get_page_link()."&cs_stellv=".$res->ID."'>".$res->user_nicename."</a>&nbsp;";
     }
     $out .="</p>";
   }
@@ -133,7 +133,9 @@ function show_UserTippForm()
       $_POST['stellvertreter']=0;
     if ( $_POST['mailservice'] == '' )
       $_POST['mailservice']=0;
-   
+    if ( $_POST['champion'] == '' )
+      $_POST['champion']=-1;
+
     if ($r1[0]->anz > 0) {
       $sql0 = "update  $cs_users set mailservice= ".$_POST['mailservice']." , stellvertreter=".$_POST['stellvertreter']." ,champion= ".$_POST['champion'].",championtime='".$currtime."' where userid=$uid;";
     } else {

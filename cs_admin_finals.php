@@ -36,6 +36,8 @@ function cs_admin_finals()
   // get sql object
   $wpdb =& $GLOBALS['wpdb'];
 
+  //$wpdb->show_errors(true);
+
   // find out what we have to do
   $action = "";
   if ( isset( $_POST['submit'] ) )
@@ -66,13 +68,16 @@ function cs_admin_finals()
 
 
     // get the teams
-    if ( $_POST['winner1'] == -1 ) {
+    if ( $_POST['winner1'] == -1 ) 
       $team1=$_POST['fgroup1'].$_POST['fplace1'];
-      $team2=$_POST['fgroup2'].$_POST['fplace2'];
-    } else {
+    else 
       $team1=($_POST['winner1']==1 ? 'W' : 'V').$_POST['matchid1'];
+    
+    if ( $_POST['winner2'] == -1 ) 
+      $team2=$_POST['fgroup2'].$_POST['fplace2'];
+    else 
       $team2=($_POST['winner2']==1 ? 'W' : 'V').$_POST['matchid2']; 
-    }
+    
 
     // check if teams already exist
     $sql="select count(*) as anz from $cs_team where name='#".$team1."';";

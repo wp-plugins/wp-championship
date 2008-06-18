@@ -94,7 +94,7 @@ function calc_points($new=false)
   include ("globals.php");
   global $wpdb;
   
-  $wpdb->show_errors(true);
+  //$wpdb->show_errors(true);
   
   // for testing
   $new=true;
