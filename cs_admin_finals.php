@@ -36,6 +36,8 @@ function cs_admin_finals()
   // get sql object
   $wpdb =& $GLOBALS['wpdb'];
 
+  //$wpdb->show_errors(true);
+
   // find out what we have to do
   $action = "";
   if ( isset( $_POST['submit'] ) )
@@ -66,13 +68,16 @@ function cs_admin_finals()
 
 
     // get the teams
-    if ( $_POST['winner1'] == -1 ) {
+    if ( $_POST['winner1'] == -1 ) 
       $team1=$_POST['fgroup1'].$_POST['fplace1'];
-      $team2=$_POST['fgroup2'].$_POST['fplace2'];
-    } else {
+    else 
       $team1=($_POST['winner1']==1 ? 'W' : 'V').$_POST['matchid1'];
+    
+    if ( $_POST['winner2'] == -1 ) 
+      $team2=$_POST['fgroup2'].$_POST['fplace2'];
+    else 
       $team2=($_POST['winner2']==1 ? 'W' : 'V').$_POST['matchid2']; 
-    }
+    
 
     // check if teams already exist
     $sql="select count(*) as anz from $cs_team where name='#".$team1."';";
@@ -227,10 +232,10 @@ function cs_admin_finals()
   }
  
   $out .= '<table class="editform" width="100%" cellspacing="2" cellpadding="2"><tr>';
-  $out .= '<th width="33%" scope="row" valign="top"><label for="match_name1">'.__('Mannschaft 1 ',"wpcs").':</label></th>'."\n";
-  $out .= '<td width="67%">Gruppe:'.$groupsel1_html.' Platz:'.$placesel1_html.' oder '.$wsel1_html.' Match Nr. <select name="matchid1">'.$match1_select_html.'</select></td></tr>'."\n";
-  $out .= '<tr><th scope="row" valign="top"><label for="team2">'.__('Mannschaft 2',"wpcs").' :</label></th>'."\n";
-   $out .= '<td width="67%">Gruppe:'.$groupsel2_html.' Platz:'.$placesel2_html.' oder '.$wsel2_html.' Match Nr. <select name="matchid2">'.$match2_select_html.'</select></td></tr>'."\n";
+  $out .= '<th width="33%" scope="row" valign="top"><label for="matchid1">'.__('Mannschaft 1 ',"wpcs").':</label></th>'."\n";
+  $out .= '<td width="67%">Gruppe:'.$groupsel1_html.' Platz:'.$placesel1_html.' oder '.$wsel1_html.' Match Nr. <select id="matchid1" name="matchid1">'.$match1_select_html.'</select></td></tr>'."\n";
+  $out .= '<tr><th scope="row" valign="top"><label for="matchid2">'.__('Mannschaft 2',"wpcs").' :</label></th>'."\n";
+   $out .= '<td width="67%">Gruppe:'.$groupsel2_html.' Platz:'.$placesel2_html.' oder '.$wsel2_html.' Match Nr. <select id="matchid2" name="matchid2">'.$match2_select_html.'</select></td></tr>'."\n";
 
   $out .= '<tr><th scope="row" valign="top"><label for="location">'.__('Ort','wpcs').':</label></th>'."\n";
   $out .= '<td><input name="location" id="location" type="text" value="'. $results->location.'" size="40" /></td></tr>'."\n";
@@ -259,7 +264,7 @@ function cs_admin_finals()
   $out .= '<th scope="col">'.__("Mannschaft 2","wpcs").'</th>'."\n";
   $out .= '<th scope="col" width="90" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
   $out .= '<th scope="col" width="90" style="text-align: center">'.__('Datum / Zeit',"wpcs").'</th>'."\n";
-  $out .= '<th colspan="2" style="text-align: center">'.__('Aktion',"wpcs").'</th>'."\n";
+  $out .= '<th colspan="2" style="text-align: center">'.__('Aktion',"wpcs").'</th></tr></thead>'."\n";
   // match loop
   $sql="select a.mid as mid,b.name as team1,c.name as team2,a.location as location,a.matchtime as matchtime from $cs_match a inner join $cs_team b on a.ptid1=b.tid inner join $cs_team c on a.ptid2=c.tid where a.round='F' order by mid;";
   $results = $wpdb->get_results($sql);
@@ -270,7 +275,7 @@ function cs_admin_finals()
     $out .= "<td align=\"center\"><a href=\"".$thisform."&amp;action=modify&amp;mid=".$res->mid."\">".__("Ändern","wpcs")."</a>&nbsp;&nbsp;&nbsp;";
     $out .= "<a href=\"".$thisform."&amp;action=remove&amp;mid=".$res->mid."\">".__("Löschen","wpcs")."</a></td></tr>\n";
   }
-  $out .= '</thead></table></div>'."\n";
+  $out .= '</table></div>'."\n";
 
   echo $out;
 }

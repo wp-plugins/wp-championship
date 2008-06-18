@@ -45,6 +45,12 @@ function cs_admin()
 	$action = "deltipps";
   else if ( isset( $_POST['delresults'] ) )
 	$action = "delresults";
+  else if ( isset( $_POST['deltables'] ) )
+	$action = "deltables";
+ else if ( isset( $_POST['mailservice1'] ) )
+	$action = "mailservice1";
+ else if ( isset( $_POST['newcalc1'] ) )
+	$action = "newcalc1";
 
   // update options
   //
@@ -107,6 +113,19 @@ function cs_admin()
      
      admin_message(__("Alle wp-championship Tabellen wurden gelöscht","wpcs"));
    }
+   
+   if ( $action == "mailservice1" and $_POST['mailservice_ok']==1) {
+     mailservice();
+     admin_message(__("Die Mails wurden verschickt.","wpcs"));
+   }
+   
+   if ( $action == "newcalc1" and $_POST['newcalc_ok']==1) {
+     // punkt nach eingabe neu berechnen
+     calc_points();
+     // finalrunde eintraege aktualisieren
+     update_finals();
+     admin_message(__("Die Neuberechnung wurde durchgeführt.","wpcs"));
+   }
 
   // load options
   $cs_groups = get_option("cs_groups");
@@ -152,23 +171,6 @@ function cs_admin()
   $out .= '<tr><th width="33%" scope="row" valign="top"><label for="cs_pts_deuce">'.__('Punkte bei Unentschieden',"wpcs").':</label></th>'."\n"; 
   $out .= '<td width="67%"><input name="cs_pts_deuce" id="cs_pts_deuce" type="text" value="'.$cs_pts_deuce.'" size="3" /></td></tr>'."\n";
   
-  // number of finalroundteams
-  // $out .= '<tr><th width="33%" scope="row" valign="top"><label for="cs_final_teams">'.__('Number of teams in finals',"wpcs").':</label></th>'."\n"; 
-//   $out .= '<td><select name="cs_final_teams" id="cs_final_teams" class="postform">'."\n";
-//   $out .= '<option value="4"';
-//   if ( $cs_final_teams == 4 )
-//     $out .= ' selected="selected"';
-//   $out .= '>4</option>';
-//   $out .= '<option value="8"';
-//   if ( $cs_final_teams == 8 )
-//     $out .= ' selected="selected"';
-//    $out .= '>8</option>';
-//   $out .= '<option value="16"';
-//   if ( $cs_final_teams == 16 )
-//     $out .= ' selected="selected"';
-//    $out .= '>16</option>';
-//   $out .= '</select></td></tr>';
- 
 
   // number of teams from each group joining finalround
   $out .= '<tr><th width="33%" scope="row" valign="top"><label for="cs_group_teams">'.__('Anzahl der Teams pro Gruppe, die sich für die Finalrunde qualifizieren',"wpcs").':</label></th>'."\n"; 
@@ -189,6 +191,18 @@ $out .= '<td width="67%"><input name="cs_pts_tendency" id="cs_pts_tendency" type
   // field for champion tipp ponts
   $out .= '<tr><th width="33%" scope="row" valign="top"><label for="cs_pts_champ">'.__('Punkte für richtigen Sieger-Tipp',"wpcs").':</label></th>'."\n";
  $out .= '<td width="67%"><input name="cs_pts_champ" id="cs_pts_champ" type="text" value="'.$cs_pts_champ.'" size="3" /></td></tr>'."\n";
+ 
+ // bestätigungs feld um die neuberechnung auszuloesen
+ $out .= '<tr><th width="33%" scope="row" valign="top"><label for="newcalc_ok">'.__('Platzierung und Punkte neu berechnen?',"wpcs").':</label></th>'."\n";
+ $out .= '<td width="67%"><input name="newcalc_ok" id="newcalc_ok" type="checkbox" value="1"  />';
+ // button zum ausloesen der neuberechnung
+ $out .= '&nbsp;&nbsp;&nbsp;<input type="submit" name="newcalc1" value="'.__('Neuberechnung durchführen','wpcs').' &raquo;" /></td></tr>'."\n";
+
+ // bestätigungs feld um die mailservice auszuloesen
+ $out .= '<tr><th width="33%" scope="row" valign="top"><label for="mailservice_ok">'.__('Mailservice einmal auslösen?',"wpcs").':</label></th>'."\n";
+ $out .= '<td width="67%"><input name="mailservice_ok" id="mailservice_ok" type="checkbox" value="1"  />';
+ // button zum ausloesen des mailservice
+ $out .= '&nbsp;&nbsp;&nbsp;<input type="submit" name="mailservice1" value="'.__('Mailservice auslösen','wpcs').' &raquo;" /></td></tr>'."\n";
 
  // bestätigungs feld um die tipps zu löschen
  $out .= '<tr><th width="33%" scope="row" valign="top"><label for="deltipps_ok">'.__('Alle Tipps löschen?',"wpcs").':</label></th>'."\n";
@@ -203,7 +217,7 @@ $out .= '<td width="67%"><input name="cs_pts_tendency" id="cs_pts_tendency" type
  $out .= '&nbsp;&nbsp;&nbsp;<input type="submit" name="delresults" value="'.__('Ergebnisse löschen','wpcs').' &raquo;" /></td></tr>'."\n";
 
 // bestätigungsfeld um die tabellen zu löschen
- $out .= '<tr><th width="33%" scope="row" valign="top"><label for="deltabless_ok">'.__('Alle Tabellen aus der Datenbank entfernen?',"wpcs").':</label></th>'."\n";
+ $out .= '<tr><th width="33%" scope="row" valign="top"><label for="deltables_ok">'.__('Alle Tabellen aus der Datenbank entfernen?',"wpcs").':</label></th>'."\n";
  $out .= '<td width="67%"><input name="deltables_ok" id="deltables_ok" type="checkbox" value="1"  />';
  // button zum loeschen der tabellen
  $out .= '&nbsp;&nbsp;&nbsp;<input type="submit" name="deltables" value="'.__('Tabellen entfernen','wpcs').' &raquo;" /></td></tr>'."\n";

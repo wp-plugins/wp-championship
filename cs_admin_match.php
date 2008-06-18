@@ -36,6 +36,8 @@ function cs_admin_match()
   // get sql object
   $wpdb =& $GLOBALS['wpdb'];
 
+  //$wpdb->show_errors(true);
+
   // find out what we have to do
   $action = "";
   if ( isset( $_POST['submit'] ) )
@@ -70,7 +72,7 @@ function cs_admin_match()
     
     // insert new match into database
     if ( $errflag==0 and $action == "savenew" ) {
-      $sql = "insert into ". $cs_table_prefix ."match values (0,'V'," . $_POST['team1'] . "," . $_POST['team2'] . ",'" . $_POST['location'] . "','" . $_POST['matchtime'] . "',-1,-1,-1);";
+      $sql = "insert into ". $cs_table_prefix ."match values (0,'V'," . $_POST['team1'] . "," . $_POST['team2'] . ",'" . $_POST['location'] . "','" . $_POST['matchtime'] . "',-1,-1,-1,-1,-1);";
       $results = $wpdb->query($sql);
       if ( $results == 1 )
 	admin_message ( __('Begegnung erfolgreich angelegt.',"wpcs") );
@@ -138,10 +140,10 @@ function cs_admin_match()
   }
  
   $out .= '<table class="editform" width="100%" cellspacing="2" cellpadding="2"><tr>';
-  $out .= '<th width="33%" scope="row" valign="top"><label for="match_name1">'.__('Mannschaft 1 ',"wpcs").':</label></th>'."\n";
-  $out .= '<td width="67%"><select name="team1">'.$team1_select_html.'</select></td></tr>'."\n";
+  $out .= '<th width="33%" scope="row" valign="top"><label for="team1">'.__('Mannschaft 1 ',"wpcs").':</label></th>'."\n";
+  $out .= '<td width="67%"><select id="team1" name="team1">'.$team1_select_html.'</select></td></tr>'."\n";
   $out .= '<tr><th scope="row" valign="top"><label for="team2">'.__('Mannschaft 2',"wpcs").' :</label></th>'."\n";
-  $out .= '<td><select name="team2">'.$team2_select_html.'</select></td></tr>'."\n";
+  $out .= '<td><select id="team2" name="team2">'.$team2_select_html.'</select></td></tr>'."\n";
   $out .= '<tr><th scope="row" valign="top"><label for="location">'.__('Ort','wpcs').':</label></th>'."\n";
   $out .= '<td><input name="location" id="location" type="text" value="'. $results->location.'" size="40" /></td></tr>'."\n";
   $out .= '<tr><th scope="row" valign="top"><label for="matchtime">'.__('Datum / Zeit','wpcs').':</label></th>'."\n";
@@ -169,7 +171,7 @@ function cs_admin_match()
   $out .= '<th scope="col">'.__("Mannschaft 2","wpcs").'</th>'."\n";
   $out .= '<th scope="col" width="90" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
   $out .= '<th scope="col" width="90" style="text-align: center">'.__('Datum / Zeit',"wpcs").'</th>'."\n";
-  $out .= '<th colspan="2" style="text-align: center">'.__('Aktion',"wpcs").'</th>'."\n";
+  $out .= '<th colspan="2" style="text-align: center">'.__('Aktion',"wpcs").'</th></tr></thead>'."\n";
   // match loop
   $sql="select a.mid as mid,b.name as team1,c.name as team2,a.location as location,a.matchtime as matchtime from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round='V' order by mid;";
   $results = $wpdb->get_results($sql);
@@ -180,7 +182,7 @@ function cs_admin_match()
     $out .= "<td align=\"center\"><a href=\"".$thisform."&amp;action=modify&amp;mid=".$res->mid."\">".__("Ändern","wpcs")."</a>&nbsp;&nbsp;&nbsp;";
     $out .= "<a href=\"".$thisform."&amp;action=remove&amp;mid=".$res->mid."\">".__("Löschen","wpcs")."</a></td></tr>\n";
   }
-  $out .= '</thead></table></div>'."\n";
+  $out .= '</table></div>'."\n";
 
   echo $out;
 }

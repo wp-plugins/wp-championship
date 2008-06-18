@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-31 08:20+0200\n"
+"POT-Creation-Date: 2008-06-18 06:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,232 +16,256 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: cs_admin_finals.php:61 cs_admin_match.php:60
+#: cs_admin_finals.php:63 cs_admin_match.php:62
 msgid "nowhere"
 msgstr ""
 
-#: cs_admin_finals.php:65
+#: cs_admin_finals.php:67
 msgid "Bitte geben Sie Datum und Uhrzeit der Begegnung ein.."
 msgstr ""
 
-#: cs_admin_finals.php:85
+#: cs_admin_finals.php:90
 msgid "Mannschaft 1 automatisch hinzugefügt."
 msgstr ""
 
-#: cs_admin_finals.php:87
+#: cs_admin_finals.php:92
 msgid "Datenbankfehler Mannschaft 1 konnte nicht automatisch angelegt werden."
 msgstr ""
 
-#: cs_admin_finals.php:96
+#: cs_admin_finals.php:101
 msgid "Mannschaft 2 automatisch hinzugefügt."
 msgstr ""
 
-#: cs_admin_finals.php:98
+#: cs_admin_finals.php:103
 msgid "Datenbankfehler Mannschaft 2 konnte nicht automatisch angelegt werden."
 msgstr ""
 
-#: cs_admin_finals.php:120
+#: cs_admin_finals.php:125
 msgid "Finalbegegnung erfolgreich angelegt."
 msgstr ""
 
-#: cs_admin_finals.php:122 cs_admin_finals.php:141 cs_admin_finals.php:152
-#: cs_admin_match.php:78 cs_admin_match.php:88 cs_admin_match.php:99
+#: cs_admin_finals.php:127 cs_admin_finals.php:146 cs_admin_finals.php:157
+#: cs_admin_match.php:80 cs_admin_match.php:90 cs_admin_match.php:101
 #: cs_admin_team.php:86 cs_admin_team.php:96 cs_admin_team.php:107
 msgid "Datenbankfehler; Vorgang abgebrochen"
 msgstr ""
 
-#: cs_admin_finals.php:139
+#: cs_admin_finals.php:144
 msgid "Finalbegegnung erfolgreich gespeichert."
 msgstr ""
 
-#: cs_admin_finals.php:150
+#: cs_admin_finals.php:155
 msgid "Finalbegegnung gelöscht."
 msgstr ""
 
-#: cs_admin_finals.php:222
+#: cs_admin_finals.php:227
 msgid "Finalbegegnung ändern"
 msgstr ""
 
-#: cs_admin_finals.php:225 cs_admin_finals.php:246
+#: cs_admin_finals.php:230 cs_admin_finals.php:251
 msgid "Finalbegegnung hinzufügen"
 msgstr ""
 
-#: cs_admin_finals.php:230 cs_admin_match.php:141
+#: cs_admin_finals.php:235 cs_admin_match.php:143
 msgid "Mannschaft 1 "
 msgstr ""
 
-#: cs_admin_finals.php:232 cs_admin_finals.php:259 cs_admin_match.php:143
-#: cs_admin_match.php:169
+#: cs_admin_finals.php:237 cs_admin_finals.php:264 cs_admin_match.php:145
+#: cs_admin_match.php:171
 msgid "Mannschaft 2"
 msgstr ""
 
-#: cs_admin_finals.php:235 cs_admin_finals.php:260 cs_admin_match.php:145
-#: cs_admin_match.php:170 cs_userstats.php:189 cs_usertipp.php:389
-#: cs_usertipp.php:430
+#: cs_admin_finals.php:240 cs_admin_finals.php:265 cs_admin_match.php:147
+#: cs_admin_match.php:172 cs_userstats.php:189 cs_usertipp.php:411
+#: cs_usertipp.php:452
 msgid "Ort"
 msgstr ""
 
-#: cs_admin_finals.php:237 cs_admin_finals.php:261 cs_admin_match.php:147
-#: cs_admin_match.php:171
+#: cs_admin_finals.php:242 cs_admin_finals.php:266 cs_admin_match.php:149
+#: cs_admin_match.php:173
 msgid "Datum / Zeit"
 msgstr ""
 
-#: cs_admin_finals.php:244
+#: cs_admin_finals.php:249
 msgid "Finalbegegnung speichern"
 msgstr ""
 
-#: cs_admin_finals.php:255
+#: cs_admin_finals.php:260
 msgid "Finalbegegnungen"
 msgstr ""
 
-#: cs_admin_finals.php:258 cs_admin_match.php:168
+#: cs_admin_finals.php:263 cs_admin_match.php:170
 msgid "Mannschaft 1"
 msgstr ""
 
-#: cs_admin_finals.php:262 cs_admin_match.php:172 cs_admin_team.php:185
-#: cs_admin_users.php:186
+#: cs_admin_finals.php:267 cs_admin_match.php:174 cs_admin_team.php:185
+#: cs_admin_users.php:188
 msgid "Aktion"
 msgstr ""
 
-#: cs_admin_finals.php:270 cs_admin_match.php:180 cs_admin_team.php:194
-#: cs_admin_users.php:196
+#: cs_admin_finals.php:275 cs_admin_match.php:182 cs_admin_team.php:194
+#: cs_admin_users.php:198
 msgid "Ändern"
 msgstr ""
 
-#: cs_admin_finals.php:271 cs_admin_match.php:181 cs_admin_team.php:195
-#: cs_admin_users.php:197
+#: cs_admin_finals.php:276 cs_admin_match.php:183 cs_admin_team.php:195
+#: cs_admin_users.php:199
 msgid "Löschen"
 msgstr ""
 
-#: cs_admin_match.php:65
+#: cs_admin_match.php:67
 msgid "Datum und Uhrzeit der Begegnung müssen gefüllt sein."
 msgstr ""
 
-#: cs_admin_match.php:76
+#: cs_admin_match.php:78
 msgid "Begegnung erfolgreich angelegt."
 msgstr ""
 
-#: cs_admin_match.php:86
+#: cs_admin_match.php:88
 msgid "Begegnung erfolgreich gespeichert."
 msgstr ""
 
-#: cs_admin_match.php:97
+#: cs_admin_match.php:99
 msgid "Begegnung gelöscht."
 msgstr ""
 
-#: cs_admin_match.php:133
+#: cs_admin_match.php:135
 msgid "Begegnung ändern"
 msgstr ""
 
-#: cs_admin_match.php:136 cs_admin_match.php:156
+#: cs_admin_match.php:138 cs_admin_match.php:158
 msgid "Begegnung hinzufügen"
 msgstr ""
 
-#: cs_admin_match.php:154
+#: cs_admin_match.php:156
 msgid "Begegnung speichern"
 msgstr ""
 
-#: cs_admin_match.php:165
+#: cs_admin_match.php:167
 msgid "Matches"
 msgstr ""
 
-#: cs_admin.php:61
+#: cs_admin.php:67
 msgid "Bitte alle Felder füllen."
 msgstr ""
 
-#: cs_admin.php:77
+#: cs_admin.php:83
 msgid "Einstellungen erfolgreich gespeichert."
 msgstr ""
 
-#: cs_admin.php:87
+#: cs_admin.php:93
 msgid "Alle Tipps wurden gelöscht"
 msgstr ""
 
-#: cs_admin.php:100
+#: cs_admin.php:106
 msgid "Alle Ergebnisse wurden gelöscht"
 msgstr ""
 
-#: cs_admin.php:108
+#: cs_admin.php:114
 msgid "Alle wp-championship Tabellen wurden gelöscht"
 msgstr ""
 
-#: cs_admin.php:128
+#: cs_admin.php:119
+msgid "Die Mails wurden verschickt."
+msgstr ""
+
+#: cs_admin.php:127
+msgid "Die Neuberechnung wurde durchgeführt."
+msgstr ""
+
+#: cs_admin.php:147
 msgid "wp-championship Einstellungen"
 msgstr ""
 
-#: cs_admin.php:131
+#: cs_admin.php:150
 msgid "Anzahl Gruppen Vorrunde"
 msgstr ""
 
-#: cs_admin.php:144
+#: cs_admin.php:163
 msgid "Punkt für den Gewinner einer Begegnung"
 msgstr ""
 
-#: cs_admin.php:148
+#: cs_admin.php:167
 msgid "Punkte für den Verlierer einer Begegnung"
 msgstr ""
 
-#: cs_admin.php:152
+#: cs_admin.php:171
 msgid "Punkte bei Unentschieden"
 msgstr ""
 
-#: cs_admin.php:174
+#: cs_admin.php:176
 msgid "Anzahl der Teams pro Gruppe, die sich für die Finalrunde qualifizieren"
 msgstr ""
 
-#: cs_admin.php:178
+#: cs_admin.php:180
 msgid "Punkt für korrekten Tipp"
 msgstr ""
 
-#: cs_admin.php:182
+#: cs_admin.php:184
 msgid "Punkt bei richtiger Tendenz"
 msgstr ""
 
-#: cs_admin.php:186
+#: cs_admin.php:188
 msgid "Punkt bei richtiger Tendenz und richtiger Tordifferenz"
 msgstr ""
 
-#: cs_admin.php:190
+#: cs_admin.php:192
 msgid "Punkte für richtigen Sieger-Tipp"
 msgstr ""
 
-#: cs_admin.php:194
+#: cs_admin.php:196
+msgid "Platzierung und Punkte neu berechnen?"
+msgstr ""
+
+#: cs_admin.php:199
+msgid "Neuberechnung durchführen"
+msgstr ""
+
+#: cs_admin.php:202
+msgid "Mailservice einmal auslösen?"
+msgstr ""
+
+#: cs_admin.php:205
+msgid "Mailservice auslösen"
+msgstr ""
+
+#: cs_admin.php:208
 msgid "Alle Tipps löschen?"
 msgstr ""
 
-#: cs_admin.php:197
+#: cs_admin.php:211
 msgid "Tipps löschen"
 msgstr ""
 
-#: cs_admin.php:200
+#: cs_admin.php:214
 msgid "Alle Ergebnisse löschen?"
 msgstr ""
 
-#: cs_admin.php:203
+#: cs_admin.php:217
 msgid "Ergebnisse löschen"
 msgstr ""
 
-#: cs_admin.php:206
+#: cs_admin.php:220
 msgid "Alle Tabellen aus der Datenbank entfernen?"
 msgstr ""
 
-#: cs_admin.php:209
+#: cs_admin.php:223
 msgid "Tabellen entfernen"
 msgstr ""
 
-#: cs_admin.php:214
+#: cs_admin.php:228
 msgid "Einstellungen speichern"
 msgstr ""
 
 #: cs_admin_stats.php:49 cs_userstats.php:96
-msgid "Der Gewinner des Tuniers heißt:"
+msgid "Der Gewinner des Turniers heißt:"
 msgstr ""
 
-#: cs_admin_stats.php:54 cs_userstats.php:100 functions.php:398
+#: cs_admin_stats.php:54 cs_userstats.php:100 functions.php:400
 msgid "Aktueller Punktestand"
 msgstr ""
 
-#: cs_admin_stats.php:58 cs_userstats.php:104 functions.php:402
+#: cs_admin_stats.php:58 cs_userstats.php:104 functions.php:404
 msgid "Punktestand"
 msgstr ""
 
@@ -281,7 +305,7 @@ msgstr ""
 msgid "Mannschaft hinzufügen"
 msgstr ""
 
-#: cs_admin_team.php:133 cs_admin_team.php:181 cs_admin_users.php:181
+#: cs_admin_team.php:133 cs_admin_team.php:181 cs_admin_users.php:183
 msgid "Name"
 msgstr ""
 
@@ -290,7 +314,7 @@ msgid "Symbol / Wappen"
 msgstr ""
 
 #: cs_admin_team.php:137 cs_admin_team.php:183 cs_userstats.php:141
-#: cs_usertipp.php:385
+#: cs_usertipp.php:407
 msgid "Gruppe"
 msgstr ""
 
@@ -307,7 +331,7 @@ msgid "Mannschaften"
 msgstr ""
 
 #: cs_admin_team.php:184
-msgid "qualifiziert"
+msgid "Platzierung"
 msgstr ""
 
 #: cs_admin_users.php:73
@@ -334,35 +358,35 @@ msgstr ""
 msgid "Datenbankfehler, Vorgang abgebrochen."
 msgstr ""
 
-#: cs_admin_users.php:143
+#: cs_admin_users.php:145
 msgid "Mitspieler ändern"
 msgstr ""
 
-#: cs_admin_users.php:146 cs_admin_users.php:169
+#: cs_admin_users.php:148 cs_admin_users.php:171
 msgid "Mitspieler hinzufügen"
 msgstr ""
 
-#: cs_admin_users.php:151 cs_admin_users.php:178 wp-championship.php:87
+#: cs_admin_users.php:153 cs_admin_users.php:180 wp-championship.php:87
 msgid "Mitspieler"
 msgstr ""
 
-#: cs_admin_users.php:154 cs_admin_users.php:183 cs_usertipp.php:364
+#: cs_admin_users.php:156 cs_admin_users.php:185 cs_usertipp.php:385
 msgid "Mailservice"
 msgstr ""
 
-#: cs_admin_users.php:156 cs_admin_users.php:182
+#: cs_admin_users.php:158 cs_admin_users.php:184
 msgid "Tippspiel-Admin"
 msgstr ""
 
-#: cs_admin_users.php:158 cs_admin_users.php:184
+#: cs_admin_users.php:160 cs_admin_users.php:186
 msgid "Stellvertreter"
 msgstr ""
 
-#: cs_admin_users.php:160 cs_admin_users.php:185 cs_usertipp.php:365
+#: cs_admin_users.php:162 cs_admin_users.php:187 cs_usertipp.php:386
 msgid "Sieger-Tipp"
 msgstr ""
 
-#: cs_admin_users.php:167
+#: cs_admin_users.php:169
 msgid "Mitspieler speichern"
 msgstr ""
 
@@ -380,19 +404,19 @@ msgstr ""
 
 #: cs_userstats.php:81
 msgid ""
-"auf dieser Seite siehst du den aktuellen Stand des Tuniers und des "
+"auf dieser Seite siehst du den aktuellen Stand des Turniers und des "
 "Tippspiels."
 msgstr ""
 
-#: cs_userstats.php:90 cs_usertipp.php:327
+#: cs_userstats.php:90 cs_usertipp.php:344
 msgid "Du bist Tippspiel-Administrator."
 msgstr ""
 
-#: cs_userstats.php:102 functions.php:259 functions.php:400
+#: cs_userstats.php:102 functions.php:261 functions.php:402
 msgid "Platz"
 msgstr ""
 
-#: cs_userstats.php:103 functions.php:401
+#: cs_userstats.php:103 functions.php:403
 msgid "Spieler"
 msgstr ""
 
@@ -412,23 +436,23 @@ msgstr ""
 msgid "Gegentore"
 msgstr ""
 
-#: cs_userstats.php:146 cs_usertipp.php:392 cs_usertipp.php:433
+#: cs_userstats.php:146 cs_usertipp.php:414 cs_usertipp.php:455
 msgid "Punkte"
 msgstr ""
 
-#: cs_userstats.php:183 cs_usertipp.php:424 wp-championship.php:85
+#: cs_userstats.php:183 cs_usertipp.php:446 wp-championship.php:85
 msgid "Finalrunde"
 msgstr ""
 
-#: cs_userstats.php:185 functions.php:257
+#: cs_userstats.php:185 functions.php:259
 msgid "Spielnr."
 msgstr ""
 
-#: cs_userstats.php:187 cs_usertipp.php:387 cs_usertipp.php:428
+#: cs_userstats.php:187 cs_usertipp.php:409 cs_usertipp.php:450
 msgid "Begegnung"
 msgstr ""
 
-#: cs_userstats.php:190 cs_usertipp.php:390 cs_usertipp.php:431
+#: cs_userstats.php:190 cs_usertipp.php:412 cs_usertipp.php:453
 msgid "Datum<br />Zeit"
 msgstr ""
 
@@ -462,59 +486,59 @@ msgstr ""
 msgid "Du bist als Stellvertreter eingetragen worden von:"
 msgstr ""
 
-#: cs_usertipp.php:119 cs_usertipp.php:359 cs_usertipp.php:477
+#: cs_usertipp.php:119 cs_usertipp.php:376 cs_usertipp.php:500
 msgid "Änderungen speichern"
 msgstr ""
 
-#: cs_usertipp.php:159
+#: cs_usertipp.php:161
 msgid "Ungueltiger Tipp, Wert:"
 msgstr ""
 
-#: cs_usertipp.php:171
+#: cs_usertipp.php:173
 msgid "Der Tipp kann nicht mehr angenommen werden."
 msgstr ""
 
-#: cs_usertipp.php:183
+#: cs_usertipp.php:185
 msgid "Es fehlt eine Seite des Tipps oder eine Eingabe ist fehlerhaft."
 msgstr ""
 
-#: cs_usertipp.php:210
+#: cs_usertipp.php:217
 msgid "Die Tipps wurden erfolgreich gespeichert."
 msgstr ""
 
-#: cs_usertipp.php:231
+#: cs_usertipp.php:239
 msgid "Ungueltiges Ergebnis, Wert:"
 msgstr ""
 
-#: cs_usertipp.php:247
+#: cs_usertipp.php:255
 msgid "Es fehlt eine Seite des Ergebnisses oder eine Eingabe ist fehlerhaft."
 msgstr ""
 
-#: cs_usertipp.php:274
+#: cs_usertipp.php:290
 msgid "Die Ergebnisse wurden erfolgreich gespeichert."
 msgstr ""
 
-#: cs_usertipp.php:344
+#: cs_usertipp.php:361
 msgid "Du hast insgesamt"
 msgstr ""
 
-#: cs_usertipp.php:344
+#: cs_usertipp.php:361
 msgid "Punkte und bist aktuell auf Platz"
 msgstr ""
 
-#: cs_usertipp.php:363
+#: cs_usertipp.php:383
 msgid "Stellvertreter:"
 msgstr ""
 
-#: cs_usertipp.php:382
+#: cs_usertipp.php:404
 msgid "Vorrundenspiele"
 msgstr ""
 
-#: cs_usertipp.php:391
+#: cs_usertipp.php:413
 msgid "Tipp"
 msgstr ""
 
-#: cs_usertipp.php:432
+#: cs_usertipp.php:454
 msgid "Tipp<br />Ergebnis"
 msgstr ""
 
@@ -526,31 +550,31 @@ msgstr ""
 msgid "Winner QF, Match #"
 msgstr ""
 
-#: functions.php:257
+#: functions.php:259
 msgid "Gewinner"
 msgstr ""
 
-#: functions.php:257
+#: functions.php:259
 msgid "Verlierer"
 msgstr ""
 
-#: functions.php:259
+#: functions.php:261
 msgid "Gruppe "
 msgstr ""
 
-#: functions.php:397
+#: functions.php:399
 msgid "EM-Tippspiel Mailservice"
 msgstr ""
 
-#: functions.php:431 functions.php:433
+#: functions.php:433 functions.php:435
 msgid "Die email an "
 msgstr ""
 
-#: functions.php:431
+#: functions.php:433
 msgid " wurde versendet.<br />"
 msgstr ""
 
-#: functions.php:433
+#: functions.php:435
 msgid "konnte <b>nicht</b> versendet werden"
 msgstr ""
 
