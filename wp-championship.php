@@ -3,7 +3,7 @@
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de/wp-championship
 Description: wp-championship is championship plugin for worpress designed for the EM 2008.
-Version: 1.2
+Version: 1.3b
 Author: Hans Matzen <webmaster at tuxlog.de>
 Author URI: http://www.tuxlog.de
 */
@@ -40,7 +40,7 @@ require_once("cs_usertipp.php");
 require_once("cs_userstats.php");
 
 // activating deactivating the plugin
-register_activation_hook(__FILE__,'wp_championship_install');
+register_activation_hook(ABSPATH ."/wp-content/plugins/wp-championship/wp-championship.php",'wp_championship_install');
 // uncomment this to loose everything when deactivating the plugin
 //register_deactivation_hook(__FILE__,'wp_championship_deinstall');
 

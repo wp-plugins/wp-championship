@@ -141,17 +141,27 @@ function show_UserStats()
      $out .= "<h2>".__("Gruppe","wpcs")." ".$res->groupid."</h2>\n"; 
      $out .= "<table border='1' width='500' cellpadding='0'><thead><tr>\n";
      $out .= '<th style="text-align: center">'.__('Mannschaft',"wpcs")."</th>"."\n";
+     $out .= '<th style="text-align: center">'.__('Spiele',"wpcs").'</th>'."\n"; 
+     $out .= '<th style="text-align: center">'.__('Siege',"wpcs").'</th>'."\n"; 
+     $out .= '<th style="text-align: center">'.__('Unentschieden',"wpcs").'</th>'."\n"; 
+     $out .= '<th style="text-align: center">'.__('Niederlagen',"wpcs").'</th>'."\n";
      $out .= '<th style="text-align: center">'.__('Tore',"wpcs").'</th>'."\n";
-     $out .= '<th scope="col" style="text-align: center">'.__("Gegentore","wpcs").'</th>'."\n";
      $out .= '<th align="center">'.__("Punkte","wpcs").'</th></tr>';
      $out .= '</thead>'."\n";
    }
+
+   // hole statistiken des teams
+   $stats=array();
+   $stats=get_team_stats($res->tid);
    
    // zeile ausgeben
    $out .= "<tr><td><img alt='icon1' width='20' src='".$iconpath.$res->icon."' />";
    $out .= $res->name . "</td>";
-   $out .= "<td align=\"center\">".$res->store."</td>";
-   $out .= "<td align=\"center\">".$res->sgegentore."</td>";
+   $out .= "<td align=\"center\">".$stats['spiele']."</td>";
+   $out .= "<td align=\"center\">".$stats['siege']."</td>"; 
+   $out .= "<td align=\"center\">".$stats['unentschieden']."</td>"; 
+   $out .= "<td align=\"center\">".$stats['niederlagen']."</td>";
+   $out .= "<td align=\"center\"> ".$res->store." : " .$res->sgegentore." </td>";
    $out .= "<td align='center'>" . $res->spoints." </td>";
    $out .= "</tr>\n";
    

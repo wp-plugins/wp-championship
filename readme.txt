@@ -1,8 +1,8 @@
 === wp-championship ===
 Tags: championship,
 Requires at least: 2.5
-Tested up to: 2.5.1
-Stable tag: 1.2
+Tested up to: 2.6
+Stable tag: 1.3b
 
 wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer 
 
@@ -11,7 +11,7 @@ wp-championship is a plugin for wordpress letting you play a guessing game of a 
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de
 Description:  wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer
-Version: 1.2
+Version: 1.3b
 Author: Hans Matzen <webmaster at tuxlog dot de>
 Author URI: http://www.tuxlog.de
 */
@@ -96,3 +96,8 @@ Author URI: http://www.tuxlog.de
 		when using a substitute, added separate trigger for 
 		recalculating points and finals in admin dialog
 		
+2008-08-02 v1.3	corrected a bit of incorrect xhtml, fixed wrong timestamp 
+	   	for championtime, check tipptime for championtime in case of injection
+		mark admin as tippspiel admin during install, add switch to disable 
+		substitute feature, added nonce check, added championship modus for
+		the german bundesliga, extended classification boards with some stats

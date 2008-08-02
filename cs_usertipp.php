@@ -20,7 +20,6 @@
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You 
 are not allowed to call this page directly.'); }
 
-
 // apply the filter to the page or post content
 function searchcsusertipp($content) {
 
@@ -64,7 +63,9 @@ function show_UserTippForm()
  $uid = $userdata->ID;
 
  // pruefe ob jemand vertreten werden soll und darf
- if ($_GET["cs_stellv"] > 0 ) {
+ $cs_stellv_schalter=get_option("cs_stellv_schalter");
+
+ if ($_GET["cs_stellv"] > 0 and ! $cs_stellv_schalter) {
    $sql="select ID, stellvertreter, user_nicename from $cs_users inner join $wp_users on ID=userid where userid=".$_GET["cs_stellv"].";";
    $r2 = $wpdb->get_row($sql);
 
@@ -94,19 +95,20 @@ function show_UserTippForm()
    $is_admin=true;
  
  // ermittle aktuelle uhrzeit
- $currtime=date("Y-m-d H:i:s", get_the_time("U"));
+ $currtime=date("Y-m-d H:i:s"); 
+
 
  // begruessung ausgeben
  $out .= __("Willkommen ","wpcs").($uid == $userdata->ID ? $userdata->user_nicename : $r2->user_nicename) .",<br />";
- $out .= __("auf dieser Seite siehst du deine Tippspielübersicht, kannst neue Tipps abgeben oder abgegebene Tipps bis Spielbeginn verändern, sowie deine persönlichen Einstellungen anpassen.","wpcs")."<br /></p><hr />";
+ $out .= __("auf dieser Seite siehst du deine Tippspielübersicht, kannst neue Tipps abgeben oder abgegebene Tipps bis Spielbeginn verändern, sowie deine persönlichen Einstellungen anpassen.","wpcs")."<br /><hr />";
  
 
  // um die vertreterregelung in anspruch zu nehmen, links ausgeben
  // aber nur wenn nicht bereits eine vertreter regelung aktiv ist
-  if ( $uid == $userdata->ID) {
+  if ( $uid == $userdata->ID and ! $cs_stellv_schalter) {
     $out .= "<p>".__("Du bist als Stellvertreter eingetragen worden von:","wpcs");
     foreach ($r1 as $res) {
-      $out .= "<a href='".get_page_link()."&cs_stellv=".$res->ID."'>".$res->user_nicename."</a>&nbsp;";
+      $out .= "<a href='".get_page_link()."&amp;cs_stellv=".$res->ID."'>".$res->user_nicename."</a>&nbsp;";
     }
     $out .="</p>";
   }
@@ -117,9 +119,13 @@ function show_UserTippForm()
   // speichern der aenderungen und pruefen der feldinhalte
   // ------------------------------------------------------
   if ( $_POST['update'] == __("Änderungen speichern","wpcs")) {
+
+    // check nonce
+     if ( function_exists( 'wp_nonce_field' )) 
+       check_admin_referer( 'wpcs-usertipp-update');
     
     // wurde als stellvertreter gespeichert?
-    if ($_POST['cs_stellv']) {
+    if ($_POST['cs_stellv'] and ! $cs_stellv_schalter) {
       $realuser=$uid;
       $uid=$_POST['cs_stellv'];
     }
@@ -135,14 +141,23 @@ function show_UserTippForm()
       $_POST['mailservice']=0;
     if ( $_POST['champion'] == '' )
       $_POST['champion']=-1;
-
+    
+    // user einstellungen speichern
     if ($r1[0]->anz > 0) {
-      $sql0 = "update  $cs_users set mailservice= ".$_POST['mailservice']." , stellvertreter=".$_POST['stellvertreter']." ,champion= ".$_POST['champion'].",championtime='".$currtime."' where userid=$uid;";
+      $sql0 = "update  $cs_users set mailservice= ".$_POST['mailservice']." , stellvertreter=".$_POST['stellvertreter']." where userid=$uid;";
     } else {
-      $sql0 = "insert into  $cs_users values ($uid,0,".$_POST['mailservice'].",".$_POST['stellvertreter'].",".$_POST['champion'].",'$currtime');"; 
+      $sql0 = "insert into  $cs_users values ($uid,0,".$_POST['mailservice'].",".$_POST['stellvertreter'].",0,'0000-00-00 00:00:00');"; 
     }
 
+    // championtipp speichern und auf zulaessigkeit pruefen
+    $sql="select min(unix_timestamp(matchtime)) as mintime from $cs_match";
+    $mr=$wpdb->get_row($sql);
+
+    if ( time() <= $mr->mintime and $r1[0]->anz > 0) {
+      $sql0 = "update  $cs_users set champion= ".$_POST['champion'].",championtime='".$currtime."' where userid=$uid;";
+    } 
     $r2 = $wpdb->query($sql0);
+
     // userdaten erneut lesen
     $sql0="select * from  $cs_users where userid=$uid";
     $r0= $wpdb->get_results($sql0);
@@ -366,30 +381,40 @@ function show_UserTippForm()
  $out.="<hr/>";
  
  // formularkopf
- $out .="<form method='post' action=''>";
+ $out .="<form method='post' action=''>\n";
+ $out .= "<div class='submit' align='right'>";
+
+ // add nonce field if possible
+ if ( function_exists( 'wp_nonce_field' )) {
+   echo $out;
+   wp_nonce_field('wpcs-usertipp-update');
+   $out = "&nbsp;</p>";
+ }
 
  // wenn als stellvertreter unterwegs, dann hidden field mitgeben
  // um beim speichern zu erkennen fuer wen gespeichert wird
  if ($userdata->ID != $uid)
    $out .= "<input type='hidden' name='cs_stellv' value='$uid' />";
 
- $out .= "<div class='submit' align='right'><input type='submit' name='update' value='".__("Änderungen speichern","wpcs")."' /></div>";
+ $out .= "<input type='submit' name='update' value='".__("Änderungen speichern","wpcs")."' /></div>";
 
  // persönliche Einstellungen
- $out .= "<table border='1' width='650' cellpadding='0'>\n";
- //
- // FIXME parameter ob stellvertreter moeglich oder nicht
- //
- $out .= "<tr><td>".__("Stellvertreter:","wpcs")." <select name='stellvertreter'>".$user1_select_html."</select></td><td><input type='checkbox' name='mailservice' value='1'";
- //$out .= "<tr><td>&nbsp;<input type='hidden' name='stellvertreter' value='-' /></td><td><input type='checkbox' name='mailservice' value='1'";
+ $out .= "<table border='1' width='650' cellpadding='0'>\n"; 
+
+ $out .= "<tr>";
+ if ( ! $cs_stellv_schalter )
+   $out .= "<td>".__("Stellvertreter:","wpcs")." <select name='stellvertreter'>".$user1_select_html."</select></td>";
+ else
+   $out .= "<td>&nbsp;<input type='hidden' name='stellvertreter' value='-' /></td>";
+
+ $out .= "<td><input type='checkbox' name='mailservice' value='1'";
  $out .= ($r0[0]->mailservice==1?'checked="checked"':'') ." /> ".__("Mailservice","wpcs")."</td></tr>";
  $out .='<tr><td align="center" colspan="2">'.__("Sieger-Tipp","wpcs");
-
+ 
  // weltmeistertipp kann nur bis tunierbeginn abgegeben werden
  $sql="select min(unix_timestamp(matchtime)) as mintime from $cs_match";
  $mr=$wpdb->get_row($sql);
 
- // if ( time() > mktime ( 18, 0, 0, 6, 7, 2008, 1) )
  if ( time() > $mr->mintime ) {
    $out .= '<select name="championshow" disabled="disabled">'.$team1_select_html.'</select>';
    $out .= '<input type="hidden" name="champion" value="'.$r0[0]->champion.'" /></td></tr>';
