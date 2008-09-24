@@ -421,7 +421,7 @@ function mailservice()
   foreach($res_email as $row) {
     // mail senden
     // header bauen
-    $header = "From: webmaster@tuxlog.de";   
+    $header = "From: webmaster@yourlog.de";   
     $header .= "MIME-Version: 1.0\n"; // ohne \r das ist wichtig
     $header .= "Content-Type: text/html; charset=utf-8\r\n";
 
