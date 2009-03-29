@@ -2,13 +2,13 @@
 /*
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de/wp-championship
-Description: wp-championship is championship plugin for worpress designed for the EM 2008.
-Version: 1.3b
+Description: wp-championship is championship plugin for wordpress designed for the EM 2008.
+Version: 1.4
 Author: Hans Matzen <webmaster at tuxlog.de>
 Author URI: http://www.tuxlog.de
 */
 
-/*  Copyright 2007,2008  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2007-2009  Hans Matzen  (email : webmaster at tuxlog dot de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -60,6 +60,13 @@ add_action('init', 'wp_championship_init');
 
 function wp_championship_init()
 {
+  // get translation 
+  $locale = get_locale();
+  if ( empty($locale) )
+    $locale = 'en_US';
+  if(function_exists('load_textdomain') and $locale != "de_DE") 
+    load_textdomain("wpcs",ABSPATH . "wp-content/plugins/wp-championship/lang/".$locale.".mo");
+
   // add css in header
   //add_action('wp_head', 'wp_greet_css');
 
