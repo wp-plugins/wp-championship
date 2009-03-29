@@ -46,13 +46,13 @@ function cs_admin_stats()
  // anzeigen der gewinnermannschaft falls tunier schon beendet
  $cswinner = get_cswinner();
  if ( $cswinner ) 
-   $out.= "<hr>".__("Der Gewinner des Tuniers heißt:","wpcs")."<b>$cswinner</b><hr>";
+   $out.= "<hr>".__("Der Gewinner des Turniers heißt:","wpcs")."<b>$cswinner</b><hr>";
  
  // ausgabe des aktuellen punktestandes und des ranges
  $rank = get_ranking();
  $i=0;
  $out .= "<h2>".__("Aktueller Punktestand","wpcs")."</h2>\n";
- $out .= "<table border='1' width='500px' cellpadding='0'><tr>\n";
+ $out .= "<table border='1' width='500' cellpadding='0'><tr>\n";
  $out .= '<th scope="col" style="text-align: center">Platz</th>'."\n";
  $out .= '<th scope="col" style="text-align: center">Spieler</th>'."\n";
  $out .= '<th width="20">'.__("Punktestand","wpcs").'</th>'."\n";

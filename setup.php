@@ -23,11 +23,11 @@
 function wp_championship_install()
 {
   include("globals.php");
-  $wpdb =& $GLOBALS['wpdb'];
+  global $wpdb;
 
   $sql = 'SHOW TABLES LIKE \''.$cs_table_prefix.'%\'';
   $results = $wpdb->query($sql);
-  
+
   if ($results == 0)
     {
       // create tables
@@ -86,6 +86,11 @@ function wp_championship_install()
             championtime datetime NOT NULL
           )";
 
+      $results = $wpdb->query($sql); 
+
+      // add admin as tippspiel admin
+      $sql = "insert into ".$cs_table_prefix."users values
+          ( 1, 1,0,0,0,'0000-00-00 00:00:00');";
       $results = $wpdb->query($sql);  
     }
 
@@ -189,6 +194,20 @@ function wp_championship_install()
     $cs_pts_champ="1";
     add_option("cs_pts_champ",$cs_pts_champ,"Points for wright champion tipp","yes");
   };
+
+  // Option: Stellvertreterfunktion abstellen, Wert: bool, Default: 0
+  $cs_stellv_schalter=get_option("cs_stellv_schalter");
+  if ($cs_stellv_schalter == "") {
+    $cs_stellv_schalter="1";
+    add_option("cs_stellv_schalter",$cs_stellv_schalter,"Disable substitute?","yes");
+  }; 
+
+  // Option: Turniermodus, Wert: int, Default: 1
+  $cs_modus=get_option("cs_modus");
+  if ($cs_modus == "") {
+    $cs_modus="1";
+    add_option("cs_modus",$cs_modus,"championship modus","yes");
+  };
 }
 
 function wp_championship_deinstall()
@@ -229,6 +248,8 @@ function wp_championship_deinstall()
   delete_option("cs_pts_supertipp");
   delete_option("cs_pts_tipp"); 
   delete_option("cs_pts_tendency");
+  delete_option("cs_stellv_schalter");
+  delete_option("cs_modus");
 }
 
 

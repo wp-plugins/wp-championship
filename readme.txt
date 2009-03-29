@@ -1,8 +1,8 @@
 === wp-championship ===
 Tags: championship,
 Requires at least: 2.5
-Tested up to: 2.5.1
-Stable tag: 0.8
+Tested up to: 2.6
+Stable tag: 1.4
 
 wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer 
 
@@ -11,12 +11,12 @@ wp-championship is a plugin for wordpress letting you play a guessing game of a 
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de
 Description:  wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer
-Version: 0.7
+Version: 1.4
 Author: Hans Matzen <webmaster at tuxlog dot de>
 Author URI: http://www.tuxlog.de
 */
 
-/*  Copyright 2007,2008  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2007-2009  Hans Matzen  (email : webmaster at tuxlog dot de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -71,8 +71,34 @@ Author URI: http://www.tuxlog.de
 		corrected spelling errors
 
 2008-05-31 v0.8 read correct wordpress table prefix,
-	   	added possibility to remove wp-cahmionship db tables,
+	   	added possibility to remove wp-championship db tables,
 		the finals will now be calculated each time a results is changed,
 		you can overrule pre-elimination classification manual by setting
 		the standing in the match dialog,
 		when creating a new user in user dialog check if user allready exists
+2008-06-01 v0.9 fixed mistake in em2008.sql, fixed problem creating matches
+
+2008-06-11 v1.0	send mails only when admin is entering results (not when 
+		admin entered tipps), added mailservice trigger in admin 
+		dialog, corrected order in group classification, consider 
+		wordpress timezone for time checking, store only new or 
+		changed tipps, corrected pulldown menu for champion tipp 
+		in user dialog, fixed points calculation for tendency and 
+		tied games (when no tipp was entered points for tied games 
+		were added)
+2008-06-16 v1.1 fixed some spelling mistakes, fixed xhtml for tipp page, 
+	   	fixed problem with saving user options, fixed html in admin 
+		dialog, fixed sql error when updating finals, corrected 
+		type error in team dialog
+2008-06-18 v1.2 added the possibility to define mixed finalround matches 
+	   	(from groups and match), fixed a problem to store user 
+		settings when no champion tipp was given, fixed an error 
+		when using a substitute, added separate trigger for 
+		recalculating points and finals in admin dialog
+		
+2008-08-02 v1.3	corrected a bit of incorrect xhtml, fixed wrong timestamp 
+	   	for championtime, check tipptime for championtime in case of injection
+		mark admin as tippspiel admin during install, add switch to disable 
+		substitute feature, added nonce check, added championship modus for
+		the german bundesliga, extended classification boards with some stats
+2009-03-29 v1.4	adding a first draft of english translation

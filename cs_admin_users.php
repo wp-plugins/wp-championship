@@ -77,7 +77,7 @@ function cs_admin_users()
 	admin_message ( __('Mitspieler bereits vorhanden.',"wpcs") );
     }
     
-    // update team 
+    // update users 
     if (  $action == "update" ) {
       $sql = "update ".$cs_table_prefix."users set admin=" . $_POST['isadmin'] . ", mailservice=" . $_POST['mailservice'] . ",stellvertreter=" . $_POST['stellv'] . ",champion=" . $_POST['champtipp'] . " where userid=".$_POST['user'].";";
       $results = $wpdb->query($sql);
@@ -100,7 +100,7 @@ function cs_admin_users()
   }
 
  
-  // output teams add/modify form
+  // output user add/modify form
   if ( $action == 'edit' ) {
     // select data to modify
     $sql= "select * from  $cs_users where userid=".$_GET['userid'].";";
@@ -113,16 +113,18 @@ function cs_admin_users()
   $out = "";
 
   $champtipp_select_html='<option value="-1">-</option>';
-  $sql="select tid,name,champion from $cs_team left outer join $cs_users on tid=champion where name not like '#%'order by name;";
+  //$sql="select tid,name,champion from $cs_team left outer join $cs_users on tid=champion where name not like '#%'order by name;";
+  
+  $sql="select tid,name from $cs_team where name not like '#%' order by name;";
   $results1 = $wpdb->get_results($sql);
   foreach($results1 as $res) {
     $champtipp_select_html .= "<option value='".$res->tid."' ";
-    if ($res->champion == $results->champion and $res->champion <>"")
+    if ($res->tid == $results->champion) // and $res->champion <>"")
       $champtipp_select_html .="selected='selected'";
     $champtipp_select_html .=">".$res->name."</option>\n";
   }
   
-  $stellv_select_html='<option value="-1">-</option>';
+  $stellv_select_html='<option value="0">-</option>';
   $user_select_html='';
   $sql="select ID,user_nicename from $wp_users order by user_nicename;";
   $results1 = $wpdb->get_results($sql);
@@ -149,16 +151,16 @@ function cs_admin_users()
  
   $out .= '<table class="editform" width="100%" cellspacing="2" cellpadding="2"><tr>';
   $out .= '<th width="33%" scope="row" valign="top"><label for="user">'.__('Mitspieler',"wpcs").':</label></th>'."\n";
-  $out .= '<td width="67%"><select name="user">'.$user_select_html.'</select></td></tr>'."\n";
+  $out .= '<td width="67%"><select id="user" name="user">'.$user_select_html.'</select></td></tr>'."\n";
  
-  $out .= '<tr><th scope="row" valign="top"><label for="location">'.__('Mailservice','wpcs').':</label></th>'."\n";
-  $out .= '<td><input name="mailservice" id="mailservice" type="checkbox" value="1" '. ($results->mailservice==1?'checked':'') . '"  /></td></tr>'."\n";
-  $out .= '<tr><th scope="row" valign="top"><label for="isAdmin">'.__('Tippspiel-Admin','wpcs').':</label></th>'."\n";
-  $out .= '<td><input name="isadmin" id="isadmin" type="checkbox" value="1" '. ($results->admin==1?'checked':'').'"  /></td></tr>'."\n";
+  $out .= '<tr><th scope="row" valign="top"><label for="mailservice">'.__('Mailservice','wpcs').':</label></th>'."\n";
+  $out .= '<td><input name="mailservice" id="mailservice" type="checkbox" value="1" '. ($results->mailservice==1?'checked="checked"':'') . '  /></td></tr>'."\n";
+  $out .= '<tr><th scope="row" valign="top"><label for="isadmin">'.__('Tippspiel-Admin','wpcs').':</label></th>'."\n";
+  $out .= '<td><input name="isadmin" id="isadmin" type="checkbox" value="1" '. ($results->admin==1?'checked="checked"':'').'  /></td></tr>'."\n";
  $out .= '<tr><th scope="row" valign="top"><label for="stellv">'.__('Stellvertreter',"wpcs").' :</label></th>'."\n";
-  $out .= '<td><select name="stellv">'.$stellv_select_html.'</select></td></tr>'."\n";
+  $out .= '<td><select id="stellv" name="stellv">'.$stellv_select_html.'</select></td></tr>'."\n";
   $out .= '<tr><th scope="row" valign="top"><label for="champtipp">'.__('Sieger-Tipp',"wpcs").' :</label></th>'."\n";
-  $out .= '<td><select name="champtipp">'.$champtipp_select_html.'</select></td></tr>'."\n";
+  $out .= '<td><select id="champtipp" name="champtipp">'.$champtipp_select_html.'</select></td></tr>'."\n";
 
   $out .= '</table>'."\n";
   
@@ -183,7 +185,7 @@ function cs_admin_users()
   $out .= '<th scope="col" width="70" style="text-align: center">'.__('Mailservice',"wpcs").'</th>'."\n";
   $out .= '<th scope="col" width="90" style="text-align: center">'.__('Stellvertreter',"wpcs").'</th>'."\n"; 
   $out .= '<th scope="col" width="90" style="text-align: center">'.__('Sieger-Tipp',"wpcs").'</th>'."\n";
-  $out .= '<th colspan="2" style="text-align: center">'.__('Aktion',"wpcs").'</th>'."\n";
+  $out .= '<th colspan="2" style="text-align: center">'.__('Aktion',"wpcs").'</th></tr></thead>'."\n";
   // match loop
   $sql="select * from $cs_users a inner join $wp_users b on a.userid=b.ID left outer join  $cs_team c on a.champion = c.tid order by b.user_nicename;";
   $results = $wpdb->get_results($sql);
@@ -196,7 +198,7 @@ function cs_admin_users()
     $out .= "<td align=\"center\"><a href=\"".$thisform."&amp;action=modify&amp;userid=".$res->userid."\">".__("Ändern","wpcs")."</a>&nbsp;&nbsp;&nbsp;";
     $out .= "<a href=\"".$thisform."&amp;action=remove&amp;userid=".$res->userid."\">".__("Löschen","wpcs")."</a></td></tr>\n";
   }
-  $out .= '</thead></table></div>'."\n";
+  $out .= '</table></div>'."\n";
 
   echo $out;
 }
