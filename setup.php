@@ -88,10 +88,15 @@ function wp_championship_install()
 
       $results = $wpdb->query($sql); 
 
-      // add admin as tippspiel admin
-      $sql = "insert into ".$cs_table_prefix."users values
+      // add admin as tippspiel admin if necessary
+      $resadmin = 0;
+      $sql = "select count(*) from ".$cs_table_prefix."users where userid=1;";
+      $resadmin = $wpdb->get_row($sql); 
+      if ($resadmin == 0) {
+	  $sql = "insert into ".$cs_table_prefix."users values
           ( 1, 1,0,0,0,'0000-00-00 00:00:00');";
-      $results = $wpdb->query($sql);  
+	  $results = $wpdb->query($sql);  
+      }
     }
 
   // -----------------------------------------------------------------
@@ -114,7 +119,6 @@ function wp_championship_install()
     $results = $wpdb->query($sql);
     
   }
-  
   
   // Optionen / Parameter
 
@@ -208,12 +212,18 @@ function wp_championship_install()
     $cs_modus="1";
     add_option("cs_modus",$cs_modus,"championship modus","yes");
   };
+  
+  wp_schedule_event(time(), 'hourly', 'cs_mailreminder');
+
 }
 
 function wp_championship_deinstall()
 {
   include("globals.php");
   $wpdb =& $GLOBALS['wpdb'];
+
+  // entferne rmeinder hook
+  wp_clear_scheduled_hook('cs_mailreminder');
 
   // to prevent misuse :-)
   return;
