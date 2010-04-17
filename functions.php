@@ -3,12 +3,14 @@
 // 
 // function to show an admin message on an admin page
 //
-function admin_message($msg) {
-  echo "<div class='updated'><p><strong>";
-  echo $msg;
-  echo "</strong></p></div>\n";
+if (!function_exists("admin_message")) 
+{
+    function admin_message($msg) {
+	echo "<div class='updated'><p><strong>";
+	echo $msg;
+	echo "</strong></p></div>\n";
+    }
 }
-
 
 //
 // return an html form field selector for num groups with id
@@ -144,21 +146,20 @@ function get_ranking() {
 // zuruekcgeliefert. ist count  = 0 werden alle teams zuruckgegegben
 function get_team_clification($groupid='', $count=0)
 {
-  include("globals.php");
-  global $wpdb;
-
-  //$wpdb->show_errors(true);
-
-  // turniermodus lesen
-  $cs_modus=get_option("cs_modus");
-  
-  // punktvergabe fuer match einlesen
-  $cs_pts_winner=get_option("cs_pts_winner");
-  $cs_pts_looser=get_option("cs_pts_looser");
-  $cs_pts_deuce=get_option("cs_pts_deuce");
-
-  $sql1= <<<EOD
-   create temporary table if not exists cs_tt
+    include("globals.php");
+    global $wpdb;
+    
+    //$wpdb->show_errors(true);
+    
+    // turniermodus lesen
+    $cs_modus      = get_option("cs_modus");
+    // punktvergabe fuer match einlesen
+    $cs_pts_winner = get_option("cs_pts_winner");
+    $cs_pts_looser = get_option("cs_pts_looser");
+    $cs_pts_deuce  = get_option("cs_pts_deuce");
+    
+    $sql1= <<<EOD
+	create temporary table if not exists cs_tt
          select groupid,name,tid,icon,qualified,
 	 sum(result1) as tore,
 	 sum(result2) as gegentore, 
@@ -166,7 +167,7 @@ function get_team_clification($groupid='', $count=0)
 	 from $cs_match 
 	 inner join $cs_team 
 	 on tid=tid1
-	 where winner <>-1 and tid1<>0 and round='V'
+	 where winner<>-1 and tid1<>0 and round='V'
          group by groupid,name,icon,qualified
 	 UNION 
          select groupid,name,tid,icon,qualified,
@@ -252,7 +253,7 @@ function compare_direct($team1,$team2)
 
   $tore1=0;$tore2=0; $atore1=0; $atore2=0; $winner=-1;
 
-  $wpdb->show_errors(true);
+  //$wpdb->show_errors(true);
 
   $sql="select * from $cs_match where (tid1=$team1 and tid2=$team2) or (tid1=$team2 and tid2=$team1) and winner <> -1";
   $res = $wpdb->get_results($sql);
@@ -450,7 +451,7 @@ function mailservice()
   // ausgabe des aktuellen punktestandes und des ranges
   $rank = get_ranking();
   $i=0;
-  $msg  = "<h2>".__("EM-Tippspiel Mailservice","wpcs")."</h2>\n";
+  $msg  = "<h2>".__("WM-Tippspiel Mailservice","wpcs")."</h2>\n";
   $msg .= "<h2>".__("Aktueller Punktestand","wpcs")."</h2>\n";
   $msg .= "<table border='1' width='500px' cellpadding='0'><thead><tr>\n";
   $msg .= '<th scope="col" style="text-align: center">'.__("Platz","wpcs").'</th>'."\n";
@@ -476,17 +477,88 @@ function mailservice()
   $msg .= '</table>'."\n<p>&nbsp;";
   
   foreach($res_email as $row) {
-    // mail senden
-    // header bauen
-    $header = "From: webmaster@tuxlog.de";   
-    $header .= "MIME-Version: 1.0\n"; // ohne \r das ist wichtig
-    $header .= "Content-Type: text/html; charset=utf-8\r\n";
+      // mail senden
+      // header bauen
+      $header = "From: " . get_option("admin_email");
+      $header .= "MIME-Version: 1.0\n"; // ohne \r das ist wichtig
+      $header .= "Content-Type: text/html; charset=utf-8\r\n";
+      
+      $stat = mail  ( $row->user_email , "Update WM2010 Tippspiel" , $msg, $header);
+      if ( $stat) 
+	  echo __("Die email an ","wpcs").$row->user_email.__(" wurde versendet.<br />","wpcs");
+      else 
+	  echo __("Die email an ","wpcs").$row->user_email.__("konnte <b>nicht</b> versendet werden","wpcs");
+  }
+}
 
-    $stat = mail  ( $row->user_email , "Update EM2008 Tippspiel" , $msg, $header);
-    if ( $stat) 
-      echo __("Die email an ","wpcs").$row->user_email.__(" wurde versendet.<br />","wpcs");
-    else 
-      echo __("Die email an ","wpcs").$row->user_email.__("konnte <b>nicht</b> versendet werden","wpcs");
+// verschickt an die abonnenten erinnerungen falls noch nicht getippt wurde
+function mailservice2()
+{
+    // prüfen ob wir erinnern sollen
+    $cs_reminder= get_option("cs_reminder");
+    if ( ! $cs_reminder)
+	return;
+
+    // globale variable einlesen
+    include("globals.php");
+    global $wpdb;
+  
+
+    // holen der match ids fuer die spiele die noch nicht angefangen haben aber in
+    // den nächsten stunden anfangen
+    $cs_reminder_hours = get_option("cs_reminder_hours");
+    $now  =  time() + ( get_option( 'gmt_offset' ) * 3600 );
+    $then =  $now + ( $cs_reminder_hours * 3600 );
+
+    $mnow  = gmdate( 'Y-m-d H:i:s', $now );
+    $mthen = gmdate( 'Y-m-d H:i:s', $then );
+
+    $sql = "select mid from cs_match where matchtime > '$mnow' and matchtime <= '$then';";
+    $res_mid = $wpdb->get_results($sql);
+
+
+
+    $mids="(";
+    foreach ($res_mid as $row)
+	$mids .= $row->mid . ", ";
+
+    $mids .= "-9999)";
+
+    // holen der userids, die fuer diese match ids noch nicht getippt haben
+    $sql ="select a.userid, b.mid from cs_users a, cs_match b where b.mid in $mids and not exists ( select userid, mid from cs_tipp where userid=a.userid and mid=b.mid ) order by a.userid, b.mid;";
+    $res_user = $wpdb->get_results($sql);
+
+    // fuer jeden user mit fehlendem tipp email zusammenstellen und senden
+    foreach ( $res_user as $u )
+    {
+	// email adresse holen
+	$sql="select user_nicename, user_email from $wp_users where ID=$u->userid;";
+	$res_email=$wpdb->get_results($sql);
+
+	// match daten adresse holen
+	$sql="select b.name name1,c.name name2,a.matchtime,a.location from cs_match a inner join cs_team b on a.tid1 = b.tid inner join cs_team c on a.tid2=c.tid where mid=$u->mid;";
+	$res_match=$wpdb->get_results($sql);
+
+
+	// mailnachricht zusammen bauen
+	$msg  = "<h2>".__("WM-Tippspiel Mailservice","wpcs")."</h2>\n";
+	$msg .= "<h2>".__("Möchtest du noch tippen? Das folgende Spiel beginnt bald: ","wpcs")."</h2>\n";
+	$msg .= $res_match[0]->name1 . " : " . $res_match[0]->name2 . " in " . $res_match[0]->location . " startet " . $res_match[0]->matchtime . "<br /><br/>\n";
+	$msg .= "Viel Glück wünscht der Tippspiel-Admin.\n";
+   
+
+	// header bauen
+	$header = "From: " . get_option("admin_email") . "\n";
+	$header .= "MIME-Version: 1.0\n"; // ohne \r das ist wichtig
+	$header .= "Content-Type: text/html; charset=utf-8\r\n";
+
+      	// mail senden
+	$stat = mail  ( $res_email[0]->user_email , "Update WM2010 Tippspiel" , $msg, $header);
+	if ( $stat) 
+	    echo __("Die Erinnerungsemail an ","wpcs").$res_email[0]->user_email.__(" wurde versendet.<br />","wpcs");
+	else 
+	    echo __("Die Erinnerungsemail an ","wpcs").$res_email[0]->user_email.__("konnte <b>nicht</b> versendet werden","wpcs");
+	echo "<br />";
   }
 }
 
@@ -523,7 +595,7 @@ function get_team_stats($teamid)
   include("globals.php");
   global $wpdb;
   
-  $wpdb->show_errors(true);
+  //$wpdb->show_errors(true);
   
   // anzahl spiele
   $sql1= "select count(*) as anz1 from $cs_match where round='V' and (tid1=$teamid or tid2=$teamid) and winner <> -1; ";
@@ -544,5 +616,25 @@ function get_team_stats($teamid)
   
   return array('spiele' => $res1->anz1, 'siege' => $res2->anz2, 
 	       'unentschieden' => $res3->anz3, 'niederlagen' => $res4->anz4 );
+}
+
+
+function get_float_js() {
+$js = <<<EOL
+<script type="text/javascript">
+var name = "#WPCSfloatMenu";
+var menuYloc = null;
+	
+jQuery(document).ready(function(){
+	menuYloc = parseInt(jQuery(name).css("top").substring(0,jQuery(name).css("top").indexOf("px")))
+	    jQuery(window).scroll(function () { 
+		    offset = menuYloc+jQuery(document).scrollTop()+"px";
+		    jQuery(name).animate({top:offset},{duration:500,queue:false});
+		});
+    }); 
+</script>
+EOL;
+
+return $js;
 }
 ?>

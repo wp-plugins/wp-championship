@@ -35,7 +35,7 @@ function cs_admin()
 
 
   // get sql object
-  $wpdb =& $GLOBALS['wpdb'];
+  global $wbdb;
 
   // find out what we have to do
   $action = "";
@@ -80,7 +80,9 @@ function cs_admin()
       update_option( "cs_pts_champ", $_POST['cs_pts_champ'] ); 
       update_option( "cs_group_teams", $_POST['cs_group_teams'] ); 
       update_option( "cs_stellv_schalter", $_POST['cs_stellv_schalter'] );
-      update_option( "cs_modus", $_POST['cs_modus'] );
+      update_option( "cs_modus", $_POST['cs_modus'] ); 
+      update_option( "cs_reminder", $_POST['cs_reminder'] );
+      update_option( "cs_reminder_hours", $_POST['cs_reminder_hours'] );
 
       admin_message( __('Einstellungen erfolgreich gespeichert.',"wpcs") );
     }
@@ -117,7 +119,8 @@ function cs_admin()
    }
    
    if ( $action == "mailservice1" and $_POST['mailservice_ok']==1) {
-     mailservice();
+       mailservice();
+       mailservice2();
      admin_message(__("Die Mails wurden verschickt.","wpcs"));
    }
    
@@ -142,6 +145,8 @@ function cs_admin()
   $cs_group_teams = get_option("cs_group_teams");
   $cs_stellv_schalter= get_option("cs_stellv_schalter");
   $cs_modus= get_option("cs_modus");
+  $cs_reminder= get_option("cs_reminder"); 
+  $cs_reminder_hours= get_option("cs_reminder_hours");
    
   // build form
   $out = "";
@@ -240,11 +245,22 @@ $out .= '<td><input name="cs_pts_tendency" id="cs_pts_tendency" type="text" valu
  $out .= '>'.__("Deutsche Bundesliga","wpcs").'</option>';
  $out .= '</select></td></tr>'."\n";
 
-  // field for champion tipp ponts
+  // field for champion tipp points
   $out .= '<tr><th scope="row" valign="top"><label for="cs_pts_champ">'.__('Punkte für richtigen Sieger-Tipp',"wpcs").':</label></th>'."\n";
- $out .= '<td ><input name="cs_pts_champ" id="cs_pts_champ" type="text" value="'.$cs_pts_champ.'" size="3" /></td></tr>'."\n";
+ $out .= '<td ><input name="cs_pts_champ" id="cs_pts_champ" type="text" value="'.$cs_pts_champ.'" size="3" /></td>'."\n";
 
+// schalter fuer erinnerungsfunktion
+ $out .= '<th scope="row" valign="top"><label for="cs_reminder">'.__('Tipp-Erinnerung per Mailservice',"wpcs").':</label></th>'."\n";
+ $out .= '<td><input name="cs_reminder" id="cs_reminder" type="checkbox" value="1"  ';
+ if ( $cs_reminder > 0)
+   $out .= " checked='checked' ";
+ $out .= '/></td></tr>';
  
+// wert wie lang vor dem spiel erinnert wird
+  $out .= '<tr><td>&nbsp;</td><td>&nbsp;</td><th scope="row" valign="top"><label for="cs_reminder_hours">'.__('Stunden bis zum Spiel (Tipp-Erinnerung)',"wpcs").':</label></th>'."\n";
+ $out .= '<td ><input name="cs_reminder_hours" id="cs_reminder_hours" type="text" value="'.$cs_reminder_hours.'" size="3" /></td></tr>'."\n";
+
+
  
   $out .= '</table>'."\n";
   
