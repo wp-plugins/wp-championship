@@ -1,0 +1,653 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wp-championship\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-15 19:31+0200\n"
+"PO-Revision-Date: 2010-02-14 15:56+0100\n"
+"Last-Translator: Davide Brognoli <davide.brognoli@gmail.com>\n"
+"Language-Team: hans matzen <webmaster ät tuxlog dot de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UNITED KINGDOM\n"
+
+#: cs_admin_finals.php:63 cs_admin_match.php:62
+msgid "nowhere"
+msgstr "Da nessua parte"
+
+#: cs_admin_finals.php:67
+msgid "Bitte geben Sie Datum und Uhrzeit der Begegnung ein.."
+msgstr "Inserisci la data e l'ora della partita"
+
+#: cs_admin_finals.php:90
+msgid "Mannschaft 1 automatisch hinzugefügt."
+msgstr "Squadra 1 aggiunta automaticamente"
+
+#: cs_admin_finals.php:92
+msgid "Datenbankfehler Mannschaft 1 konnte nicht automatisch angelegt werden."
+msgstr ""
+"Errore del Database, la squadra non può essere aggiunta automaticamente"
+
+#: cs_admin_finals.php:101
+msgid "Mannschaft 2 automatisch hinzugefügt."
+msgstr "Squadra 2 aggiunta automaticamente"
+
+#: cs_admin_finals.php:103
+msgid "Datenbankfehler Mannschaft 2 konnte nicht automatisch angelegt werden."
+msgstr ""
+"Errore del Database, la squadra non può essere aggiunta automaticamente"
+
+#: cs_admin_finals.php:125
+msgid "Finalbegegnung erfolgreich angelegt."
+msgstr "Partita finale creata con successo"
+
+#: cs_admin_finals.php:127 cs_admin_finals.php:146 cs_admin_finals.php:157
+#: cs_admin_match.php:80 cs_admin_match.php:90 cs_admin_match.php:101
+#: cs_admin_team.php:86 cs_admin_team.php:96 cs_admin_team.php:107
+msgid "Datenbankfehler; Vorgang abgebrochen"
+msgstr "Errore del Database"
+
+#: cs_admin_finals.php:144
+msgid "Finalbegegnung erfolgreich gespeichert."
+msgstr "Partita finale salvata"
+
+#: cs_admin_finals.php:155
+msgid "Finalbegegnung gelöscht."
+msgstr "Partita finale cancellata"
+
+#: cs_admin_finals.php:227
+msgid "Finalbegegnung ändern"
+msgstr "Parita finale aggiornata"
+
+#: cs_admin_finals.php:230 cs_admin_finals.php:251
+msgid "Finalbegegnung hinzufügen"
+msgstr "Aggiungi partita finale"
+
+#: cs_admin_finals.php:235 cs_admin_match.php:143
+msgid "Mannschaft 1 "
+msgstr "Squadra 1"
+
+#: cs_admin_finals.php:237 cs_admin_finals.php:264 cs_admin_match.php:145
+#: cs_admin_match.php:171
+msgid "Mannschaft 2"
+msgstr "Squadra 2"
+
+#: cs_admin_finals.php:240 cs_admin_finals.php:265 cs_admin_match.php:147
+#: cs_admin_match.php:172 cs_userstats.php:217 cs_usertipp.php:471
+#: cs_usertipp.php:513
+msgid "Ort"
+msgstr "Lugo"
+
+#: cs_admin_finals.php:242 cs_admin_finals.php:266 cs_admin_match.php:149
+#: cs_admin_match.php:173
+msgid "Datum / Zeit"
+msgstr "Data / Ora"
+
+#: cs_admin_finals.php:249
+msgid "Finalbegegnung speichern"
+msgstr "Salva la partita finale"
+
+#: cs_admin_finals.php:260
+msgid "Finalbegegnungen"
+msgstr "Partita finale"
+
+#: cs_admin_finals.php:263 cs_admin_match.php:170
+msgid "Mannschaft 1"
+msgstr "Squadra 1"
+
+#: cs_admin_finals.php:267 cs_admin_match.php:174 cs_admin_team.php:185
+#: cs_admin_users.php:188
+msgid "Aktion"
+msgstr "Azione"
+
+#: cs_admin_finals.php:275 cs_admin_match.php:182 cs_admin_team.php:194
+#: cs_admin_users.php:198
+msgid "Ändern"
+msgstr "Aggiorna"
+
+#: cs_admin_finals.php:276 cs_admin_match.php:183 cs_admin_team.php:195
+#: cs_admin_users.php:199
+msgid "Löschen"
+msgstr "Cancella"
+
+#: cs_admin_match.php:67
+msgid "Datum und Uhrzeit der Begegnung müssen gefüllt sein."
+msgstr "E' necessario inserire sia la data che l'ora"
+
+#: cs_admin_match.php:78
+msgid "Begegnung erfolgreich angelegt."
+msgstr "Partita aggiunta con successo"
+
+#: cs_admin_match.php:88
+msgid "Begegnung erfolgreich gespeichert."
+msgstr "Partita salvata con successo"
+
+#: cs_admin_match.php:99
+msgid "Begegnung gelöscht."
+msgstr "Parita eliminata"
+
+#: cs_admin_match.php:135
+msgid "Begegnung ändern"
+msgstr "Partita aggiornata"
+
+#: cs_admin_match.php:138 cs_admin_match.php:158
+msgid "Begegnung hinzufügen"
+msgstr "Aggiungi partita"
+
+#: cs_admin_match.php:156
+msgid "Begegnung speichern"
+msgstr "Slava partita"
+
+#: cs_admin_match.php:167
+msgid "Matches"
+msgstr "Partite"
+
+#: cs_admin.php:69
+msgid "Bitte alle Felder füllen."
+msgstr "Compila tutti i campi"
+
+#: cs_admin.php:89
+msgid "Einstellungen erfolgreich gespeichert."
+msgstr "Configurazione salvata con successo"
+
+#: cs_admin.php:99
+msgid "Alle Tipps wurden gelöscht"
+msgstr "Tutti i consigli sono stati cancellati"
+
+#: cs_admin.php:112
+msgid "Alle Ergebnisse wurden gelöscht"
+msgstr "Tutti i risultati sono stati cancellati"
+
+#: cs_admin.php:120
+msgid "Alle wp-championship Tabellen wurden gelöscht"
+msgstr "Tutte le tabelle di wp-championship sono state cancellate"
+
+#: cs_admin.php:126
+msgid "Die Mails wurden verschickt."
+msgstr "E-mail inviate"
+
+#: cs_admin.php:134
+msgid "Die Neuberechnung wurde durchgeführt."
+msgstr "Ricalcolo eseguito"
+
+#: cs_admin.php:157
+msgid "wp-championship Einstellungen"
+msgstr "Configurazione di wp-championship"
+
+#: cs_admin.php:160
+msgid "Anzahl Gruppen Vorrunde"
+msgstr "Numero di gruppi nei preliminari"
+
+#: cs_admin.php:173
+msgid "Platzierung und Punkte neu berechnen?"
+msgstr "Ricalcolare punti e posizioni?"
+
+#: cs_admin.php:176
+msgid "Neuberechnung durchführen"
+msgstr "Ricalcolare"
+
+#: cs_admin.php:179
+msgid "Punkt für den Gewinner einer Begegnung"
+msgstr "Punti per la squadra vincente"
+
+#: cs_admin.php:183
+msgid "Mailservice einmal auslösen?"
+msgstr "Manda una sola email"
+
+#: cs_admin.php:186
+msgid "Mailservice auslösen"
+msgstr "Manda le email"
+
+#: cs_admin.php:189
+msgid "Punkte für den Verlierer einer Begegnung"
+msgstr "Punti per la squadra perdente"
+
+#: cs_admin.php:193
+msgid "Alle Tipps löschen?"
+msgstr "Cancellare tutti i consigli?"
+
+#: cs_admin.php:196
+msgid "Tipps löschen"
+msgstr "Cancella i consigli"
+
+#: cs_admin.php:199
+msgid "Punkte bei Unentschieden"
+msgstr "Punti per il pareggio"
+
+#: cs_admin.php:203
+msgid "Alle Ergebnisse löschen?"
+msgstr "Cancellare tutti i risultati?"
+
+#: cs_admin.php:206
+msgid "Ergebnisse löschen"
+msgstr "Cancella i risultati"
+
+#: cs_admin.php:209
+msgid "Anzahl der Teams pro Gruppe, die sich für die Finalrunde qualifizieren"
+msgstr "Numero di squadre per gruppo che si qualificano per la finale"
+
+#: cs_admin.php:213
+msgid "Alle Tabellen aus der Datenbank entfernen?"
+msgstr "Cancellare tutte le tabelle di wp-chmpionship dal database?"
+
+#: cs_admin.php:216
+msgid "Tabellen entfernen"
+msgstr "Cancella tutte le tabelle"
+
+#: cs_admin.php:219
+msgid "Punkt für korrekten Tipp"
+msgstr "Punti per un consiglio esatto"
+
+#: cs_admin.php:223
+msgid "Punkt bei richtiger Tendenz"
+msgstr "Punti per la corretta tendenza"
+
+#: cs_admin.php:227
+msgid "Deaktiveren der Stellvertreterfunktion"
+msgstr "Disattivare la funzione sostituzioni"
+
+#: cs_admin.php:234
+msgid "Punkt bei richtiger Tendenz und richtiger Tordifferenz"
+msgstr "Punti per la corretta tendenza e la differenza reti"
+
+#: cs_admin.php:238
+msgid "Turniermodus"
+msgstr "Tipologia di torneo"
+
+#: cs_admin.php:243
+msgid "Standard"
+msgstr "Standard"
+
+#: cs_admin.php:247
+msgid "Deutsche Bundesliga"
+msgstr "Bundesliga tedesca"
+
+#: cs_admin.php:251
+msgid "Punkte für richtigen Sieger-Tipp"
+msgstr "Punti per il corretto vincitre del campionato"
+
+#: cs_admin.php:255
+#, fuzzy
+msgid "Tipp-Erinnerung per Mailservice"
+msgstr "Servizio e-mail del gioco"
+
+#: cs_admin.php:262
+msgid "Stunden bis zum Spiel (Tipp-Erinnerung)"
+msgstr ""
+
+#: cs_admin.php:270
+msgid "Einstellungen speichern"
+msgstr "Salva la configurazione"
+
+#: cs_admin_stats.php:49 cs_userstats.php:102
+msgid "Der Gewinner des Turniers heißt:"
+msgstr "Il vincitore del campionato è:"
+
+#: cs_admin_stats.php:54 cs_userstats.php:106 functions.php:455
+msgid "Aktueller Punktestand"
+msgstr "Stato corrente"
+
+#: cs_admin_stats.php:58 cs_userstats.php:110 functions.php:459
+msgid "Punktestand"
+msgstr "Stato"
+
+#: cs_admin_stats.php:59
+msgid "Anzahl Tipps"
+msgstr "Numero di consigli"
+
+#: cs_admin_stats.php:60
+msgid "Champion-Tipp"
+msgstr "Consiglio sul campionato"
+
+#: cs_admin_team.php:70
+msgid "Der Name der Mannschaft darf nicht leer sein."
+msgstr "Il nome della squadra non può essere vuoto"
+
+#: cs_admin_team.php:73
+msgid "Der Name der Mannschaft darf nicht mit # beginnen."
+msgstr "Il nome della squadra non può cominciare con #"
+
+#: cs_admin_team.php:84
+msgid "Mannschaft erfolgreich angelegt."
+msgstr "Squadra aggiunta con successo"
+
+#: cs_admin_team.php:94
+msgid "Mannschaft erfolgreich gespeichert."
+msgstr "Squadra salvata con successo"
+
+#: cs_admin_team.php:105
+msgid "Mannschaft gelöscht."
+msgstr "Squadra cancellata"
+
+#: cs_admin_team.php:125
+msgid "Mannschaft ändern"
+msgstr "Squadra aggiornata"
+
+#: cs_admin_team.php:128 cs_admin_team.php:169
+msgid "Mannschaft hinzufügen"
+msgstr "Aggiungi una squadra"
+
+#: cs_admin_team.php:133 cs_admin_team.php:181 cs_admin_users.php:183
+msgid "Name"
+msgstr "Nome"
+
+#: cs_admin_team.php:135 cs_admin_team.php:182
+msgid "Symbol / Wappen"
+msgstr "Simbolo / Logo"
+
+#: cs_admin_team.php:137 cs_admin_team.php:183 cs_userstats.php:154
+#: cs_usertipp.php:467
+msgid "Gruppe"
+msgstr "Gruppo"
+
+#: cs_admin_team.php:149
+msgid "Platzierung der Vorrunde"
+msgstr "Stato preliminare"
+
+#: cs_admin_team.php:167
+msgid "Mannschaft speichern"
+msgstr "Salva la squadra"
+
+#: cs_admin_team.php:178 wp-championship.php:123
+msgid "Mannschaften"
+msgstr "Squadre"
+
+#: cs_admin_team.php:184
+msgid "Platzierung"
+msgstr "Stati"
+
+#: cs_admin_users.php:73
+msgid "Mitspieler erfolgreich angelegt."
+msgstr "Aggiungi giocatore"
+
+#: cs_admin_users.php:75 cs_admin_users.php:88
+msgid "Datenbankfehler; Vorgang abgebrochen."
+msgstr "Errore del database"
+
+#: cs_admin_users.php:77
+msgid "Mitspieler bereits vorhanden."
+msgstr "Il giocatore è già nel database"
+
+#: cs_admin_users.php:86
+msgid "Mitspieler erfolgreich gespeichert."
+msgstr "Giocatore salvato con successo"
+
+#: cs_admin_users.php:97
+msgid "Mitspieler gelöscht."
+msgstr "Giocatore cancellato"
+
+#: cs_admin_users.php:99
+msgid "Datenbankfehler, Vorgang abgebrochen."
+msgstr "Errore del database"
+
+#: cs_admin_users.php:145
+msgid "Mitspieler ändern"
+msgstr "Aggiona il giocatore"
+
+#: cs_admin_users.php:148 cs_admin_users.php:171
+msgid "Mitspieler hinzufügen"
+msgstr "Aggiungi giocatore"
+
+#: cs_admin_users.php:153 cs_admin_users.php:180 wp-championship.php:129
+msgid "Mitspieler"
+msgstr "Giocatore"
+
+#: cs_admin_users.php:156 cs_admin_users.php:185 cs_usertipp.php:445
+msgid "Mailservice"
+msgstr "Servizio E-mail"
+
+#: cs_admin_users.php:158 cs_admin_users.php:184
+msgid "Tippspiel-Admin"
+msgstr "Amministratore del gioco"
+
+#: cs_admin_users.php:160 cs_admin_users.php:186
+msgid "Stellvertreter"
+msgstr "Sostituzione"
+
+#: cs_admin_users.php:162 cs_admin_users.php:187 cs_usertipp.php:446
+msgid "Sieger-Tipp"
+msgstr "Vincitore - consiglio"
+
+#: cs_admin_users.php:169
+msgid "Mitspieler speichern"
+msgstr "Salva il giocatore"
+
+#: cs_userstats.php:54 cs_usertipp.php:61
+msgid "Sie sind nicht angemeldet."
+msgstr "Non sei loggato"
+
+#: cs_userstats.php:55
+msgid "Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website"
+msgstr "Per partecipare al gioco devi avere un account"
+
+#: cs_userstats.php:80 cs_usertipp.php:110
+msgid "Willkommen "
+msgstr "Benvenuto"
+
+#: cs_userstats.php:81
+msgid ""
+"auf dieser Seite siehst du den aktuellen Stand des Turniers und des "
+"Tippspiels."
+msgstr "Questa pagina mostra lo stato del gioco"
+
+#: cs_userstats.php:96 cs_usertipp.php:392
+msgid "Du bist Tippspiel-Administrator."
+msgstr "Sei l'amministratore del gioco"
+
+#: cs_userstats.php:108 functions.php:316 functions.php:457
+msgid "Platz"
+msgstr "Posizione"
+
+#: cs_userstats.php:109 functions.php:458
+msgid "Spieler"
+msgstr "Giocatore"
+
+#: cs_userstats.php:138 wp-championship.php:125
+msgid "Vorrunde"
+msgstr "Preliminare"
+
+#: cs_userstats.php:158
+msgid "Mannschaft"
+msgstr "Squadra"
+
+#: cs_userstats.php:159
+msgid "Spiele"
+msgstr "Partite"
+
+#: cs_userstats.php:160
+msgid "Siege"
+msgstr "Vittorie"
+
+#: cs_userstats.php:161
+msgid "Unentschieden"
+msgstr "Parggio"
+
+#: cs_userstats.php:162
+msgid "Niederlagen"
+msgstr "Sconfitta"
+
+#: cs_userstats.php:163
+msgid "Tore"
+msgstr "Reti"
+
+#: cs_userstats.php:164 cs_usertipp.php:474 cs_usertipp.php:516
+msgid "Punkte"
+msgstr "Punti"
+
+#: cs_userstats.php:209 cs_usertipp.php:507 wp-championship.php:127
+msgid "Finalrunde"
+msgstr "Finali"
+
+#: cs_userstats.php:213 functions.php:314
+msgid "Spielnr."
+msgstr "Partita n."
+
+#: cs_userstats.php:215 cs_usertipp.php:469 cs_usertipp.php:511
+msgid "Begegnung"
+msgstr "Partita"
+
+#: cs_userstats.php:218 cs_usertipp.php:472 cs_usertipp.php:514
+msgid "Datum<br />Zeit"
+msgstr "Data<br />Ora"
+
+#: cs_userstats.php:219
+msgid "Ergebnis"
+msgstr "Risultato"
+
+#: cs_usertipp.php:62
+msgid ""
+"Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website."
+msgstr "Per partecipare al gioco devi avere un account"
+
+#: cs_usertipp.php:81
+msgid "Du bist als Stellvertreter aktiv für "
+msgstr "Sei il sostituto di"
+
+#: cs_usertipp.php:82
+msgid ""
+"Um wieder Deine eigenen Tipps zu bearbeiten, rufe diese Seite (EM-Tipp) "
+"einfach neu auf."
+msgstr "Per aggiornare ancora il tuo consiglio, ricarica la pagina"
+
+#: cs_usertipp.php:111
+msgid ""
+"auf dieser Seite siehst du deine Tippspielübersicht, kannst neue Tipps "
+"abgeben oder abgegebene Tipps bis Spielbeginn verändern, sowie deine "
+"persönlichen Einstellungen anpassen."
+msgstr ""
+"Questa pagina mostra il riassunto dei tuoi consigli, puoi inserire novi "
+"consigli o aggiornare quelli già inseriti fino all'inizio del match e puoi "
+"modificare la tua configurazione."
+
+#: cs_usertipp.php:117
+msgid "Du bist als Stellvertreter eingetragen worden von:"
+msgstr "Sei il sostituto di:"
+
+#: cs_usertipp.php:129 cs_usertipp.php:432 cs_usertipp.php:596
+msgid "Änderungen speichern"
+msgstr "Salva i cambiamenti"
+
+#: cs_usertipp.php:186
+msgid "Ungueltiger Tipp, Wert:"
+msgstr "Consiglio non valido:"
+
+#: cs_usertipp.php:199
+msgid "Der Tipp kann nicht mehr angenommen werden."
+msgstr "Il consiglio non può essere modificato"
+
+#: cs_usertipp.php:211
+msgid "Es fehlt eine Seite des Tipps oder eine Eingabe ist fehlerhaft."
+msgstr "Il consiglio è incompleto o non valido"
+
+#: cs_usertipp.php:244
+msgid "Die Tipps wurden erfolgreich gespeichert."
+msgstr "Consiglio salvato con successo"
+
+#: cs_usertipp.php:266
+msgid "Ungueltiges Ergebnis, Wert:"
+msgstr "Risultato non valido"
+
+#: cs_usertipp.php:283
+msgid "Es fehlt eine Seite des Ergebnisses oder eine Eingabe ist fehlerhaft."
+msgstr "Il risultato è incompleto o non valido"
+
+#: cs_usertipp.php:319
+msgid "Die Ergebnisse wurden erfolgreich gespeichert."
+msgstr "Risultati salvati con successo"
+
+#: cs_usertipp.php:409
+msgid "Du hast insgesamt"
+msgstr "Tu hai"
+
+#: cs_usertipp.php:409
+msgid "Punkte und bist aktuell auf Platz"
+msgstr "Il punteggio e la tua posizione sono:"
+
+#: cs_usertipp.php:435
+#, fuzzy
+msgid "Einstellungen"
+msgstr "Salva la configurazione"
+
+#: cs_usertipp.php:440
+msgid "Stellvertreter:"
+msgstr "Sostituto:"
+
+#: cs_usertipp.php:464
+msgid "Vorrundenspiele"
+msgstr "Prliminare"
+
+#: cs_usertipp.php:473
+msgid "Tipp"
+msgstr "Consiglio"
+
+#: cs_usertipp.php:515
+msgid "Tipp<br />Ergebnis"
+msgstr "Consiglio<br />Risultato"
+
+#: functions.php:314
+msgid "Gewinner"
+msgstr "Vincitore"
+
+#: functions.php:314
+msgid "Verlierer"
+msgstr "Perdente"
+
+#: functions.php:316
+msgid "Gruppe "
+msgstr "Gruppo"
+
+#: functions.php:454 functions.php:544
+#, fuzzy
+msgid "WM-Tippspiel Mailservice"
+msgstr "Servizio e-mail del gioco"
+
+#: functions.php:488 functions.php:490
+msgid "Die email an "
+msgstr "E-mail a"
+
+#: functions.php:488 functions.php:558
+msgid " wurde versendet.<br />"
+msgstr "è stata mandata.<br />"
+
+#: functions.php:490 functions.php:560
+msgid "konnte <b>nicht</b> versendet werden"
+msgstr "<b>non può</b> essere inviata."
+
+#: functions.php:545
+msgid "Möchtest du noch tippen? Das folgende Spiel beginnt bald: "
+msgstr ""
+
+#: functions.php:558 functions.php:560
+#, fuzzy
+msgid "Die Erinnerungsemail an "
+msgstr "E-mail a"
+
+#: wp-championship.php:123
+msgid "wp-championship Teams"
+msgstr "Squadre wp-championship"
+
+#: wp-championship.php:125
+msgid "wp-championship Matches"
+msgstr "Partite wp-championship"
+
+#: wp-championship.php:127
+msgid "wp-championship Finals"
+msgstr "Finali wp-championship"
+
+#: wp-championship.php:129
+msgid "wp-championship Users"
+msgstr "Utenti wp-championship"
+
+#: wp-championship.php:131
+msgid "wp-championship Stats"
+msgstr "Statistiche wp-championship"
+
+#: wp-championship.php:131
+msgid "Statistiken"
+msgstr "Statistiche"
