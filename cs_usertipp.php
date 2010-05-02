@@ -66,12 +66,17 @@ function show_UserTippForm()
  //$wpdb->show_errors(true);
 
  // javascript für floating link ausgeben
- $out .= get_float_js();
+ $cs_floating_link = get_option("cs_floating_link");
+ if ($cs_floating_link > 0 )
+     $out .= get_float_js();
  
  // lese anwenderdaten ein
  get_currentuserinfo();
  // merke die userid 
  $uid = $userdata->ID;
+
+ // lese torsummen schalter
+ $cs_goalsum = get_option("cs_goalsum");
 
  // pruefe ob jemand vertreten werden soll und darf
  $cs_stellv_schalter=get_option("cs_stellv_schalter");
@@ -125,7 +130,6 @@ function show_UserTippForm()
   }
   
   
-  
   $errlist=array();
   // speichern der aenderungen und pruefen der feldinhalte
   // ------------------------------------------------------
@@ -143,32 +147,35 @@ function show_UserTippForm()
 
     // optionen speichern
     $sql1="select count(*) as anz from $cs_users where userid=$uid;";
-    $r1 = $wpdb->get_results($sql1);
-    
+    $r1 = $wpdb->get_row($sql1);
+
     // datenfelder auf gueltigkeit pruefen
-    if ( $_POST['stellvertreter'] == -1 )
-      $_POST['stellvertreter']=0;
+    if ( $_POST['stellvertreter'] == -1 or $_POST['stellvertreter'] == "-")
+	$_POST['stellvertreter']=0;
     if ( $_POST['mailservice'] == '' )
-      $_POST['mailservice']=0;
+	$_POST['mailservice']=0;
     if ( $_POST['champion'] == '' )
-      $_POST['champion']=-1;
+	$_POST['champion']=-1;
     
     // user einstellungen speichern
-    if ($r1[0]->anz > 0) {
-      $sql0 = "update  $cs_users set mailservice= ".$_POST['mailservice']." , stellvertreter=".$_POST['stellvertreter']." where userid=$uid;";
+    if ($r1->anz > 0) { 
+	$sql0 = "update  $cs_users set mailservice= ".$_POST['mailservice']." , stellvertreter=".$_POST['stellvertreter']." where userid=$uid;";
     } else {
-      $sql0 = "insert into  $cs_users values ($uid,0,".$_POST['mailservice'].",".$_POST['stellvertreter'].",0,'0000-00-00 00:00:00');"; 
+	$sql0 = "insert into  $cs_users values ($uid,0,".$_POST['mailservice'].",".$_POST['stellvertreter'].",0,'0000-00-00 00:00:00');"; 
     }
-     $r1 = $wpdb->query($sql0);
-
+    $r3 = $wpdb->query($sql0);
+    
     // championtipp speichern und auf zulaessigkeit pruefen
     $sql="select min(unix_timestamp(matchtime)) as mintime from $cs_match";
     $mr=$wpdb->get_row($sql);
-
-    if ( time() <= $mr->mintime and $r1[0]->anz > 0) {
-      $sql0 = "update  $cs_users set champion= ".$_POST['champion'].",championtime='".$currtime."' where userid=$uid;";
-    } 
-    $r2 = $wpdb->query($sql0);
+    
+    if ( time() <= $mr->mintime ) { 
+	$sql0 = "update  $cs_users set champion= ".$_POST['champion'].",championtime='".$currtime."' where userid=$uid;";
+	$r2 = $wpdb->query($sql0);
+    } else {
+	$out .= __("Championtipp kann nicht mehr verändert werden.","wpcs")."<br />\n";
+    }
+    
 
     // userdaten erneut lesen
     $sql0="select * from  $cs_users where userid=$uid";
@@ -177,31 +184,43 @@ function show_UserTippForm()
 
    $errflag=0;
    $errlist=array(); // enthält die ids der input felder, die fehlerhaft sind
+   //
    // tipps plausibiliseren
+   //
    foreach ($_POST as $key => $value) {
      $mkey = substr($key,0,4);
-     if ( $mkey == "gt1_" or $mkey=="gt2_" ) {
-       $mid=substr($key,4);
+     if ( $mkey == "gt1_" or $mkey=="gt2_" or $mkey=="gt3_") {
+	 $mid=substr($key,4);
     
-       // es sind nur zahlen zugelassen, rest herausfiltern
-       // ebenso sind werte kleiner als 0 nicht zugelassen
-       if ( $value != preg_replace('/[^0-9]/i', '', $value) or (int) $value < 0) {
-	 $out .= __("Ungueltiger Tipp, Wert:","wpcs")." $value<br />\n";
-	 $errflag += 1;
-	 $errlist[$key]=$key;
-       }
+	 // es sind nur zahlen zugelassen, rest herausfiltern
+	 // ebenso sind werte kleiner als 0 nicht zugelassen
+	 if ( $value != preg_replace('/[^0-9]/i', '', $value) or (int) $value < 0) {
+	     $out .= __("Ungueltiger Tipp, Wert:","wpcs")." $value<br />\n";
+	     $errflag += 1;
+	     $errlist[$key]=$key;
+	 }
 
-       // leere felder auf -1 setzen
-       if ($_POST[$key]=="")
-	 $_POST[$key] = -1;
-       
-       // pruefe ob das spiel schon begonnen hat
-       $sql1="select matchtime from  $cs_match where mid=$mid";
-       $r1 = $wpdb->get_results($sql1);
-       if (time() > strtotime($r1[0]->matchtime) ) {
-	 $out .= __("Das Spiel $mid hat schon begonnen.","wpcs")."<br />".__("Der Tipp kann nicht mehr angenommen werden.","wpcs")."<br />\n";
-	 $errflag += 1;
-       } 
+	 // leere felder auf -1 setzen
+	 if ($_POST[$key]=="")
+	     $_POST[$key] = -1;
+	 
+	 // pruefe ob das spiel schon begonnen hat
+	 $sql1="select matchtime from  $cs_match where mid=$mid";
+	 $r1 = $wpdb->get_results($sql1);
+	 if (time() > strtotime($r1[0]->matchtime) ) {
+	     $out .= __("Das Spiel $mid hat schon begonnen.","wpcs")."<br />".__("Der Tipp kann nicht mehr angenommen werden.","wpcs")."<br />\n";
+	     $errflag += 1;
+	 } 
+
+	 // pruefe ob torsummen tipp erlaubt und im range ist
+	 if ($cs_goalsum > 0 and $mkey=="gt3_") {
+	     if ( $_POST[$key] < $cs_goalsum and $_POST[$key] > -1) {
+		 $out .= __("Die Summe der Tore muss größer als der Schwellwert sein","wpcs")."(".$cs_goalsum.").<br />\n";
+		 $errflag += 1;	
+		 $errlist[$key]=$key;
+		 $_POST[$key]=-1; 
+	     }
+	 }
      }
    }
 
@@ -224,24 +243,26 @@ function show_UserTippForm()
    if ($errflag == 0) {
      // tipp speichern
      foreach ($_POST as $key => $value) {
-       if ( substr($key,0,4) == "gt1_" or substr($key,0,4)=="gt2_") {
+       if ( substr($key,0,4) == "gt1_" or substr($key,0,4)=="gt2_" or substr($key,0,4)=="gt3_") {
 	 // speichere tipp fuer spiel mid
 	 $mid=substr($key,4);
 	 
 	 // pruefe ob satz bereits vorhanden
 	 $sql1="select * from $cs_tipp where userid=$uid and mid=$mid;";
 	 $r1 = $wpdb->get_row($sql1);
-	 
+
 	 if ($r1) {
-	   if ( $r1->result1 != (int) $_POST['gt1_'.$mid] or	
-		$r1->result2 != (int) $_POST['gt2_'.$mid] )  {
-	     $sql2="update  $cs_tipp set result1=". (int) $_POST['gt1_'.$mid].", result2=".(int) $_POST['gt2_'.$mid].", tipptime='$currtime' where userid=$uid and mid=$mid;";
-	     $r2 = $wpdb->query($sql2);
-	   }
+	     if ( $r1->result1 != (int) $_POST['gt1_'.$mid] or	
+		  $r1->result2 != (int) $_POST['gt2_'.$mid] or
+		  $r1->result3 != (int) $_POST['gt3_'.$mid])  {
+		 $sql2="update  $cs_tipp set result1=". (int) $_POST['gt1_'.$mid].", result2=".(int) $_POST['gt2_'.$mid].", result3=".(int) $_POST['gt3_'.$mid].", tipptime='$currtime' where userid=$uid and mid=$mid;"; 
+		 $r2 = $wpdb->query($sql2);
+	     }
 	 } else {
-	   $sql2="insert into  $cs_tipp values ($uid, $mid, ".(int) $_POST['gt1_'.$mid].", ". (int) $_POST['gt2_'.$mid].",'$currtime',-1);";
-	   $r2 = $wpdb->query($sql2);
+	     $sql2="insert into  $cs_tipp values ($uid, $mid, ".(int) $_POST['gt1_'.$mid].", ". (int) $_POST['gt2_'.$mid].", ".(int) $_POST['gt3_'.$mid].",'$currtime',-1);";
+	     $r2 = $wpdb->query($sql2);
 	 }
+	
        }
      }
      $out .= __("Die Tipps wurden erfolgreich gespeichert.","wpcs")."<br/>";
@@ -354,9 +375,10 @@ function show_UserTippForm()
   
 
 //
-// ausgabe des floating nach oben links
+// ausgabe des floating links 
 //
-$out .= '<div id="WPCSfloatMenu"><ul class="menu1"><li><a href="#" onclick="window.scrollTo(0,); return false;"> Zum Seitenanfang </a></li></ul></div>';
+  if ($cs_floating_link)
+      $out .= '<div id="WPCSfloatMenu"><ul class="menu1"><li><a href="#" onclick="window.scrollTo(0,); return false;"> Zum Seitenanfang </a></li></ul></div>';
 
 // ausgabe der optionen und der tipptabelle
 // -------------------------------------------------------------------
@@ -458,9 +480,11 @@ $out .= '<div id="WPCSfloatMenu"><ul class="menu1"><li><a href="#" onclick="wind
    $out .= '<select name="champion">'.$team1_select_html.'</select></td></tr>';
  $out .= "</table>";
 
+
  // Spielübersicht Vorrunde
  $iconpath = get_option("siteurl") . "/wp-content/plugins/wp-championship/icons/";
-
+ 
+ 
  //$out .= "<div class='wrap'>";
  $out .= "<script type='text/javascript'>jQuery(document).ready(function() { jQuery('#ptab').tablesorter({sortList:[[5,0]],headers:{1:{sorter:false},3:{sorter:false}}}); }); jQuery(document).ready(function() { jQuery('#ftab').tablesorter({sortList:[[5,0]],headers:{1:{sorter:false},3:{sorter:false}}}); });</script>\n";
  $out .= "<br /><h2>".__("Vorrundenspiele","wpcs")."</h2>\n"; 
@@ -473,7 +497,9 @@ $out .= '<div id="WPCSfloatMenu"><ul class="menu1"><li><a href="#" onclick="wind
  $out .= '<th scope="col" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
  $out .= '<th id="p1stsort" scope="col" style="text-align: center">'.__("Datum<br />Zeit","wpcs").'</th>'."\n";
  $out .= '<th align="center">'.__("Tipp","wpcs").'<br />Ergebnis</th>';
- $out .= '<th align="center">'.__("Punkte","wpcs").'</th></tr>';
+ if ($cs_goalsum > 0)
+     $out .= '<th align="center">'.__("Summe<br />Tore","wpcs").'</th>';
+  $out .= '<th align="center">'.__("Punkte","wpcs").'</th></tr>';
 
 $out .= '</thead><tbody>'."\n";
  // match loop
@@ -490,17 +516,23 @@ $out .= '</thead><tbody>'."\n";
      $_POST[ 'gt1_'.$res->mid ] = $res->result1;
    if ($res->result2 != -1)
      $_POST[ 'gt2_'.$res->mid ] = $res->result2;
+   if ($res->result3 != -1)
+     $_POST[ 'gt3_'.$res->mid ] = $res->result3;
 
    // setze -1 felder auf leer wenn diese keinen fehler ausgeloest haben
    if ($_POST[ 'gt1_'.$res->mid ] == -1 and ! array_key_exists('gt1_'.$res->mid,$errlist))
      $_POST[ 'gt1_'.$res->mid ] = "";
    if ($_POST[ 'gt2_'.$res->mid ] == -1 and ! array_key_exists('gt2_'.$res->mid,$errlist))
      $_POST[ 'gt2_'.$res->mid ] = "";
+   if ($_POST[ 'gt3_'.$res->mid ] == -1)
+     $_POST[ 'gt3_'.$res->mid ] = "";
+   
    
    $_POST[ 'pt_'.$res->mid ] = $res->points;
  }
 
  $lastmatchround='';
+
 
  foreach($results as $res) {
 
@@ -515,6 +547,8 @@ $out .= '</thead><tbody>'."\n";
      $out .= '<th scope="col" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
      $out .= '<th id="f1stsort" scope="col" style="text-align: center">'.__("Datum<br />Zeit","wpcs").'</th>'."\n";
      $out .= '<th align="center">'.__("Tipp<br />Ergebnis","wpcs").'</th>';
+     if ($cs_goalsum > 0)
+	 $out .= '<th align="center">'.__("Summe<br />Tore","wpcs").'</th>';
      $out .= '<th align="center">'.__("Punkte","wpcs").'</th></tr>';
      $out .= '</thead><tbody>'."\n";
    }
@@ -587,6 +621,21 @@ $out .= '</thead><tbody>'."\n";
        $out .= "</td>"; 
    } else
      $out .= ($res->result1==-1 ? "-" : $res->result1) . ":" . ($res->result2==-1 ? "-" : $res->result2) . "</td>";
+ 
+   if ($cs_goalsum > 0) {
+       if (array_key_exists('gt3_'.$res->mid,$errlist)) {
+	   $errclass = " class='cs_inputerror' ";
+	   $gt3_value = $_POST['gt3_'.$res->mid]; // alten eingabewert anzeigen
+       } else {
+	   $errclass="";
+	   $gt3_value = ($_POST['gt3_'.$res->mid]==-1 ? "-" : $_POST['gt3_'.$res->mid]);
+       }
+       if ($res->result2 != -1 or time() > $match_start)
+	   $out .= "<td>".$_POST['gt3_'.$res->mid]."</td>";
+       else
+	   $out .= "<td><input $errclass name='gt3_".$res->mid."' id='gt3_".$res->mid."' type='text' size='1' maxlength='2' value='$gt3_value' /></td> ";  
+   }
+  
    $out .= "<td align='center'>".($_POST['pt_'.$res->mid] == -1 ? "-" : $_POST['pt_'.$res->mid] )."</td>";
    $out .= "</tr>\n";
 
@@ -595,7 +644,7 @@ $out .= '</thead><tbody>'."\n";
  }
  $out .= '</tbody></table>'."\n&nbsp;";
 
- $out .= "<div class='submit' align='right'><input type='submit' name='update' value='".__("Änderungen speichern","wpcs")."' /></div></form><p>&nbsp;";
+ $out .= "<div class='submit' align='right'><input type='submit' class='wpcs-button' name='update' value='".__("Änderungen speichern","wpcs")."' /></div></form><p>&nbsp;";
 
 
  return $out;

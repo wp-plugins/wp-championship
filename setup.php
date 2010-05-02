@@ -120,6 +120,22 @@ function wp_championship_install()
     
   }
   
+  // -----------------------------------------------------------------
+  // U P D A T E - table structure v1.6
+  // -----------------------------------------------------------------
+  $sql="select result3 from $cs_tipp;";
+  $results = $wpdb->query($sql);  
+  
+  if ($results == 0) {
+      // add columns for point sum tip
+      $sql="alter table $cs_tipp add column result3 int NOT NULL after result2";
+      $results = $wpdb->query($sql);
+      
+      $sql="update $cs_tipp set result3 = -1;";
+      $results = $wpdb->query($sql);
+  }
+  
+
   // Optionen / Parameter
 
   // Option: Anzahl der Gruppen in der Vorrunde; Werte: 1-12; 
@@ -199,6 +215,30 @@ function wp_championship_install()
     add_option("cs_pts_champ",$cs_pts_champ,"Points for wright champion tipp","yes");
   };
 
+  // Option: Punkte für einseitig richtigen Tipp, Wert: ganzzahlig numerisch, 
+  // Default: 0
+   $cs_pts_oneside=get_option("cs_pts_oneside");
+  if ($cs_pts_oneside == "") {
+    $cs_pts_oneside="0";
+    add_option("cs_pts_oneside",$cs_pts_oneside,"Points for one side correct tip","yes");
+  };
+
+  // Option: Schwellwert für Summer der Tore Tipp, Wert: ganzzahlig numerisch, 
+  // Default: 0
+   $cs_goalsum=get_option("cs_goalsum");
+  if ($cs_goalsum == "") {
+    $cs_goalsum="0";
+    add_option("cs_goalsum",$cs_goalsum,"Threshold for points for sum of goals","yes");
+  };
+
+  // Option: Punkte für Summe der Tore, Wert: ganzzahlig numerisch, 
+  // Default: 0
+   $cs_pts_goalsum=get_option("cs_pts_goalsum");
+  if ($cs_pts_goalsum == "") {
+    $cs_pts_goalsum="0";
+    add_option("cs_pts_goalsum",$cs_pts_goalsum,"Points for sum of goals tip","yes");
+  };
+
   // Option: Stellvertreterfunktion abstellen, Wert: bool, Default: 0
   $cs_stellv_schalter=get_option("cs_stellv_schalter");
   if ($cs_stellv_schalter == "") {
@@ -212,7 +252,14 @@ function wp_championship_install()
     $cs_modus="1";
     add_option("cs_modus",$cs_modus,"championship modus","yes");
   };
-  
+
+  // Option: Floating Link einschalten, Wert: bool, Default: 1
+  $cs_floating_link=get_option("cs_floating_link");
+  if ($cs_floating_link == "") {
+    $cs_floating_link="1";
+    add_option("cs_floating_link",$cs_floating_link,"Enable floating link?","yes");
+  }; 
+
   wp_schedule_event(time(), 'hourly', 'cs_mailreminder');
 
 }
@@ -260,6 +307,9 @@ function wp_championship_deinstall()
   delete_option("cs_pts_tendency");
   delete_option("cs_stellv_schalter");
   delete_option("cs_modus");
+  delete_option("cs_goalsum");
+  delete_option("cs_pts_goalsum");
+  delete_option("cs_pts_oneside");
 }
 
 

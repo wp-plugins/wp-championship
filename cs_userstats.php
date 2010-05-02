@@ -60,7 +60,10 @@ function show_UserStats()
   //$wpdb->show_errors(true);
 
   // javascript für floating link ausgeben
-  $out .= get_float_js();
+  $cs_floating_link = get_option("cs_floating_link");
+  if ($cs_floating_link > 0 )
+      $out .= get_float_js();
+ 
 
  // lese anwenderdaten ein
  get_currentuserinfo();
@@ -87,7 +90,8 @@ function show_UserStats()
  //
  // ausgabe des floating nach oben links
  //
-$out .= '<div id="WPCSfloatMenu" ><ul class="menu1"><li><a href="#" onclick="window.scrollTo(0,); return false;"> Zum Seitenanfang </a></li></ul></div>';
+ if ($cs_floating_link > 0 )
+     $out .= '<div id="WPCSfloatMenu" ><ul class="menu1"><li><a href="#" onclick="window.scrollTo(0,); return false;"> Zum Seitenanfang </a></li></ul></div>';
 
  // ausgabe der optionen und der tipptabelle
  // -------------------------------------------------------------------

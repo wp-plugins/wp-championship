@@ -1,10 +1,10 @@
 === wp-championship ===
 Contributors: tuxlog
 Donate link: http://www.tuxlog.de/
-Tags: championship,guessing, game, soccer, world, 2010, wordpress,plugin
+Tags: championship,guessing, game, soccer, world, 2010, wordpress, plugin
 Requires at least: 2.5
 Tested up to: 2.9.2
-Stable tag: 1.5
+Stable tag: 1.6
 
 wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer 
 
@@ -12,15 +12,15 @@ wp-championship is a plugin for wordpress letting you play a guessing game of a 
 wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer 
 
 Features:
-* define number of groups, and points given to the winner, looser of each match
-* define teams and a team specific icon
-* define matches finalround and pre-final round
-* for each user you can set a substitute
-* sends mails about current game status (if wanted)
-* define game admin to edit match results   
-* shows some stats for admin and users
-* sql for the EM2008 championship in switzerland and austria
-* sql for the WM2010 championship in south-africa
+ + define number of groups, and points given to the winner, looser of each match
+ + define teams and a team specific icon
+ + define matches finalround and pre-final round
+ + for each user you can set a substitute
+ + sends mails about current game status (if wanted)
+ + define game admin to edit match results   
+ + shows some stats for admin and users
+ + sql for the EM2008 championship in switzerland and austria
+ + sql for the WM2010 championship in south-africa
 
 Credits:
 Thanks go to all who support this plugin, with  hints and suggestions for improv
@@ -35,12 +35,46 @@ ment and especially to Andy Chapman for doing a lot of tests
 	    (i.e. `wp-championship.php` should end up in
 	    `wp-content/plugins/wp-championship/`).
 
-	2.  Activate the plugin on the plugin screen.
+	1.  Activate the plugin on the plugin screen.
 
-	3.  Visit the configuration page (wp-championship) to
+	1.  Visit the configuration page (wp-championship) to
             configure your guessing game
 
+	1.  Optional: load teams andmatches into your database (e.g. using phpmyadmin). SQL for the WM2010 can be found in the sql subdirectory
+
+	1.  Optional Update to v1.6: Please remember to deactivate and activate the plugin once for database updates
+
+== Frequently Asked Questions ==
+= Where can I get further information about the plugin? =
+
+There are several resources to visit:
+
+* [The german wp-championship v1.5. post][german15] 
+* [Information up to v1.4 of wp-championship][german14]
+* [A quick reference for wp-championship][wpcsref] 
+
+
+[german15]: http://www.tuxlog.de/wordpress/2010/wp-championship-v1-5-fur-die-wm2010/ "German wp-championship post v1.5"
+[german14]: http://www.tuxlog.de/wordpress/2008/wp-championship/ "wp-championship post up to v1.4"
+[wpcsref]:  http://www.tuxlog.de/wordpress/2010/wp-championship-v1-5-quickreferenz/ "quick reference for wp-championship"
+
+== Screenshots ==
+1. wp-championship stats
+2. wp-championship tipp dialog
+
 == Changelog ==
+
+= 2010-04-27 v1.6 =
+* fixed layout in readme.txt
+* added screenshots
+* fixed, championtipp was not updated when no other field was changed (tippdialog)
+* added error message when championtipp should be changed after first match start
+* added feature to gain points for a only on one side correct tip
+* added feature to gain points for a sum of goals/points during for each match
+* fixed save user data when using substitutes
+* added feature to gain points if one side of the tipp is exactly correct
+* fixed button class on tipp page
+* added switch to enable/disable floating link
 
 = 2010-04-15 v1.5 =
 * adopt to wordpress 2.9.2
