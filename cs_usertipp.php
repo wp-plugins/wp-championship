@@ -77,6 +77,7 @@ function show_UserTippForm()
 
  // lese torsummen schalter
  $cs_goalsum = get_option("cs_goalsum");
+ $cs_goalsum_auto = get_option("cs_goalsum_auto");
 
  // pruefe ob jemand vertreten werden soll und darf
  $cs_stellv_schalter=get_option("cs_stellv_schalter");
@@ -213,7 +214,7 @@ function show_UserTippForm()
 	 } 
 
 	 // pruefe ob torsummen tipp erlaubt und im range ist
-	 if ($cs_goalsum > 0 and $mkey=="gt3_") {
+	 if ($cs_goalsum > 0 and $cs_goalsum_auto==0 and $mkey=="gt3_") {
 	     if ( $_POST[$key] < $cs_goalsum and $_POST[$key] > -1) {
 		 $out .= __("Die Summe der Tore muss größer als der Schwellwert sein","wpcs")."(".$cs_goalsum.").<br />\n";
 		 $errflag += 1;	
@@ -497,7 +498,7 @@ function show_UserTippForm()
  $out .= '<th scope="col" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
  $out .= '<th id="p1stsort" scope="col" style="text-align: center">'.__("Datum<br />Zeit","wpcs").'</th>'."\n";
  $out .= '<th align="center">'.__("Tipp","wpcs").'<br />Ergebnis</th>';
- if ($cs_goalsum > 0)
+ if ($cs_goalsum > 0 and $cs_goalsum_auto==0)
      $out .= '<th align="center">'.__("Summe<br />Tore","wpcs").'</th>';
   $out .= '<th align="center">'.__("Punkte","wpcs").'</th></tr>';
 
@@ -547,7 +548,7 @@ $out .= '</thead><tbody>'."\n";
      $out .= '<th scope="col" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
      $out .= '<th id="f1stsort" scope="col" style="text-align: center">'.__("Datum<br />Zeit","wpcs").'</th>'."\n";
      $out .= '<th align="center">'.__("Tipp<br />Ergebnis","wpcs").'</th>';
-     if ($cs_goalsum > 0)
+     if ($cs_goalsum > 0 and $cs_goalsum_auto == 0)
 	 $out .= '<th align="center">'.__("Summe<br />Tore","wpcs").'</th>';
      $out .= '<th align="center">'.__("Punkte","wpcs").'</th></tr>';
      $out .= '</thead><tbody>'."\n";
@@ -622,7 +623,7 @@ $out .= '</thead><tbody>'."\n";
    } else
      $out .= ($res->result1==-1 ? "-" : $res->result1) . ":" . ($res->result2==-1 ? "-" : $res->result2) . "</td>";
  
-   if ($cs_goalsum > 0) {
+   if ($cs_goalsum > 0 and $cs_goalsum_auto==0) {
        if (array_key_exists('gt3_'.$res->mid,$errlist)) {
 	   $errclass = " class='cs_inputerror' ";
 	   $gt3_value = $_POST['gt3_'.$res->mid]; // alten eingabewert anzeigen

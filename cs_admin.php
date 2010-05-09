@@ -78,8 +78,10 @@ function cs_admin()
 	update_option( "cs_pts_tendency", $_POST['cs_pts_tendency'] ); 
 	update_option( "cs_pts_supertipp", $_POST['cs_pts_supertipp'] ); 
 	update_option( "cs_pts_champ", $_POST['cs_pts_champ'] ); 
-	update_option( "cs_pts_oneside", $_POST['cs_pts_oneside'] ); 
-	update_option( "cs_goalsum", $_POST['cs_goalsum'] ); 
+	update_option( "cs_pts_oneside", $_POST['cs_pts_oneside'] );
+	update_option( "cs_oneside_tendency", $_POST['cs_oneside_tendency'] ); 
+	update_option( "cs_goalsum", $_POST['cs_goalsum'] );
+	update_option( "cs_goalsum_auto", $_POST['cs_goalsum_auto'] );  
 	update_option( "cs_pts_goalsum", $_POST['cs_pts_goalsum'] ); 
 	update_option( "cs_group_teams", $_POST['cs_group_teams'] ); 
 	update_option( "cs_stellv_schalter", $_POST['cs_stellv_schalter'] );
@@ -146,8 +148,10 @@ function cs_admin()
   $cs_pts_tendency = get_option("cs_pts_tendency");
   $cs_pts_supertipp = get_option("cs_pts_supertipp");
   $cs_pts_champ = get_option("cs_pts_champ");
-  $cs_pts_oneside = get_option("cs_pts_oneside");
+  $cs_pts_oneside = get_option("cs_pts_oneside"); 
+  $cs_oneside_tendency = get_option("cs_oneside_tendency");
   $cs_goalsum = get_option("cs_goalsum"); 
+  $cs_goalsum_auto=get_option("cs_goalsum_auto");
   $cs_pts_goalsum = get_option("cs_pts_goalsum");
   $cs_group_teams = get_option("cs_group_teams");
   $cs_stellv_schalter= get_option("cs_stellv_schalter");
@@ -265,16 +269,33 @@ $out .= '<td><input name="cs_pts_tendency" id="cs_pts_tendency" type="text" valu
  $out .= '/></td></tr>';
 
  // field for correct one side tipp points
- $out .= '<tr><th scope="row" valign="top"><label for="cs_pts_oneside">'.__('Punkte für einseitig richtigen Tipp',"wpcs").':</label></th>'."\n";
- $out .= '<td ><input name="cs_pts_oneside" id="cs_pts_oneside" type="text" value="'.$cs_pts_oneside.'" size="3" /></td>'."\n"; 
+ $out .= '<tr><th scope="row" valign="top"><label for="cs_pts_oneside">'.__('Punkte für einseitig richtigen Tipp',"wpcs").':</label>'."\n";
+
+// oneside tipp hits only if tendency is correct
+ $out .= '<br /><label style="font-size: 9px;" for="cs_oneside_tendency">'.__('Einseitiger Tipp zieht nur mit Tendenz',"wpcs").':</label>'."\n";
+ $out .= '<input name="cs_oneside_tendency" id="cs_oneside_tendency" type="checkbox" value="1" ';
+ if ($cs_oneside_tendency > 0)
+      $out .= " checked='checked' ";
+$out.= '/><br /></th>'."\n";  
+
+ $out .= '<td ><input name="cs_pts_oneside" id="cs_pts_oneside" type="text" value="'.$cs_pts_oneside.'" size="3" /></td>'."\n";
 
 // wert wie lang vor dem spiel erinnert wird
   $out .= '<th scope="row" valign="top"><label for="cs_reminder_hours">'.__('Stunden bis zum Spiel (Tipp-Erinnerung)',"wpcs").':</label></th>'."\n";
  $out .= '<td ><input name="cs_reminder_hours" id="cs_reminder_hours" type="text" value="'.$cs_reminder_hours.'" size="3" /></td></tr>'."\n";
 
 // field for min goal sum to get points
- $out .= '<tr><th scope="row" valign="top"><label for="cs_goalsum">'.__('Schwellwert für Summe der Tore',"wpcs").':</label></th>'."\n";
+ $out .= '<tr><th scope="row" valign="top"><label for="cs_goalsum">'.__('Schwellwert für Summe der Tore',"wpcs").':</label>'."\n";
+ // oneside tipp not as separate tip but from summ of tipp goals
+ $out .= '<br /><label style="font-size: 9px;" for="cs_goalsum_auto">'.__('kein separater Tortipp',"wpcs").':</label>'."\n";
+ $out .= '<input name="cs_goalsum_auto" id="cs_goalsum_auto" type="checkbox" value="1" ';
+ if ($cs_goalsum_auto > 0)
+     $out .= " checked='checked' ";
+ $out.= '/><br /></th>'."\n"; 
+
  $out .= '<td ><input name="cs_goalsum" id="cs_goalsum" type="text" value="'.$cs_goalsum.'" size="3" /></td><td>&nbsp;</td><td>&nbsp;</td></tr>'."\n"; 
+
+
 
 // field for high goal sum tipp
  $out .= '<tr><th scope="row" valign="top"><label for="cs_pts_goalsum">'.__('Punkte für Summe der Tore größer als Schwellwert',"wpcs").':</label></th>'."\n";

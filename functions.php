@@ -74,9 +74,11 @@ function calc_points($new=false)
  $cs_pts_tendency=get_option("cs_pts_tendency");    // tendenz
  $cs_pts_supertipp=get_option("cs_pts_supertipp");  // tendenz und tordifferenz
  $cs_pts_champ=get_option("cs_pts_champ");          // championtipp
- $cs_pts_oneside=get_option("cs_pts_oneside");      // einseitg ricfhtiger tipp 
+ $cs_pts_oneside=get_option("cs_pts_oneside");      // einseitg richtiger tipp 
+ $cs_oneside_tendency=get_option("cs_oneside_tendency");  // einseitg richtiger tipp nur mit richtiger tendenz gültig
  $cs_goalsum=get_option("cs_goalsum");              // schwellwert für torsumme tipp
  $cs_pts_goalsum=get_option("cs_pts_goalsum");      // punkte für tosummentipp
+ $cs_goalsum_auto = get_option("cs_goalsum_auto");  // torsummentipp aus tipp berechnen oder separat?
 
  // genauer treffer
  // sql vor mysql 5.0
@@ -99,14 +101,22 @@ function calc_points($new=false)
  $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( (a.result1<a.result2 and b.result1<b.result2) or (a.result1=a.result2 and b.result1=b.result2) or (a.result1>a.result2 and b.result1>b.result2)  ) set points= $cs_pts_tendency where b.points = -1 and b.result1>-1 and b.result2>-1;";
  $res = $wpdb->query($sql); 
 
- // einseitig richtiger tipp
+ // einseitig richtiger tipp ohne und mit tendenz
  // mysql 4.x
- $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1=b.result1 or a.result2=b.result2 ) set points= $cs_pts_oneside where b.points = -1 and b.result1>-1 and b.result2>-1;";
- $res = $wpdb->query($sql);
+ if ($cs_pts_oneside > 0) {
+     if ($cs_oneside_tendency > 0)
+	 $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( (a.result1<a.result2 and b.result1<b.result2) or (a.result1=a.result2 and b.result1=b.result2) or (a.result1>a.result2 and b.result1>b.result2)  ) and ( a.result1=b.result1 or a.result2=b.result2 ) set points= points + $cs_pts_oneside where b.points = $cs_pts_tendency b.result1>-1 and b.result2>-1;";  
+     else
+	 $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1=b.result1 or a.result2=b.result2 ) set points= $cs_pts_oneside where b.points = -1 and b.result1>-1 and b.result2>-1;";
+     $res = $wpdb->query($sql);
+ }
 
  // torsummen tipp prüfen und ggf addieren
  if ($cs_goalsum > 0) {
-     $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1+a.result2 <= b.result3 and a.result1+a.result2 >= $cs_goalsum ) set points=points+$cs_pts_goalsum where b.result1>-1 and b.result2>-1;";
+     if ($cs_goalsum_auto==0)
+	 $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1+a.result2 <= b.result3 and a.result1+a.result2 >= $cs_goalsum ) set points=points+$cs_pts_goalsum where b.result1>-1 and b.result2>-1;";
+     else
+	 $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1+a.result2 <= b.result1+b.result2 and a.result1+a.result2 >= $cs_goalsum ) set points=points+$cs_pts_goalsum where b.result1>-1 and b.result2>-1;"; 
      $res = $wpdb->get_results($sql);
  }
  
