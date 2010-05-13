@@ -39,9 +39,13 @@ function searchcsusertipp($content) {
 
 // funktion zum holen einer url (wird verwendet um die lokale zeitzone des users zu ermitteln)
 function file_get_contents_utf8($fn) {
-     $content = file_get_contents($fn);
-      return mb_convert_encoding($content, 'UTF-8',
-          mb_detect_encoding($content, 'UTF-8, ISO-8859-1', true));
+    $content = "";
+    if (ini_get('allow_url_fopen') and  function_exists("mb_convert_encoding") ) {
+	$content = file_get_contents($fn);
+	return mb_convert_encoding($content, 'UTF-8',
+				   mb_detect_encoding($content, 'UTF-8, ISO-8859-1', true));
+    } else
+	return $content;
 } 
 
 // -----------------------------------------------------------------------------------
@@ -367,13 +371,15 @@ function show_UserTippForm()
 // die differenz zwischen lokaler client zeit und spielzeiten in sekunden steht in $timediff
 //
   $geo_uri = "http://ipinfodb.com/ip_query.php?ip=".$_SERVER['REMOTE_ADDR']."&timezone=true";
+  $timediff = 0;
   $geores  = file_get_contents_utf8($geo_uri);
-  $spos = strpos($geores, "Gmtoffset") + 10;
-  $epos = strpos($geores,">",$spos);
-  $cltimezone = substr($geores,$spos,$epos-$spos+1);
-  $setimezone = get_option('gmt_offset') * 3600;
-  $timediff = -1 * $setimezone + $cltimezone;
-  
+  if ($geores != "" ) {
+      $spos = strpos($geores, "Gmtoffset") + 10;
+      $epos = strpos($geores,">",$spos);
+      $cltimezone = substr($geores,$spos,$epos-$spos+1);
+      $setimezone = get_option('gmt_offset') * 3600;
+      $timediff = -1 * $setimezone + $cltimezone;
+  }
 
 //
 // ausgabe des floating links 
@@ -556,8 +562,12 @@ $out .= '</thead><tbody>'."\n";
 
    // start des spiels als unix timestamp
    $match_start = strtotime($res->origtime);
-   // stat des spiels in der browser tiezone als unix timestamp
+   // start des spiels in der browser timezone als unix timestamp
    $match_local_start = strtotime($res->origtime) + $timediff;
+   // tooltip nur anzeigen, wenn die zeit unterschiedlich ist
+   $match_tooltip = "";
+   if ($timediff != 0 )
+       $match_tooltip = "title='Spielbeginn (lokal):".strftime("%d.%m %H:%M", $match_local_start)."'";
 
    $out .= "<tr><td align=\"center\">".($res->round == "V" ? $res->groupid : $res->mid)."</td>";
    if ($res->icon1!="")
@@ -570,7 +580,7 @@ $out .= '</thead><tbody>'."\n";
    else
      $out .= "<td>&nbsp;</td>";
    $out .= "<td align=\"center\">".$res->location."</td>";
-   $out .= "<td align=\"center\" title='Spielbeginn (lokal):".strftime("%d.%m %H:%M", $match_local_start)."'>".$res->matchtime."</td>";
+   $out .= "<td align=\"center\" ".$match_tooltip." >".$res->matchtime."</td>";
    $out .= "<td align='center'>";
 
    // fehlerklasse setzen, wenn erforderlich

@@ -3,12 +3,12 @@
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de/wp-championship
 Description: wp-championship is championship plugin for wordpress designed for the WM 2010.
-Version: 1.7
+Version: 1.8
 Author: Hans Matzen 
 Author URI: http://www.tuxlog.de
 */
 
-/*  Copyright 2007-2009  Hans Matzen  (email : webmaster at tuxlog dot de)
+/*  Copyright 2007-2010  Hans Matzen  (email : webmaster at tuxlog dot de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
