@@ -171,10 +171,12 @@ function show_UserTippForm()
     $r3 = $wpdb->query($sql0);
     
     // championtipp speichern und auf zulaessigkeit pruefen
-    $sql="select min(unix_timestamp(matchtime)) as mintime from $cs_match";
-    $mr=$wpdb->get_row($sql);
-    
-    if ( time() <= $mr->mintime ) { 
+    $blog_now =  current_time('mysql',false);
+ 
+    $sql="select min(matchtime) as mintime from $cs_match";
+    $mr = $wpdb->get_row($sql);
+
+    if ( $blog_now <= $mr->mintime ) { 
 	$sql0 = "update  $cs_users set champion= ".$_POST['champion'].",championtime='".$currtime."' where userid=$uid;";
 	$r2 = $wpdb->query($sql0);
     } else {
@@ -212,7 +214,7 @@ function show_UserTippForm()
 	 // pruefe ob das spiel schon begonnen hat
 	 $sql1="select matchtime from  $cs_match where mid=$mid";
 	 $r1 = $wpdb->get_results($sql1);
-	 if (time() > strtotime($r1[0]->matchtime) ) {
+	 if ($blog_now > $r1[0]->matchtime ) {
 	     $out .= __("Das Spiel $mid hat schon begonnen.","wpcs")."<br />".__("Der Tipp kann nicht mehr angenommen werden.","wpcs")."<br />\n";
 	     $errflag += 1;
 	 } 
@@ -477,10 +479,13 @@ function show_UserTippForm()
  $out .='<tr><td align="center" colspan="2">'.__("Sieger-Tipp","wpcs").": ";
  
  // weltmeistertipp kann nur bis tunierbeginn abgegeben werden
- $sql="select min(unix_timestamp(matchtime)) as mintime from $cs_match";
- $mr=$wpdb->get_row($sql);
-
- if ( time() > $mr->mintime ) {
+ // ermittle aktuell blog zeit
+ $blog_now =  current_time('mysql',false);
+ 
+ $sql="select min(matchtime) as mintime from $cs_match";
+ $mr = $wpdb->get_row($sql);
+ 
+ if ( $blog_now > $mr->mintime ) {
    $out .= '<select name="championshow" disabled="disabled">'.$team1_select_html.'</select>';
    $out .= '<input type="hidden" name="champion" value="'.$r0[0]->champion.'" /></td></tr>';
  } else

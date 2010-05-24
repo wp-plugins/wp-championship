@@ -461,7 +461,6 @@ EOD;
  }
 }
 
-
 // verschickt an die abonnenten das aktuelle ranking
 function mailservice()
 {
@@ -504,15 +503,16 @@ function mailservice()
   foreach($res_email as $row) {
       // mail senden
       // header bauen
-      $header = "From: " . get_option("admin_email");
+      $header = "From: " . get_option("admin_email") ."\n"; 
       $header .= "MIME-Version: 1.0\n"; // ohne \r das ist wichtig
       $header .= "Content-Type: text/html; charset=utf-8\r\n";
-      
-      $stat = mail  ( $row->user_email , "Update WM2010 Tippspiel" , $msg, $header);
+ 
+      $stat = wp_mail( $row->user_email , "Update WM2010 Tippspiel" , $msg, $header);
       if ( $stat) 
-	  echo __("Die email an ","wpcs").$row->user_email.__(" wurde versendet.<br />","wpcs");
+	  echo __("Die email an ","wpcs").$row->user_email.__(" wurde versendet.","wpcs");
       else 
-	  echo __("Die email an ","wpcs").$row->user_email.__("konnte <b>nicht</b> versendet werden","wpcs");
+	  echo __("Die email an ","wpcs").$row->user_email.__(" konnte <b>nicht</b> versendet werden","wpcs");
+      echo "<br />\n";
   }
 }
 
@@ -578,11 +578,11 @@ function mailservice2()
 	$header .= "Content-Type: text/html; charset=utf-8\r\n";
 
       	// mail senden
-	$stat = mail  ( $res_email[0]->user_email , "Update WM2010 Tippspiel" , $msg, $header);
+	$stat = wp_mail  ( $res_email[0]->user_email , "Update WM2010 Tippspiel" , $msg, $header);
 	if ( $stat) 
-	    echo __("Die Erinnerungsemail an ","wpcs").$res_email[0]->user_email.__(" wurde versendet.<br />","wpcs");
+	    echo __("Die Erinnerungsemail an ","wpcs").$res_email[0]->user_email.__(" wurde versendet.","wpcs");
 	else 
-	    echo __("Die Erinnerungsemail an ","wpcs").$res_email[0]->user_email.__("konnte <b>nicht</b> versendet werden","wpcs");
+	    echo __("Die Erinnerungsemail an ","wpcs").$res_email[0]->user_email.__(" konnte <b>nicht</b> versendet werden","wpcs");
 	echo "<br />";
   }
 }
