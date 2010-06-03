@@ -63,7 +63,7 @@ function calc_points($new=false)
   // for testing
   $new=true;
 
-  // alles zuruekcsetzen
+  // alles zuruecksetzen
   if ($new) {
     $sql = "update $cs_tipp set points=-1 where points <>-1";
     $res = $wpdb->query($sql);
@@ -105,27 +105,31 @@ function calc_points($new=false)
  // mysql 4.x
  if ($cs_pts_oneside > 0) {
      if ($cs_oneside_tendency > 0)
-	 $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( (a.result1<a.result2 and b.result1<b.result2) or (a.result1=a.result2 and b.result1=b.result2) or (a.result1>a.result2 and b.result1>b.result2)  ) and ( a.result1=b.result1 or a.result2=b.result2 ) set points= points + $cs_pts_oneside where b.points = $cs_pts_tendency b.result1>-1 and b.result2>-1;";  
+	 $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( (a.result1<a.result2 and b.result1<b.result2) or (a.result1=a.result2 and b.result1=b.result2) or (a.result1>a.result2 and b.result1>b.result2)  ) and ( a.result1=b.result1 or a.result2=b.result2 ) set points= points + $cs_pts_oneside where b.points = $cs_pts_tendency and b.result1>-1 and b.result2>-1;";  
      else
 	 $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1=b.result1 or a.result2=b.result2 ) set points= $cs_pts_oneside where b.points = -1 and b.result1>-1 and b.result2>-1;";
      $res = $wpdb->query($sql);
  }
 
- // torsummen tipp prüfen und ggf addieren
- if ($cs_goalsum > 0) {
-     if ($cs_goalsum_auto==0)
-	 $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1+a.result2 <= b.result3 and a.result1+a.result2 >= $cs_goalsum ) set points=points+$cs_pts_goalsum where b.result1>-1 and b.result2>-1;";
-     else
-	 $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1+a.result2 <= b.result1+b.result2 and a.result1+a.result2 >= $cs_goalsum ) set points=points+$cs_pts_goalsum where b.result1>-1 and b.result2>-1;"; 
-     $res = $wpdb->get_results($sql);
- }
- 
+
  // falscher tipp (setzt alle restlichen auf 0)
  // mysql 5.0
  //$sql= "update  $cs_tipp b set points=0 where mid in ( select a.mid from  a where a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 ) and b.points = -1;";
  // mysql 4.x
  $sql= "update $cs_tipp b inner join $cs_match a on  a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1  set points=0 where b.points = -1 and b.result1>-1 and b.result2>-1;";
  $res = $wpdb->query($sql);
+ 
+ 
+ // torsummen tipp prüfen und ggf addieren
+ if ($cs_goalsum > 0) {
+     if ($cs_goalsum_auto==0)
+	 $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1+a.result2 <= b.result3 and a.result1+a.result2 > $cs_goalsum ) set points=points+$cs_pts_goalsum where b.result1>-1 and b.result2>-1;";
+     else
+	 $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1+a.result2 <= b.result1+b.result2 and a.result1+a.result2 > $cs_goalsum ) set points=points+$cs_pts_goalsum where b.result1>-1 and b.result2>-1;"; 
+     $res = $wpdb->query($sql);
+ }
+ 
+
  
  // champion tipp addieren auf finalspiel
  //$sql="update  $cs_tipp b inner join $cs_match a on b.mid=a.mid and a.result1<> -1 and a.result2 <> -1 and a.matchtime = max(a.matchtime) and a.round='F' set points = points +10";

@@ -92,7 +92,7 @@ function show_UserTippForm()
 
    if ($r2->stellvertreter == $uid ) {
      $out .= "<b>".__("Du bist als Stellvertreter aktiv für ","wpcs").$r2->user_nicename.".</b><br />";
-     $out .= "<b>".__("Um wieder Deine eigenen Tipps zu bearbeiten, rufe diese Seite (EM-Tipp) einfach neu auf.","wpcs")."</b><br />";
+     $out .= "<b>".__("Um wieder Deine eigenen Tipps zu bearbeiten, rufe diese Seite einfach neu auf.","wpcs")."</b><br />";
      // user switchen
      $uid=$r2->ID;
    } 
@@ -127,9 +127,11 @@ function show_UserTippForm()
  // um die vertreterregelung in anspruch zu nehmen, links ausgeben
  // aber nur wenn nicht bereits eine vertreter regelung aktiv ist
   if ( $uid == $userdata->ID and ! $cs_stellv_schalter) {
-    $out .= "<p>".__("Du bist als Stellvertreter eingetragen worden von:","wpcs");
-    foreach ($r1 as $res) {
-      $out .= "<a href='".get_page_link()."&amp;cs_stellv=".$res->ID."'>".$res->user_nicename."</a>&nbsp;";
+      $out .= "<p>".__("Du bist als Stellvertreter eingetragen worden von:","wpcs");
+      foreach ($r1 as $res) {
+	  $plink = get_page_link();
+	  $pdelimiter = ( strpos($plink,"/?") > 0 ? "" : "?"); 
+	  $out .= "<a href='". $plink . $pdelimiter . "&amp;cs_stellv=".$res->ID."'>".$res->user_nicename."</a>&nbsp;";
     }
     $out .="</p>";
   }
@@ -387,7 +389,7 @@ function show_UserTippForm()
 // ausgabe des floating links 
 //
   if ($cs_floating_link)
-      $out .= '<div id="WPCSfloatMenu"><ul class="menu1"><li><a href="#" onclick="window.scrollTo(0,); return false;"> Zum Seitenanfang </a></li></ul></div>';
+      $out .= '<div id="WPCSfloatMenu"><ul class="menu1"><li><a href="#" onclick="window.scrollTo(0,); return false;"> ' . __("Zum Seitenanfang",'wpcs') . ' </a></li></ul></div>';
 
 // ausgabe der optionen und der tipptabelle
 // -------------------------------------------------------------------
@@ -451,10 +453,16 @@ function show_UserTippForm()
  $out .= "<div class='submit' align='right'>";
 
  // add nonce field if possible
+ //if ( function_exists( 'wp_nonce_field' )) {
+ //  echo $out;
+ //  wp_nonce_field('wpcs-usertipp-update');
+ //  $out = "&nbsp;</p>";
+ //}
+
+ // new add nonce field if possible
  if ( function_exists( 'wp_nonce_field' )) {
-   echo $out;
-   wp_nonce_field('wpcs-usertipp-update');
-   $out = "&nbsp;</p>";
+     $out .= wp_nonce_field('wpcs-usertipp-update',"_wpnonce",true,false);
+     $out .= "&nbsp;</p>";
  }
 
  // wenn als stellvertreter unterwegs, dann hidden field mitgeben
@@ -498,7 +506,7 @@ function show_UserTippForm()
  
  
  //$out .= "<div class='wrap'>";
- $out .= "<script type='text/javascript'>jQuery(document).ready(function() { jQuery('#ptab').tablesorter({sortList:[[5,0]],headers:{1:{sorter:false},3:{sorter:false}}}); }); jQuery(document).ready(function() { jQuery('#ftab').tablesorter({sortList:[[5,0]],headers:{1:{sorter:false},3:{sorter:false}}}); });</script>\n";
+ $out .= "<script type='text/javascript'>jQuery(document).ready(function() { jQuery('#ptab').tablesorter({sortList:[[5,0]],headers:{1:{sorter:false},3:{sorter:false}}}); }); jQuery(document).ready(function() { jQuery('#ftab').tablesorter({sortList:[[0,0]],headers:{1:{sorter:false},3:{sorter:false}}}); });</script>\n";
  $out .= "<br /><h2>".__("Vorrundenspiele","wpcs")."</h2>\n"; 
  $out .= "<table id='ptab' class='tablesorter' ><thead><tr>\n";
  //$out .= '<th scope="col" style="text-align: center">Spiel-Nr.</th>'."\n";
@@ -508,7 +516,7 @@ function show_UserTippForm()
  $out .= '<th >&nbsp;</th>'."\n";
  $out .= '<th scope="col" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
  $out .= '<th id="p1stsort" scope="col" style="text-align: center">'.__("Datum<br />Zeit","wpcs").'</th>'."\n";
- $out .= '<th align="center">'.__("Tipp","wpcs").'<br />Ergebnis</th>';
+ $out .= '<th align="center">'.__("Tipp","wpcs").'<br />' . __("Ergebnis","wpcs").'</th>';
  if ($cs_goalsum > 0 and $cs_goalsum_auto==0)
      $out .= '<th align="center">'.__("Summe<br />Tore","wpcs").'</th>';
   $out .= '<th align="center">'.__("Punkte","wpcs").'</th></tr>';
@@ -558,7 +566,7 @@ $out .= '</thead><tbody>'."\n";
      $out .= '<th>&nbsp;</th>'."\n";
      $out .= '<th scope="col" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
      $out .= '<th id="f1stsort" scope="col" style="text-align: center">'.__("Datum<br />Zeit","wpcs").'</th>'."\n";
-     $out .= '<th align="center">'.__("Tipp<br />Ergebnis","wpcs").'</th>';
+     $out .= '<th align="center">'.__("Tipp","wpcs").'<br />'.__("Ergebnis","wpcs").'</th>';
      if ($cs_goalsum > 0 and $cs_goalsum_auto == 0)
 	 $out .= '<th align="center">'.__("Summe<br />Tore","wpcs").'</th>';
      $out .= '<th align="center">'.__("Punkte","wpcs").'</th></tr>';
