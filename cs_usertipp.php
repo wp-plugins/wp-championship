@@ -373,10 +373,15 @@ function show_UserTippForm()
 // die zeitzone in stunden zu gmt  steht in $cltimezone
 // die zeitzone des servers in stunden zu gmt  steht in $setimezone
 // die differenz zwischen lokaler client zeit und spielzeiten in sekunden steht in $timediff
+// die ip adresse für localhost wird dabei ausgesteuert
 //
-  $geo_uri = "http://ipinfodb.com/ip_query.php?ip=".$_SERVER['REMOTE_ADDR']."&timezone=true";
   $timediff = 0;
-  $geores  = file_get_contents_utf8($geo_uri);
+  if ( $_SERVER['REMOTE_ADDR'] == "127.0.0.1" )
+      $geores="";
+  else {
+      $geo_uri = "http://ipinfodb.com/ip_query.php?ip=".$_SERVER['REMOTE_ADDR']."&timezone=true";
+      $geores  = file_get_contents_utf8($geo_uri);
+  }
   if ($geores != "" ) {
       $spos = strpos($geores, "Gmtoffset") + 10;
       $epos = strpos($geores,">",$spos);
@@ -560,7 +565,7 @@ $out .= '</thead><tbody>'."\n";
      $out .= '</tbody></table>'."<p>&nbsp;</p>\n";
      $out .= "<h2>".__("Finalrunde","wpcs")."</h2>\n"; 
      $out .= "<table id='ftab' class='tablesorter'><thead><tr>\n";
-     $out .= '<th scope="col" style="text-align: center">Spielnr.</th>'."\n";
+     $out .= '<th scope="col" style="text-align: center">'.__("Spielnr.","wpcs").'</th>'."\n";
      $out .= '<th>&nbsp;</th>'."\n";
      $out .= '<th scope="col" style="text-align: center">'.__('Begegnung',"wpcs")."</th>"."\n";
      $out .= '<th>&nbsp;</th>'."\n";
@@ -574,7 +579,7 @@ $out .= '</thead><tbody>'."\n";
    }
 
    // start des spiels als unix timestamp
-   $match_start = strtotime($res->origtime);
+   $match_start = $res->origtime;
    // start des spiels in der browser timezone als unix timestamp
    $match_local_start = strtotime($res->origtime) + $timediff;
    // tooltip nur anzeigen, wenn die zeit unterschiedlich ist
@@ -602,7 +607,7 @@ $out .= '</thead><tbody>'."\n";
    } else {
        $errclass="";
    }
-   if ($res->result1!=-1 or time() > $match_start)
+   if ($res->result1!=-1 or $blog_now > $match_start)
        $out .= $_POST['gt1_'.$res->mid]." : ";
    else
        $out .= "<input $errclass name='gt1_".$res->mid."' id='gt1_".$res->mid."' type='text' value='".$_POST['gt1_'.$res->mid]."' size='1' maxlength='2' />";
@@ -613,7 +618,7 @@ $out .= '</thead><tbody>'."\n";
    else
        $errclass="";
    
-   if ($res->result2 != -1 or time() > $match_start)
+   if ($res->result2 != -1 or $blog_now > $match_start)
        $out .= $_POST['gt2_'.$res->mid];
    else
        $out .= " : <input $errclass name='gt2_".$res->mid."' id='gt2_".$res->mid."' type='text' value='".$_POST['gt2_'.$res->mid]."' size='1' maxlength='2' />";
@@ -654,7 +659,7 @@ $out .= '</thead><tbody>'."\n";
 	   $errclass="";
 	   $gt3_value = ($_POST['gt3_'.$res->mid]==-1 ? "-" : $_POST['gt3_'.$res->mid]);
        }
-       if ($res->result2 != -1 or time() > $match_start)
+       if ($res->result2 != -1 or $blog_now > $match_start)
 	   $out .= "<td>".$_POST['gt3_'.$res->mid]."</td>";
        else
 	   $out .= "<td><input $errclass name='gt3_".$res->mid."' id='gt3_".$res->mid."' type='text' size='1' maxlength='2' value='$gt3_value' /></td> ";  
