@@ -198,7 +198,7 @@ function get_team_clification($groupid='', $count=0)
 	 on tid=tid1
 	 where winner<>-1 and tid1<>0 and round='V'
          group by groupid,name,icon,qualified
-	 UNION 
+	 UNION ALL
          select groupid,name,tid,icon,qualified,
 	 sum(result2) as tore,
 	 sum(result1) as gegentore, 
@@ -208,12 +208,12 @@ function get_team_clification($groupid='', $count=0)
 	 on tid=tid2
 	 where winner <>-1 and tid2<>0 and round='V'
          group by groupid,name,icon,qualified
-	 UNION
+	 UNION ALL
          select distinct groupid,name,tid,icon,qualified, 
          0 as tore,0 as gegentore,0 as points
 	 from $cs_match inner join $cs_team on tid=tid1
 	 where winner =-1 and tid1<>0 and round ='V'
-	 UNION
+	 UNION ALL
          select distinct groupid,name,tid,icon, qualified,
          0 as tore,0 as gegentore,0 as points
 	 from $cs_match inner join $cs_team on tid=tid2
@@ -485,6 +485,7 @@ function mailservice()
   $msg .= '<th scope="col" style="text-align: center">'.__("Platz","wpcs").'</th>'."\n";
   $msg .= '<th scope="col" style="text-align: center">'.__("Spieler","wpcs").'</th>'."\n";
   $msg .= '<th width="20">'.__("Punktestand","wpcs").'</th>'."\n";
+  $msg .= '</tr></thead>';
 
   $pointsbefore= -1; 
   $i=0;
