@@ -2,13 +2,13 @@
 /*
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de/wp-championship
-Description: wp-championship is championship plugin for wordpress designed for the EM 2008.
-Version: 1.4
-Author: Hans Matzen <webmaster at tuxlog.de>
+Description: wp-championship is championship plugin for wordpress designed for the WM 2010.
+Version: 2.3
+Author: tuxlog 
 Author URI: http://www.tuxlog.de
 */
 
-/*  Copyright 2007-2009  Hans Matzen  (email : webmaster at tuxlog dot de)
+/*  Copyright 2007-2010  Hans Matzen  (email : webmaster at tuxlog dot de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -40,16 +40,40 @@ require_once("cs_usertipp.php");
 require_once("cs_userstats.php");
 
 // activating deactivating the plugin
-register_activation_hook(ABSPATH ."/wp-content/plugins/wp-championship/wp-championship.php",'wp_championship_install');
-// uncomment this to loose everything when deactivating the plugin
-//register_deactivation_hook(__FILE__,'wp_championship_deinstall');
+register_activation_hook(__FILE__,'wp_championship_install');
+// aktion fuer erinnerungsmails hinzufügen
+add_action('cs_mailreminder', 'mailservice2');
 
+// uncomment this to loose everything when deactivating the plugin
+register_deactivation_hook(__FILE__,'wp_championship_deinstall');
 
 // add option page 
 add_action('admin_menu', 'add_menus');
 
 // init plugin
 add_action('init', 'wp_championship_init');
+
+//
+// just return the css link
+// this function is called via the wp_head hook
+//
+function wpcs_css() 
+{
+    $def  = "wp-championship-default.css";
+    $user = "wp-championship.css";
+    
+    if (file_exists( WP_PLUGIN_DIR . "/wp-championship/" . $user))
+	$def =$user;
+    
+    $plugin_url = plugins_url("wp-championship/");
+    
+    echo '<link rel="stylesheet" id="wp-championship-css" href="'. 
+	$plugin_url . $def . '" type="text/css" media="screen" />' ."\n";
+    
+}
+
+// add css im header hinzufügen 
+add_action('wp_head', 'wpcs_css');
 
 // add widgets
 // widget #1: nextgames, shows the n coming games with date and location
@@ -67,15 +91,18 @@ function wp_championship_init()
   if(function_exists('load_textdomain') and $locale != "de_DE") 
     load_textdomain("wpcs",ABSPATH . "wp-content/plugins/wp-championship/lang/".$locale.".mo");
 
-  // add css in header
-  //add_action('wp_head', 'wp_greet_css');
-
   // Action calls for all functions 
   add_filter('the_content', 'searchcsusertipp');
   add_filter('the_excerpt', 'searchcsusertipp');
   
   add_filter('the_content', 'searchcsuserstats');
   add_filter('the_excerpt', 'searchcsuserstats');
+
+  // javascript hinzufügen für tablesorter / floating menu
+  wp_enqueue_script('cs_tablesort', '/' . PLUGINDIR . '/wp-championship/jquery.tablesorter.min.js',
+		    array('jquery'), "2.0.3");
+  wp_enqueue_script('cs_dimensions', '/' . PLUGINDIR . '/wp-championship/jquery.dimensions.js',
+		    array('jquery'), "1.2");
 }
 
 // adds the admin menustructure
@@ -83,7 +110,7 @@ function add_menus() {
 
   $PPATH=ABSPATH.PLUGINDIR."/wp-championship/";
 
-  add_menu_page('wp-championship','wp-championship', 8, $PPATH."cs_admin.php","cs_admin");
+  add_menu_page('wp-championship','wp-champion', 8, $PPATH."cs_admin.php","cs_admin",	site_url("/wp-content/plugins/wp-championship") . '/worldcup-icon.png');
 
   add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Teams',"wpcs"), __('Mannschaften', "wpcs"), 8, $PPATH."cs_admin_team.php", "cs_admin_team") ;
 
