@@ -420,6 +420,7 @@ EOD;
    }
  }
 
+
  // aktualisiere daten fuer k.o.-runde
  // selektiere noch zu ersetzende pseudo teams 
  $sql0=<<<EOD
@@ -428,13 +429,13 @@ EOD;
    substring( b.name, 2,1 ) as wl,substring(b.name,3) as wlmid,a.matchtime
    FROM $cs_match a
    INNER JOIN $cs_team b ON a.tid1 = b.tid
-   WHERE a.round = 'F' AND (b.name LIKE '#W%' or b.name like '#L%')
+   WHERE a.round = 'F' AND (b.name LIKE '#W%' or b.name like '#V%')
    UNION
    SELECT a.mid,'2' as tnr,a.tid2 as tid,
    substring( b.name, 2,1 ) as wl, substring(b.name,3) as wlmid,a.matchtime
    FROM $cs_match a
    INNER JOIN $cs_team b ON a.tid2 = b.tid
-   WHERE a.round = 'F' AND (b.name LIKE '#W%' or b.name like '#L%')
+   WHERE a.round = 'F' AND (b.name LIKE '#W%' or b.name like '#V%')
    ;
 EOD;
 

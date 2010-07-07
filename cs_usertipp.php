@@ -72,7 +72,7 @@ function show_UserTippForm()
  // javascript für floating link ausgeben
  $cs_floating_link = get_option("cs_floating_link");
  if ($cs_floating_link > 0 )
-     $out .= get_float_js();
+     $out .= get_float_js() . "</p>";
  
  // lese anwenderdaten ein
  get_currentuserinfo();
@@ -120,7 +120,7 @@ function show_UserTippForm()
 
 
  // begruessung ausgeben
- $out .= __("Willkommen ","wpcs").($uid == $userdata->ID ? $userdata->user_nicename : $r2->user_nicename) .",<br />";
+ $out .=  __("Willkommen ","wpcs").($uid == $userdata->ID ? $userdata->user_nicename : $r2->user_nicename) .",<br />";
  $out .= __("auf dieser Seite siehst du deine Tippspielübersicht, kannst neue Tipps abgeben oder abgegebene Tipps bis Spielbeginn verändern, sowie deine persönlichen Einstellungen anpassen.","wpcs")."<br /><hr />";
  
 
@@ -467,7 +467,7 @@ function show_UserTippForm()
  // new add nonce field if possible
  if ( function_exists( 'wp_nonce_field' )) {
      $out .= wp_nonce_field('wpcs-usertipp-update',"_wpnonce",true,false);
-     $out .= "&nbsp;</p>";
+     $out .= "&nbsp;";
  }
 
  // wenn als stellvertreter unterwegs, dann hidden field mitgeben
