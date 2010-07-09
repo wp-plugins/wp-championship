@@ -454,9 +454,9 @@ EOD;
    // nur updaten wenn ergebnis vorliegt
    if ( !empty($row) ) {
      // ermittle einzutragendes team
-     if (( $res->wl=='W' and $row->winner==1) or ( $res->wl=='L' and $row->winner==2 ))
+     if (( $res->wl=='W' and $row->winner==1) or ( $res->wl=='V' and $row->winner==2 ))
        $newtid = $row->tid1;
-     if (( $res->wl=='W' and $row->winner==2) or ( $res->wl=='L' and $row->winner==1 ))
+     if (( $res->wl=='W' and $row->winner==2) or ( $res->wl=='V' and $row->winner==1 ))
        $newtid = $row->tid2;
 
      $sql1="update $cs_match set tid".$res->tnr."=".$newtid." where mid=".$res->mid;
