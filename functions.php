@@ -163,7 +163,8 @@ function get_ranking() {
   global $wpdb;
 
   //select fuer ranking der tipper
-  $sql = "select b.user_nicename, a.userid,sum(a.points) as points from $cs_tipp a inner join $wp_users b on a.userid=b.ID where points <> -1 group by b.user_nicename, a.userid order by points DESC;";
+  //$sql = "select b.user_nicename, a.userid,sum(a.points) as points from $cs_tipp a inner join $wp_users b on a.userid=b.ID where points <> -1 group by b.user_nicename, a.userid order by points DESC;"; 
+  $sql = "select b.user_nicename, a.userid,sum(a.points) as points, c.rang as oldrank from $cs_tipp a inner join $wp_users b on a.userid=b.ID inner join $cs_users c on a.userid=c.userid where points <> -1 group by b.user_nicename, a.userid order by points DESC;";
   $res = $wpdb->get_results($sql);
 
   return $res;
@@ -480,14 +481,16 @@ function mailservice()
   // ausgabe des aktuellen punktestandes und des ranges
   $rank = get_ranking();
   $i=0;
-  $msg  = "<h2>".__("WM-Tippspiel Mailservice","wpcs")."</h2>\n";
+  $msg  = "<h2>".__("Tippspiel Mailservice","wpcs")."</h2>\n";
   $msg .= "<h2>".__("Aktueller Punktestand","wpcs")."</h2>\n";
   $msg .= "<table border='1' width='500px' cellpadding='0'><thead><tr>\n";
   $msg .= '<th scope="col" style="text-align: center">'.__("Platz","wpcs").'</th>'."\n";
   $msg .= '<th scope="col" style="text-align: center">'.__("Spieler","wpcs").'</th>'."\n";
   $msg .= '<th width="20">'.__("Punktestand","wpcs").'</th>'."\n";
+  if (get_option('cs_rank_trend'))
+      $msg .= '<th width="20">'.__("Trend","wpcs").'</th>';
   $msg .= '</tr></thead>';
-
+  
   $pointsbefore= -1; 
   $i=0;
   $j=1;
@@ -499,8 +502,19 @@ function mailservice()
     } else
       $j += 1;
     
-    $msg .= "<tr><td align='center'>$i</td><td align='center'>".$row->user_nicename."</td><td align='center'>".$row->points. "</td></tr>";
+    if ($i < $row->oldrank )
+	$trend = "&uArr;";
+    elseif ($i > $row->oldrank )
+	$trend = "&dArr;";
+    else
+	$trend = "&rArr;"; 
     
+    $msg .= "<tr><td align='center'>$i</td><td align='center'>".$row->user_nicename."</td><td align='center'>".$row->points. "</td>";
+    if (get_option('cs_rank_trend'))
+	$msg .= "<td align='center'>$trend</td>";
+    $out .= "</tr>";
+
+
     // gruppenwechsel versorgen
     $pointsbefore = $row->points;
   }
@@ -513,7 +527,7 @@ function mailservice()
       $header .= "MIME-Version: 1.0\n"; // ohne \r das ist wichtig
       $header .= "Content-Type: text/html; charset=utf-8\r\n";
  
-      $stat = wp_mail( $row->user_email , "Update WM2010 Tippspiel" , $msg, $header);
+      $stat = wp_mail( $row->user_email , "Update Tippspiel" , $msg, $header);
       if ( $stat) 
 	  echo __("Die email an ","wpcs").$row->user_email.__(" wurde versendet.","wpcs");
       else 
@@ -572,7 +586,7 @@ function mailservice2()
 
 
 	// mailnachricht zusammen bauen
-	$msg  = "<h2>".__("WM-Tippspiel Mailservice","wpcs")."</h2>\n";
+	$msg  = "<h2>".__("Tippspiel Mailservice","wpcs")."</h2>\n";
 	$msg .= "<h2>".__("Möchtest du noch tippen? Das folgende Spiel beginnt bald: ","wpcs")."</h2>\n";
 	$msg .= $res_match[0]->name1 . " : " . $res_match[0]->name2 . " in " . $res_match[0]->location . " startet " . $res_match[0]->matchtime . "<br /><br/>\n";
 	$msg .= "Viel Glück wünscht der Tippspiel-Admin.\n";
@@ -584,7 +598,7 @@ function mailservice2()
 	$header .= "Content-Type: text/html; charset=utf-8\r\n";
 
       	// mail senden
-	$stat = wp_mail  ( $res_email[0]->user_email , "Update WM2010 Tippspiel" , $msg, $header);
+	$stat = wp_mail  ( $res_email[0]->user_email , "Update Tippspiel" , $msg, $header);
 	if ( $stat) 
 	    echo __("Die Erinnerungsemail an ","wpcs").$res_email[0]->user_email.__(" wurde versendet.","wpcs");
 	else 
@@ -667,5 +681,35 @@ jQuery(document).ready(function(){
 EOL;
 
 return $js;
+}
+
+//
+// speichert die aktuelle platzierung alle mitspieler in der tabelle cs_users
+// in der spalte rang
+//
+function store_current_ranking() {
+    include("globals.php");
+    global $wpdb;
+
+    $pointsbefore=-1;
+    $i=0;
+    $j=1;
+    // hole aktuelle mitspielerplatzierung
+    $rank = get_ranking();
+
+    foreach ($rank as $row) {
+	// platzierung erhoehen, wenn punkte sich veraendern
+	if ($row->points != $pointsbefore) {
+	    $i += $j;
+	    $j = 1;
+	} else
+	    $j += 1;
+    
+    	$sql="update $cs_users set rang=$i where userid=$row->userid;";
+	$wpdb->query($sql);
+    
+	// gruppenwechsel versorgen
+	$pointsbefore = $row->points;
+    }
 }
 ?>

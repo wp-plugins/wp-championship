@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2007,2008  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2007-2010  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -94,7 +94,7 @@ function wp_championship_install()
       $resadmin = $wpdb->get_row($sql); 
       if ($resadmin == 0) {
 	  $sql = "insert into ".$cs_table_prefix."users values
-          ( 1, 1,0,0,0,'0000-00-00 00:00:00');";
+          ( 1, 1,0,0,0,'0000-00-00 00:00:00',-1);";
 	  $results = $wpdb->query($sql);  
       }
     }
@@ -135,6 +135,33 @@ function wp_championship_install()
       $results = $wpdb->query($sql);
   }
   
+  // -----------------------------------------------------------------
+  // U P D A T E - table structure v2.5
+  // -----------------------------------------------------------------
+  $sql="select spieltag from $cs_match;";
+  $results = $wpdb->query($sql);  
+  
+  if ($results == 0) {
+      // add columns for spieltag
+      $sql="alter table $cs_match add column spieltag int NOT NULL after round";
+      $results = $wpdb->query($sql);
+      
+      $sql="update $cs_match set spieltag=-1;";
+      $results = $wpdb->query($sql);
+  } 
+
+  $sql="select rang from $cs_users;";
+  $results = $wpdb->query($sql);  
+  
+  if ($results == 0) {
+      // add columns for rang = platzierung
+      $sql="alter table $cs_users add column rang int NOT NULL after championtime";
+      $results = $wpdb->query($sql);
+      
+      $sql="update $cs_users set rang=-1;";
+      $results = $wpdb->query($sql);
+  }
+
 
   // Optionen / Parameter
 
@@ -259,6 +286,21 @@ function wp_championship_install()
     $cs_floating_link="1";
     add_option("cs_floating_link",$cs_floating_link,"Enable floating link?","yes");
   }; 
+
+  // Option: Vorrunden-Tipps sperren, Wert: bool, Default: 0
+  $cs_lock_round1=get_option("cs_lock_round1");
+  if ($cs_lock_round1 == "") {
+      $cs_lock_round1="0";
+      add_option("cs_lock_round1",$cs_lock_round1,"lock tipps for round1?","yes");
+  }; 
+ 
+  // Option: Platzierungstrend berechnen, Wert: bool, Default: 1
+  $cs_rank_trend=get_option("cs_rank_trend");
+  if ($cs_rank_trend == "") {
+      $cs_rank_trend="1";
+      add_option("cs_rank_trend",$cs_rank_trend,"Enable rank trend?","yes");
+  }; 
+  
 
   wp_schedule_event(time(), 'hourly', 'cs_mailreminder');
 

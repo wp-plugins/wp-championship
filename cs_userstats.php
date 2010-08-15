@@ -113,7 +113,10 @@ function show_UserStats()
  $out .= "<table class='tablesorter'><tr>\n";
  $out .= '<th scope="col" style="text-align: center">'.__("Platz","wpcs").'</th>'."\n";
  $out .= '<th scope="col" style="text-align: center">'.__("Spieler","wpcs").'</th>'."\n";
- $out .= '<th width="20">'.__("Punktestand","wpcs").'</th>'."</tr>\n";
+ $out .= '<th width="20">'.__("Punktestand","wpcs").'</th>';
+ if (get_option('cs_rank_trend'))
+     $out .= '<th width="20">'.__("Trend","wpcs").'</th>';
+ $out .= "</tr>\n";
  
  $pointsbefore= -1;   
  $i=0; $j=1;
@@ -125,7 +128,18 @@ function show_UserStats()
    } else
      $j += 1;
 
-   $out .= "<tr><td align='center'>$i</td><td align='center'>".$row->user_nicename."</td><td align='center'>".$row->points. "</td></tr>";
+   if ($i < $row->oldrank )
+       $trend = "&uArr;";
+   elseif ($i > $row->oldrank )
+       $trend = "&dArr;";
+   else
+       $trend = "&rArr;"; 
+
+   $out .= "<tr><td align='center'>$i</td><td align='center'>".$row->user_nicename."</td><td align='center'>".$row->points. "</td>";
+   if (get_option('cs_rank_trend'))
+       $out .= "<td align='center'>$trend</td>";
+   $out .= "</tr>";
+   
    // gruppenwechsel versorgen
    $pointsbefore = $row->points;
  }
@@ -202,26 +216,27 @@ function show_UserStats()
    on a.tid1=b.tid
    inner join  $cs_team c
    on a.tid2=c.tid
-   where a.round='F'
+   where a.round='FF'
      order by origtime;
 EOD;
 
  $results = $wpdb->get_results($sql1);
 
  // tabellen kopf ausgeben
-
-$out .= "<h2 id='cs_sh_z' class='cs_stathead' onclick=\"jQuery(document).ready( function() {jQuery('#cs_stattab_z').toggle('slow', function() { if ( jQuery('#cs_stattab_z').css('display') == 'block') jQuery('#cs_stattab_z').css('display','table');}    ); } );\">".__("Finalrunde","wpcs")."</h2>\n"; 
-$out .= "<script type='text/javascript'>jQuery('#cs_sh_z').toggle( function () { jQuery(this).addClass('divclose'); }, function () { jQuery(this).removeClass('divclose');});</script>";
-
- $out .= "<table id='cs_stattab_z' class='tablesorter'><thead><tr>\n";
- $out .= '<th width="20">'.__("Spielnr.","wpcs").'</th>'."\n";
- $out .= '<th>&nbsp;</th>';
- $out .= '<th scope="col" style="text-align: center">'.__('Begegnung',"wpcs")."</th>"."\n";
- $out .= '<th>&nbsp;</th>';
- $out .= '<th scope="col" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
- $out .= '<th scope="col" style="text-align: center">'.__("Datum<br />Zeit").'</th>'."\n";
- $out .= '<th align="center">'.__("Ergebnis","wpcs").'</th>';
- $out .= '</tr></thead>'."\n";
+ if (!empty($results)) {
+	 $out .= "<h2 id='cs_sh_z' class='cs_stathead' onclick=\"jQuery(document).ready( function() {jQuery('#cs_stattab_z').toggle('slow', function() { if ( jQuery('#cs_stattab_z').css('display') == 'block') jQuery('#cs_stattab_z').css('display','table');}    ); } );\">".__("Finalrunde","wpcs")."</h2>\n"; 
+	 $out .= "<script type='text/javascript'>jQuery('#cs_sh_z').toggle( function () { jQuery(this).addClass('divclose'); }, function () { jQuery(this).removeClass('divclose');});</script>";
+	 
+	 $out .= "<table id='cs_stattab_z' class='tablesorter'><thead><tr>\n";
+	 $out .= '<th width="20">'.__("Spielnr.","wpcs").'</th>'."\n";
+	 $out .= '<th>&nbsp;</th>';
+	 $out .= '<th scope="col" style="text-align: center">'.__('Begegnung',"wpcs")."</th>"."\n";
+	 $out .= '<th>&nbsp;</th>';
+	 $out .= '<th scope="col" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
+	 $out .= '<th scope="col" style="text-align: center">'.__("Datum<br />Zeit").'</th>'."\n";
+	 $out .= '<th align="center">'.__("Ergebnis","wpcs").'</th>';
+	 $out .= '</tr></thead>'."\n";
+     }
 
  foreach($results as $res) {
    // zeile ausgeben
@@ -243,7 +258,8 @@ $out .= "<script type='text/javascript'>jQuery('#cs_sh_z').toggle( function () {
    $out .= "</tr>\n";
 
  }
- $out .= "</table>\n<p>&nbsp;";
+ if (!empty($results)) 
+     $out .= "</table>\n<p>&nbsp;";
 
 
  return $out;

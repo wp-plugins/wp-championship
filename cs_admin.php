@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2007,2008  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2006-2010  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -89,6 +89,8 @@ function cs_admin()
 	update_option( "cs_reminder", $_POST['cs_reminder'] );
 	update_option( "cs_reminder_hours", $_POST['cs_reminder_hours'] );
 	update_option( "cs_floating_link", $_POST['cs_floating_link'] );
+	update_option( "cs_lock_round1", $_POST['cs_lock_round1'] );
+	update_option( "cs_rank_trend", $_POST['cs_rank_trend'] );
 	
 	admin_message( __('Einstellungen erfolgreich gespeichert.',"wpcs") );
     }
@@ -159,6 +161,8 @@ function cs_admin()
   $cs_reminder= get_option("cs_reminder"); 
   $cs_reminder_hours= get_option("cs_reminder_hours");
   $cs_floating_link= get_option("cs_floating_link");
+  $cs_lock_round1= get_option("cs_lock_round1");
+  $cs_rank_trend= get_option("cs_rank_trend");
    
   // build form
   $out = "";
@@ -293,8 +297,14 @@ $out.= '/><br /></th>'."\n";
      $out .= " checked='checked' ";
  $out.= '/><br /></th>'."\n"; 
 
- $out .= '<td ><input name="cs_goalsum" id="cs_goalsum" type="text" value="'.$cs_goalsum.'" size="3" /></td><td>&nbsp;</td><td>&nbsp;</td></tr>'."\n"; 
+ $out .= '<td ><input name="cs_goalsum" id="cs_goalsum" type="text" value="'.$cs_goalsum.'" size="3" /></td>'."\n"; 
 
+ // switch to activate/deactivate ranking trend
+ $out .= '<th scope="row" valign="top"><label for="cs_rank_trend">'.__('Platzierungstrend berechnen',"wpcs").':</label></th>'."\n";
+ $out .= '<td ><input name="cs_rank_trend" id="cs_rank_trend" type="checkbox" value="1"  ';
+     if ($cs_rank_trend > 0 )
+	 $out .= " checked='checked' ";
+ $out .= '/></td></tr>'."\n"; 
 
 
 // field for high goal sum tipp
@@ -307,6 +317,14 @@ $out.= '/><br /></th>'."\n";
      if ($cs_floating_link > 0 )
 	 $out .= " checked='checked' ";
  $out .= '/></td></tr>'."\n"; 
+
+ // switch to lock round1
+ $out .= '<tr><td colspan="2">&nbsp;</td><th scope="row" valign="top"><label for="cs_lock_round1">'.__('Vorrunden-Tipps sperren',"wpcs").':</label></th>'."\n";
+ $out .= '<td ><input name="cs_lock_round1" id="cs_lock_round1" type="checkbox" value="1"  ';
+ if ($cs_lock_round1 > 0 )
+     $out .= " checked='checked' ";
+ $out .= '/></td></tr>'."\n"; 
+ 
  
  $out .= '</table>'."\n";
  

@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2008  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2006-2010  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -352,6 +352,9 @@ function show_UserTippForm()
 	 $out .= __("Die Ergebnisse wurden erfolgreich gespeichert.","wpcs")."<br/>";
      }
    
+     // aktuelle mitspieler platzierung speichern
+     if (get_option('cs_rank_trend'))
+	 store_current_ranking();
      // punkt nach eingabe neu berechnen
      calc_points();
      // finalrunde eintraege aktualisieren
@@ -396,6 +399,7 @@ function show_UserTippForm()
   if ($cs_floating_link)
       $out .= '<div id="WPCSfloatMenu"><ul class="menu1"><li><a href="#" onclick="window.scrollTo(0,); return false;"> ' . __("Zum Seitenanfang",'wpcs') . ' </a></li></ul></div>';
 
+// -------------------------------------------------------------------
 // ausgabe der optionen und der tipptabelle
 // -------------------------------------------------------------------
 
@@ -457,13 +461,6 @@ function show_UserTippForm()
  $out .="<form method='post' action=''>\n";
  $out .= "<div class='submit' align='right'>";
 
- // add nonce field if possible
- //if ( function_exists( 'wp_nonce_field' )) {
- //  echo $out;
- //  wp_nonce_field('wpcs-usertipp-update');
- //  $out = "&nbsp;</p>";
- //}
-
  // new add nonce field if possible
  if ( function_exists( 'wp_nonce_field' )) {
      $out .= wp_nonce_field('wpcs-usertipp-update',"_wpnonce",true,false);
@@ -503,19 +500,26 @@ function show_UserTippForm()
    $out .= '<input type="hidden" name="champion" value="'.$r0[0]->champion.'" /></td></tr>';
  } else
    $out .= '<select name="champion">'.$team1_select_html.'</select></td></tr>';
- $out .= "</table>";
+ $out .= "</table>\n";
 
 
  // Spielübersicht Vorrunde
  $iconpath = get_option("siteurl") . "/wp-content/plugins/wp-championship/icons/";
  
- 
- //$out .= "<div class='wrap'>";
- $out .= "<script type='text/javascript'>jQuery(document).ready(function() { jQuery('#ptab').tablesorter({sortList:[[5,0]],headers:{1:{sorter:false},3:{sorter:false}}}); }); jQuery(document).ready(function() { jQuery('#ftab').tablesorter({sortList:[[0,0]],headers:{1:{sorter:false},3:{sorter:false}}}); });</script>\n";
+// sortierbare tabelle nur im tunier modus
+ if ( get_option('cs_modus') == 1 )
+     $out .= "<script type='text/javascript'>jQuery(document).ready(function() { jQuery('#ptab').tablesorter({sortList:[[5,0]],headers:{1:{sorter:false},3:{sorter:false}}}); }); jQuery(document).ready(function() { jQuery('#ftab').tablesorter({sortList:[[0,0]],headers:{1:{sorter:false},3:{sorter:false}}}); });</script>\n";
+
+ // collapse / expand für den bundesliga modus 
+ if ( get_option('cs_modus') == 2 )
+     $out .= "<script type='text/javascript'>jQuery(document).ready(function() { var toggleMinus = '".site_url(PLUGINDIR . "/wp-championship/arrow_down.jpg")."'; var togglePlus = '".site_url(PLUGINDIR . "/wp-championship/arrow_right.jpg")."'; var AsubHead = jQuery('tbody th:first-child'); AsubHead.prepend('<img src=\"' + toggleMinus + '\" alt=\"collapse this section\" />'); jQuery('img', AsubHead).addClass('clickable') .click(function() { var toggleSrc = jQuery(this).attr('src'); if ( toggleSrc == toggleMinus ) { jQuery(this).attr('src', togglePlus) .parents('tr').siblings().fadeOut('fast'); } else{ jQuery(this).attr('src', toggleMinus) .parents('tr').siblings().fadeIn('fast'); }; });  jQuery('img').trigger('click'); jQuery('img','#currspieltag').trigger('click'); })</script>\n"; 
+
+
  $out .= "<br /><h2>".__("Vorrundenspiele","wpcs")."</h2>\n"; 
  $out .= "<table id='ptab' class='tablesorter' ><thead><tr>\n";
  //$out .= '<th scope="col" style="text-align: center">Spiel-Nr.</th>'."\n";
- $out .= '<th scope="col" style="text-align: center">'.__("Gruppe","wpcs").'</th>'."\n";
+  if ( get_option('cs_modus') == 1 )
+      $out .= '<th scope="col" style="text-align: center">'.__("Gruppe","wpcs").'</th>'."\n";
  $out .= '<th >&nbsp;</th>'."\n";
  $out .= '<th scope="col" style="text-align: center">'.__('Begegnung',"wpcs")."</th>"."\n";
  $out .= '<th >&nbsp;</th>'."\n";
@@ -526,10 +530,16 @@ function show_UserTippForm()
      $out .= '<th align="center">'.__("Summe<br />Tore","wpcs").'</th>';
   $out .= '<th align="center">'.__("Punkte","wpcs").'</th></tr>';
 
-$out .= '</thead><tbody>'."\n";
+  $out .= '</thead>'."\n"; 
+  if (get_option("cs_modus")==1)
+      $out .= '<tbody>'."\n";
+
  // match loop
  // hole match daten
- $sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round in ('V','F') order by origtime;";
+  if (get_option("cs_modus")==1)
+      $sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round in ('V','F') order by origtime;";
+  else
+      $sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round = 'V' order by spieltag,origtime;"; 
  $results = $wpdb->get_results($sql);
 
  // hole tipps des users
@@ -557,7 +567,10 @@ $out .= '</thead><tbody>'."\n";
  }
 
  $lastmatchround='';
-
+ $bl_lastspieltag='';
+ $bl_sql1 = "select min(spieltag) as mst from $cs_match where result1=-1;";
+ $bl_res1 = $wpdb->get_row($bl_sql1);
+ $bl_currspieltag = $bl_res1->mst;
 
  foreach($results as $res) {
 
@@ -575,7 +588,17 @@ $out .= '</thead><tbody>'."\n";
      if ($cs_goalsum > 0 and $cs_goalsum_auto == 0)
 	 $out .= '<th align="center">'.__("Summe<br />Tore","wpcs").'</th>';
      $out .= '<th align="center">'.__("Punkte","wpcs").'</th></tr>';
-     $out .= '</thead><tbody>'."\n";
+     $out .= '</thead>'."\n"; 
+     $out .= '<tbody>'."\n";
+   }
+   
+   // im bundesligamodus werden die spieltage durch eine untertitelzeile getrennt
+   // für das collapse/expand feature
+   if (get_option("cs_modus")==2 && $bl_lastspieltag < $res->spieltag) {
+       if ( $bl_lastspieltag !='')
+	   $out .= "</tbody>\n";
+       $bl_idext = ($bl_currspieltag == $res->spieltag?"id='currspieltag'":"");
+       $out .= "<tbody><tr><th align='left' colspan=\"8\" ".$bl_idext.">".$res->spieltag.". Spieltag</th></tr>\n";
    }
 
    // start des spiels als unix timestamp
@@ -586,8 +609,9 @@ $out .= '</thead><tbody>'."\n";
    $match_tooltip = "";
    if ($timediff != 0 )
        $match_tooltip = "title='Spielbeginn (lokal):".strftime("%d.%m %H:%M", $match_local_start)."'";
-
-   $out .= "<tr><td align=\"center\">".($res->round == "V" ? $res->groupid : $res->mid)."</td>";
+   $out .= "<tr>";
+   if ( get_option('cs_modus') == 1 )
+       $out .= "<td align=\"center\">".($res->round == "V" ? $res->groupid : $res->mid)."</td>";
    if ($res->icon1!="")
      $out .= "<td align='center'><img class='csicon' alt='icon1' src='".$iconpath . $res->icon1."' /></td>";
    else
@@ -607,7 +631,8 @@ $out .= '</thead><tbody>'."\n";
    } else {
        $errclass="";
    }
-   if ($res->result1!=-1 or $blog_now > $match_start)
+   if ($res->result1!=-1 or $blog_now > $match_start or 
+       ($res->round=='V' and get_option('cs_lock_round1')))
        $out .= $_POST['gt1_'.$res->mid]." : ";
    else
        $out .= "<input $errclass name='gt1_".$res->mid."' id='gt1_".$res->mid."' type='text' value='".$_POST['gt1_'.$res->mid]."' size='1' maxlength='2' />";
@@ -618,7 +643,8 @@ $out .= '</thead><tbody>'."\n";
    else
        $errclass="";
    
-   if ($res->result2 != -1 or $blog_now > $match_start)
+   if ($res->result2 != -1 or $blog_now > $match_start or  
+       ($res->round=='V' and get_option('cs_lock_round1')))
        $out .= $_POST['gt2_'.$res->mid];
    else
        $out .= " : <input $errclass name='gt2_".$res->mid."' id='gt2_".$res->mid."' type='text' value='".$_POST['gt2_'.$res->mid]."' size='1' maxlength='2' />";
@@ -669,7 +695,8 @@ $out .= '</thead><tbody>'."\n";
    $out .= "</tr>\n";
 
    // gruppenwechsel versorgen
-   $lastmatchround = $res->round;
+   $lastmatchround  = $res->round;
+   $bl_lastspieltag = $res->spieltag; 
  }
  $out .= '</tbody></table>'."\n&nbsp;";
 
