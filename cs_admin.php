@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2007,2008  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2006-2010  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,31 +35,31 @@ function cs_admin()
 
 
   // get sql object
-  $wpdb =& $GLOBALS['wpdb'];
+  global $wbdb;
 
   // find out what we have to do
   $action = "";
   if ( isset( $_POST['update'] ) )
-	$action = "update";
+      $action = "update";
   else if ( isset( $_POST['deltipps'] ) )
-	$action = "deltipps";
+      $action = "deltipps";
   else if ( isset( $_POST['delresults'] ) )
-	$action = "delresults";
+      $action = "delresults";
   else if ( isset( $_POST['deltables'] ) )
-	$action = "deltables";
- else if ( isset( $_POST['mailservice1'] ) )
-	$action = "mailservice1";
- else if ( isset( $_POST['newcalc1'] ) )
-	$action = "newcalc1";
+      $action = "deltables";
+  else if ( isset( $_POST['mailservice1'] ) )
+      $action = "mailservice1";
+  else if ( isset( $_POST['newcalc1'] ) )
+      $action = "newcalc1";
 
   // update options
   //
   $errflag=0;
   if ( $action == "update" ) {
-    // check form contents for mandatory fields
-    // and/or set default values
-    if ( $_POST['cs_group_teams']=="" or $_POST['cs_pts_winner']=="" or $_POST['cs_pts_looser']=="" or $_POST['cs_pts_deuce']=="" or $_POST['cs_pts_champ']=="" or $_POST['cs_pts_tipp']=="" or $_POST['cs_pts_tendency']=="" or $_POST['cs_pts_supertipp']=="" )
-      $errflag=1;
+      // check form contents for mandatory fields
+      // and/or set default values
+      if ( $_POST['cs_group_teams']=="" or $_POST['cs_pts_winner']=="" or $_POST['cs_pts_looser']=="" or $_POST['cs_pts_deuce']=="" or $_POST['cs_pts_champ']=="" or $_POST['cs_pts_tipp']=="" or $_POST['cs_pts_tendency']=="" or $_POST['cs_pts_supertipp']=="" or $_POST['cs_pts_oneside']=="" or $_POST['cs_goalsum']=="" or $_POST['cs_pts_goalsum']=="" )
+	  $errflag=1;
 
     
     // send a message about mandatory data
@@ -69,23 +69,33 @@ function cs_admin()
     
     // update settings
     if ( $errflag==0 and $action == "update" ) {
-      update_option( "cs_groups", $_POST['cs_groups'] );
-      update_option( "cs_pts_winner", $_POST['cs_pts_winner'] );
-      update_option( "cs_pts_looser", $_POST['cs_pts_looser'] ); 
-      update_option( "cs_pts_deuce", $_POST['cs_pts_deuce'] ); 
-      update_option( "cs_final_teams", $_POST['cs_final_teams'] ); 
-      update_option( "cs_pts_tipp", $_POST['cs_pts_tipp'] ); 
-      update_option( "cs_pts_tendency", $_POST['cs_pts_tendency'] ); 
-      update_option( "cs_pts_supertipp", $_POST['cs_pts_supertipp'] ); 
-      update_option( "cs_pts_champ", $_POST['cs_pts_champ'] ); 
-      update_option( "cs_group_teams", $_POST['cs_group_teams'] ); 
-      update_option( "cs_stellv_schalter", $_POST['cs_stellv_schalter'] );
-      update_option( "cs_modus", $_POST['cs_modus'] );
-
-      admin_message( __('Einstellungen erfolgreich gespeichert.',"wpcs") );
+	update_option( "cs_groups", $_POST['cs_groups'] );
+	update_option( "cs_pts_winner", $_POST['cs_pts_winner'] );
+	update_option( "cs_pts_looser", $_POST['cs_pts_looser'] ); 
+	update_option( "cs_pts_deuce", $_POST['cs_pts_deuce'] ); 
+	update_option( "cs_final_teams", $_POST['cs_final_teams'] ); 
+	update_option( "cs_pts_tipp", $_POST['cs_pts_tipp'] ); 
+	update_option( "cs_pts_tendency", $_POST['cs_pts_tendency'] ); 
+	update_option( "cs_pts_supertipp", $_POST['cs_pts_supertipp'] ); 
+	update_option( "cs_pts_champ", $_POST['cs_pts_champ'] ); 
+	update_option( "cs_pts_oneside", $_POST['cs_pts_oneside'] );
+	update_option( "cs_oneside_tendency", $_POST['cs_oneside_tendency'] ); 
+	update_option( "cs_goalsum", $_POST['cs_goalsum'] );
+	update_option( "cs_goalsum_auto", $_POST['cs_goalsum_auto'] );  
+	update_option( "cs_pts_goalsum", $_POST['cs_pts_goalsum'] ); 
+	update_option( "cs_group_teams", $_POST['cs_group_teams'] ); 
+	update_option( "cs_stellv_schalter", $_POST['cs_stellv_schalter'] );
+	update_option( "cs_modus", $_POST['cs_modus'] ); 
+	update_option( "cs_reminder", $_POST['cs_reminder'] );
+	update_option( "cs_reminder_hours", $_POST['cs_reminder_hours'] );
+	update_option( "cs_floating_link", $_POST['cs_floating_link'] );
+	update_option( "cs_lock_round1", $_POST['cs_lock_round1'] );
+	update_option( "cs_rank_trend", $_POST['cs_rank_trend'] );
+	
+	admin_message( __('Einstellungen erfolgreich gespeichert.',"wpcs") );
     }
   }
-
+  
    if ( $action == "deltipps" and $_POST['deltipps_ok']==1) {
      $sql="update $cs_users set champion=-1, championtime='1900-01-01 00:00';";
      $wpdb->query($sql);
@@ -117,7 +127,8 @@ function cs_admin()
    }
    
    if ( $action == "mailservice1" and $_POST['mailservice_ok']==1) {
-     mailservice();
+       mailservice();
+       mailservice2();
      admin_message(__("Die Mails wurden verschickt.","wpcs"));
    }
    
@@ -139,9 +150,19 @@ function cs_admin()
   $cs_pts_tendency = get_option("cs_pts_tendency");
   $cs_pts_supertipp = get_option("cs_pts_supertipp");
   $cs_pts_champ = get_option("cs_pts_champ");
+  $cs_pts_oneside = get_option("cs_pts_oneside"); 
+  $cs_oneside_tendency = get_option("cs_oneside_tendency");
+  $cs_goalsum = get_option("cs_goalsum"); 
+  $cs_goalsum_auto=get_option("cs_goalsum_auto");
+  $cs_pts_goalsum = get_option("cs_pts_goalsum");
   $cs_group_teams = get_option("cs_group_teams");
   $cs_stellv_schalter= get_option("cs_stellv_schalter");
   $cs_modus= get_option("cs_modus");
+  $cs_reminder= get_option("cs_reminder"); 
+  $cs_reminder_hours= get_option("cs_reminder_hours");
+  $cs_floating_link= get_option("cs_floating_link");
+  $cs_lock_round1= get_option("cs_lock_round1");
+  $cs_rank_trend= get_option("cs_rank_trend");
    
   // build form
   $out = "";
@@ -240,20 +261,79 @@ $out .= '<td><input name="cs_pts_tendency" id="cs_pts_tendency" type="text" valu
  $out .= '>'.__("Deutsche Bundesliga","wpcs").'</option>';
  $out .= '</select></td></tr>'."\n";
 
-  // field for champion tipp ponts
+  // field for champion tipp points
   $out .= '<tr><th scope="row" valign="top"><label for="cs_pts_champ">'.__('Punkte für richtigen Sieger-Tipp',"wpcs").':</label></th>'."\n";
- $out .= '<td ><input name="cs_pts_champ" id="cs_pts_champ" type="text" value="'.$cs_pts_champ.'" size="3" /></td></tr>'."\n";
+ $out .= '<td ><input name="cs_pts_champ" id="cs_pts_champ" type="text" value="'.$cs_pts_champ.'" size="3" /></td>'."\n";
 
+// schalter fuer erinnerungsfunktion
+ $out .= '<th scope="row" valign="top"><label for="cs_reminder">'.__('Tipp-Erinnerung per Mailservice',"wpcs").':</label></th>'."\n";
+ $out .= '<td><input name="cs_reminder" id="cs_reminder" type="checkbox" value="1"  ';
+ if ( $cs_reminder > 0)
+   $out .= " checked='checked' ";
+ $out .= '/></td></tr>';
+
+ // field for correct one side tipp points
+ $out .= '<tr><th scope="row" valign="top"><label for="cs_pts_oneside">'.__('Punkte für einseitig richtigen Tipp',"wpcs").':</label>'."\n";
+
+// oneside tipp hits only if tendency is correct
+ $out .= '<br /><label style="font-size: 9px;" for="cs_oneside_tendency">'.__('Einseitiger Tipp zieht nur mit Tendenz',"wpcs").':</label>'."\n";
+ $out .= '<input name="cs_oneside_tendency" id="cs_oneside_tendency" type="checkbox" value="1" ';
+ if ($cs_oneside_tendency > 0)
+      $out .= " checked='checked' ";
+$out.= '/><br /></th>'."\n";  
+
+ $out .= '<td ><input name="cs_pts_oneside" id="cs_pts_oneside" type="text" value="'.$cs_pts_oneside.'" size="3" /></td>'."\n";
+
+// wert wie lang vor dem spiel erinnert wird
+  $out .= '<th scope="row" valign="top"><label for="cs_reminder_hours">'.__('Stunden bis zum Spiel (Tipp-Erinnerung)',"wpcs").':</label></th>'."\n";
+ $out .= '<td ><input name="cs_reminder_hours" id="cs_reminder_hours" type="text" value="'.$cs_reminder_hours.'" size="3" /></td></tr>'."\n";
+
+// field for min goal sum to get points
+ $out .= '<tr><th scope="row" valign="top"><label for="cs_goalsum">'.__('Schwellwert für Summe der Tore',"wpcs").':</label>'."\n";
+ // oneside tipp not as separate tip but from summ of tipp goals
+ $out .= '<br /><label style="font-size: 9px;" for="cs_goalsum_auto">'.__('kein separater Tortipp',"wpcs").':</label>'."\n";
+ $out .= '<input name="cs_goalsum_auto" id="cs_goalsum_auto" type="checkbox" value="1" ';
+ if ($cs_goalsum_auto > 0)
+     $out .= " checked='checked' ";
+ $out.= '/><br /></th>'."\n"; 
+
+ $out .= '<td ><input name="cs_goalsum" id="cs_goalsum" type="text" value="'.$cs_goalsum.'" size="3" /></td>'."\n"; 
+
+ // switch to activate/deactivate ranking trend
+ $out .= '<th scope="row" valign="top"><label for="cs_rank_trend">'.__('Platzierungstrend berechnen',"wpcs").':</label></th>'."\n";
+ $out .= '<td ><input name="cs_rank_trend" id="cs_rank_trend" type="checkbox" value="1"  ';
+     if ($cs_rank_trend > 0 )
+	 $out .= " checked='checked' ";
+ $out .= '/></td></tr>'."\n"; 
+
+
+// field for high goal sum tipp
+ $out .= '<tr><th scope="row" valign="top"><label for="cs_pts_goalsum">'.__('Punkte für Summe der Tore größer als Schwellwert',"wpcs").':</label></th>'."\n";
+ $out .= '<td ><input name="cs_pts_goalsum" id="cs_pts_goalsum" type="text" value="'.$cs_pts_goalsum.'" size="3" /></td>'."\n"; 
+ 
+ // switch to activate/deactivate floating link
+ $out .= '<th scope="row" valign="top"><label for="cs_floating_link">'.__('Floating Link einschalten',"wpcs").':</label></th>'."\n";
+ $out .= '<td ><input name="cs_floating_link" id="cs_floating_link" type="checkbox" value="1"  ';
+     if ($cs_floating_link > 0 )
+	 $out .= " checked='checked' ";
+ $out .= '/></td></tr>'."\n"; 
+
+ // switch to lock round1
+ $out .= '<tr><td colspan="2">&nbsp;</td><th scope="row" valign="top"><label for="cs_lock_round1">'.__('Vorrunden-Tipps sperren',"wpcs").':</label></th>'."\n";
+ $out .= '<td ><input name="cs_lock_round1" id="cs_lock_round1" type="checkbox" value="1"  ';
+ if ($cs_lock_round1 > 0 )
+     $out .= " checked='checked' ";
+ $out .= '/></td></tr>'."\n"; 
  
  
-  $out .= '</table>'."\n";
-  
-  // add submit button to form
-  $out .= '<p class="submit"><input type="submit" name="update" value="'.__('Einstellungen speichern','wpcs').' &raquo;" /></p>';
-
-
-  $out .= '</form></div>'."\n";
-  
-  echo $out;
+ $out .= '</table>'."\n";
+ 
+ // add submit button to form
+ $out .= '<p class="submit"><input type="submit" name="update" value="'.__('Einstellungen speichern','wpcs').' &raquo;" /></p>';
+ 
+ 
+ $out .= '</form></div>'."\n";
+ 
+ echo $out;
 }
 ?>

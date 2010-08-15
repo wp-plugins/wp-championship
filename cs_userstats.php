@@ -56,8 +56,14 @@ function show_UserStats()
     return $out;
   }
   
- // for debugging
- //$wpdb->show_errors(true);
+  // for debugging
+  //$wpdb->show_errors(true);
+
+  // javascript für floating link ausgeben
+  $cs_floating_link = get_option("cs_floating_link");
+  if ($cs_floating_link > 0 )
+      $out .= get_float_js();
+ 
 
  // lese anwenderdaten ein
  get_currentuserinfo();
@@ -81,6 +87,12 @@ function show_UserStats()
  $out .= __("auf dieser Seite siehst du den aktuellen Stand des Turniers und des Tippspiels.","wpcs")."<br /></p>";
  
 
+ //
+ // ausgabe des floating nach oben links
+ //
+ if ($cs_floating_link > 0 )
+     $out .= '<div id="WPCSfloatMenu" ><ul class="menu1"><li><a href="#" onclick="window.scrollTo(0,); return false;"> Zum Seitenanfang </a></li></ul></div>';
+
  // ausgabe der optionen und der tipptabelle
  // -------------------------------------------------------------------
 
@@ -98,10 +110,13 @@ function show_UserStats()
  // ausgabe des aktuellen punktestandes und des ranges
  $rank = get_ranking();
  $out .= "<h2>".__("Aktueller Punktestand","wpcs")."</h2>\n";
- $out .= "<table border='1' width='500' cellpadding='0'><tr>\n";
+ $out .= "<table class='tablesorter'><tr>\n";
  $out .= '<th scope="col" style="text-align: center">'.__("Platz","wpcs").'</th>'."\n";
  $out .= '<th scope="col" style="text-align: center">'.__("Spieler","wpcs").'</th>'."\n";
- $out .= '<th width="20">'.__("Punktestand","wpcs").'</th>'."</tr>\n";
+ $out .= '<th width="20">'.__("Punktestand","wpcs").'</th>';
+ if (get_option('cs_rank_trend'))
+     $out .= '<th width="20">'.__("Trend","wpcs").'</th>';
+ $out .= "</tr>\n";
  
  $pointsbefore= -1;   
  $i=0; $j=1;
@@ -113,7 +128,18 @@ function show_UserStats()
    } else
      $j += 1;
 
-   $out .= "<tr><td align='center'>$i</td><td align='center'>".$row->user_nicename."</td><td align='center'>".$row->points. "</td></tr>";
+   if ($i < $row->oldrank )
+       $trend = "&uArr;";
+   elseif ($i > $row->oldrank )
+       $trend = "&dArr;";
+   else
+       $trend = "&rArr;"; 
+
+   $out .= "<tr><td align='center'>$i</td><td align='center'>".$row->user_nicename."</td><td align='center'>".$row->points. "</td>";
+   if (get_option('cs_rank_trend'))
+       $out .= "<td align='center'>$trend</td>";
+   $out .= "</tr>";
+   
    // gruppenwechsel versorgen
    $pointsbefore = $row->points;
  }
@@ -129,17 +155,23 @@ function show_UserStats()
 
  $groupid_old = "";
  
- $out .= "<h2>".__("Vorrunde","wpcs")."</h2>\n"; 
- 
+ $out .= "<h2 id='cs_sh_v' class='cs_stathead' onclick=\"jQuery(document).ready( function() {jQuery('#cs_stattab_v').toggle('slow') } );\">".__("Vorrunde","wpcs")."</h2>\n"; 
+ $out .= "<script type='text/javascript'>jQuery('#cs_sh_v').toggle( function () { jQuery(this).addClass('divclose'); }, function () { jQuery(this).removeClass('divclose');});</script>";
+
+ $out .= "<div id='cs_stattab_v'>";
+
  foreach($results as $res) {
 
    // bei gruppenwechsel footer / header ausgeben
    if ($res->groupid != $groupid_old) {
      if ($groupid_old !="")
-       $out .= '</table><p>&nbsp;</p>';
+	 $out .= '</table><p>&nbsp;</p>';
      
-     $out .= "<h2>".__("Gruppe","wpcs")." ".$res->groupid."</h2>\n"; 
-     $out .= "<table border='1' width='500' cellpadding='0'><thead><tr>\n";
+     
+     $out .= "<h2 id='cs_sh_$res->groupid' class='cs_grouphead' onclick=\"jQuery(document).ready( function() {jQuery('#cs_stattab_$res->groupid').toggle('slow'   , function() { if ( jQuery('#cs_stattab_$res->groupid').css('display') == 'block') jQuery('#cs_stattab_$res->groupid').css('display','table');}    ); } );\">".__("Gruppe","wpcs")." ".$res->groupid."</h2>\n"; 
+
+     $out .= "<script type='text/javascript'>jQuery('#cs_sh_$res->groupid').toggle( function () { jQuery(this).addClass('divclose'); }, function () { jQuery(this).removeClass('divclose');});</script>";
+     $out .= "<table id='cs_stattab_$res->groupid' class='tablesorter' ><thead><tr>\n";
      $out .= '<th style="text-align: center">'.__('Mannschaft',"wpcs")."</th>"."\n";
      $out .= '<th style="text-align: center">'.__('Spiele',"wpcs").'</th>'."\n"; 
      $out .= '<th style="text-align: center">'.__('Siege',"wpcs").'</th>'."\n"; 
@@ -155,7 +187,7 @@ function show_UserStats()
    $stats=get_team_stats($res->tid);
    
    // zeile ausgeben
-   $out .= "<tr><td><img alt='icon1' width='20' src='".$iconpath.$res->icon."' />";
+   $out .= "<tr><td><img class='csicon' alt='icon1' width='20' src='".$iconpath . $res->icon."' />";
    $out .= $res->name . "</td>";
    $out .= "<td align=\"center\">".$stats['spiele']."</td>";
    $out .= "<td align=\"center\">".$stats['siege']."</td>"; 
@@ -168,8 +200,8 @@ function show_UserStats()
    // gruppenwechsel versorgen
    $groupid_old = $res->groupid;
  }
- $out .= "</table><p>&nbsp;</p>\n";
- 
+ $out .= "</table><p>&nbsp;</p></div>\n"; 
+  
 
  // Finalrunde ausgeben
  $sql1=<<<EOD
@@ -177,41 +209,46 @@ function show_UserStats()
    c.icon as icon2, c.name as name2, a.result1 as result1,
    a.result2 as result2, a.location as location, 
    date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,
+   a.matchtime as origtime,  
    a.matchtime as matchts
    from  $cs_match a
    inner join  $cs_team b
    on a.tid1=b.tid
    inner join  $cs_team c
    on a.tid2=c.tid
-   where a.round='F'
-   order by a.matchtime;
+   where a.round='FF'
+     order by origtime;
 EOD;
 
  $results = $wpdb->get_results($sql1);
 
  // tabellen kopf ausgeben
- $out .= "<h2>".__("Finalrunde","wpcs")."</h2>\n"; 
- $out .= "<table border='1' width='600' cellpadding='0'><thead><tr>\n";
- $out .= '<th width="20">'.__("Spielnr.","wpcs").'</th>'."\n";
- $out .= '<th>&nbsp;</th>';
- $out .= '<th scope="col" style="text-align: center">'.__('Begegnung',"wpcs")."</th>"."\n";
- $out .= '<th>&nbsp;</th>';
- $out .= '<th scope="col" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
- $out .= '<th scope="col" style="text-align: center">'.__("Datum<br />Zeit").'</th>'."\n";
- $out .= '<th align="center">'.__("Ergebnis","wpcs").'</th>';
- $out .= '</tr></thead>'."\n";
+ if (!empty($results)) {
+	 $out .= "<h2 id='cs_sh_z' class='cs_stathead' onclick=\"jQuery(document).ready( function() {jQuery('#cs_stattab_z').toggle('slow', function() { if ( jQuery('#cs_stattab_z').css('display') == 'block') jQuery('#cs_stattab_z').css('display','table');}    ); } );\">".__("Finalrunde","wpcs")."</h2>\n"; 
+	 $out .= "<script type='text/javascript'>jQuery('#cs_sh_z').toggle( function () { jQuery(this).addClass('divclose'); }, function () { jQuery(this).removeClass('divclose');});</script>";
+	 
+	 $out .= "<table id='cs_stattab_z' class='tablesorter'><thead><tr>\n";
+	 $out .= '<th width="20">'.__("Spielnr.","wpcs").'</th>'."\n";
+	 $out .= '<th>&nbsp;</th>';
+	 $out .= '<th scope="col" style="text-align: center">'.__('Begegnung',"wpcs")."</th>"."\n";
+	 $out .= '<th>&nbsp;</th>';
+	 $out .= '<th scope="col" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
+	 $out .= '<th scope="col" style="text-align: center">'.__("Datum<br />Zeit").'</th>'."\n";
+	 $out .= '<th align="center">'.__("Ergebnis","wpcs").'</th>';
+	 $out .= '</tr></thead>'."\n";
+     }
 
  foreach($results as $res) {
    // zeile ausgeben
    $out .= "<tr>";
    $out .= "<td align='center'>".$res->mid."</td>";
    if ($res->icon1 != "")
-     $out .= "<td><img alt='icon1' width='15' src='".$iconpath.$res->icon1."' /></td>";
+     $out .= "<td><img class='csicon' alt='icon1' width='15' src='".$iconpath.$res->icon1."' /></td>";
    else
      $out .= "<td>&nbsp;</td>";
    $out .= "<td align='center'>".team2text($res->name1) . " - " . team2text($res->name2)."</td>";
    if ($res->icon2 != "")
-     $out .= "<td><img alt='icon2' width='15' src='".$iconpath.$res->icon2."' /></td>";
+     $out .= "<td><img class='csicon' alt='icon2' width='15' src='".$iconpath.$res->icon2."' /></td>";
    else
      $out .= "<td>&nbsp;</td>";
    $out .= "<td align=\"center\">".$res->location."</td>";
@@ -221,7 +258,8 @@ EOD;
    $out .= "</tr>\n";
 
  }
- $out .= "</table>\n<p>&nbsp;";
+ if (!empty($results)) 
+     $out .= "</table>\n<p>&nbsp;";
 
 
  return $out;
