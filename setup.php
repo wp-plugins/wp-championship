@@ -89,10 +89,9 @@ function wp_championship_install()
       $results = $wpdb->query($sql); 
 
       // add admin as tippspiel admin if necessary
-      $resadmin = 0;
-      $sql = "select count(*) from ".$cs_table_prefix."users where userid=1;";
+      $sql = "select count(*) as c from ".$cs_table_prefix."users where userid=1;";
       $resadmin = $wpdb->get_row($sql); 
-      if ($resadmin == 0) {
+      if ($resadmin->c == 0) {
 	  $sql = "insert into ".$cs_table_prefix."users values
           ( 1, 1,0,0,0,'0000-00-00 00:00:00',-1);";
 	  $results = $wpdb->query($sql);  

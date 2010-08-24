@@ -55,7 +55,7 @@ function show_UserTippForm()
 {
   include("globals.php");
   global $wpdb,$userdata;
-
+  
   // initialisiere ausgabe variable
   $out = "";
 
@@ -168,7 +168,7 @@ function show_UserTippForm()
     if ($r1->anz > 0) { 
 	$sql0 = "update  $cs_users set mailservice= ".$_POST['mailservice']." , stellvertreter=".$_POST['stellvertreter']." where userid=$uid;";
     } else {
-	$sql0 = "insert into  $cs_users values ($uid,0,".$_POST['mailservice'].",".$_POST['stellvertreter'].",0,'0000-00-00 00:00:00');"; 
+	$sql0 = "insert into  $cs_users values ($uid,0,".$_POST['mailservice'].",".$_POST['stellvertreter'].",0,'0000-00-00 00:00:00',-1);"; 
     }
     $r3 = $wpdb->query($sql0);
     
