@@ -12,6 +12,7 @@ wp-championship is a plugin for wordpress letting you play a guessing game of a 
 wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer 
 
 Features:
+
  + define number of groups, and points given to the winner, looser of each match
  + define teams and a team specific icon
  + define matches finalround and pre-final round
