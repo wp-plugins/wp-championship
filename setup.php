@@ -310,7 +310,7 @@ function wp_championship_deinstall()
   include("globals.php");
   $wpdb =& $GLOBALS['wpdb'];
 
-  // entferne rmeinder hook
+  // entferne reminder hook
   wp_clear_scheduled_hook('cs_mailreminder');
 
   // to prevent misuse :-)
@@ -350,7 +350,19 @@ function wp_championship_deinstall()
   delete_option("cs_modus");
   delete_option("cs_goalsum");
   delete_option("cs_pts_goalsum");
-  delete_option("cs_pts_oneside");
+  delete_option("cs_pts_oneside"); 
+
+  // options 
+  $fieldnames = array ("cs_label_group", "cs_col_group", "cs_label_icon1", "cs_col_icon1", "cs_label_match",
+		       "cs_col_match", "cs_label_icon2", "cs_col_icon2", "cs_label_location", "cs_col_location",
+		       "cs_label_time", "cs_col_time", "cs_label_tip", "cs_col_tip", "cs_label_points",
+		       "cs_col_points", "cs_label_place", "cs_col_place", "cs_label_player", "cs_col_player",
+		       "cs_label_upoints", "cs_col_upoints", "cs_label_trend", "cs_label_steam",
+		       "cs_col_steam", "cs_label_smatch", "cs_col_smatch", "cs_label_swin", "cs_col_swin", 
+		       "cs_label_stie", "cs_col_stie", "cs_label_sloose", "cs_col_sloose", "cs_label_sgoal",
+		       "cs_col_sgoal", "cs_label_spoint", "cs_col_spoint", "cs_tipp_sort");
+  foreach($fieldnames as $fn)
+      delete_option($fn);
 }
 
 

@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2008  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2008-2010  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -92,7 +92,37 @@ function show_UserStats()
  //
  if ($cs_floating_link > 0 )
      $out .= '<div id="WPCSfloatMenu" ><ul class="menu1"><li><a href="#" onclick="window.scrollTo(0,); return false;"> Zum Seitenanfang </a></li></ul></div>';
+ 
 
+
+ //
+ // lese alternative bezeichnungen
+ //
+ $fieldnames = array ("cs_label_group", "cs_col_group", "cs_label_icon1", "cs_col_icon1", "cs_label_match",
+		      "cs_col_match", "cs_label_icon2", "cs_col_icon2", "cs_label_location", "cs_col_location",
+		      "cs_label_time", "cs_col_time", "cs_label_tip", "cs_col_tip", "cs_label_points",
+		      "cs_col_points", "cs_label_place", "cs_col_place", "cs_label_player", "cs_col_player",
+		      "cs_label_upoints", "cs_col_upoints", "cs_label_trend", "cs_col_trend", "cs_label_steam",
+		      "cs_col_steam", "cs_label_smatch", "cs_col_smatch", "cs_label_swin", "cs_col_swin", 
+		      "cs_label_stie", "cs_col_stie", "cs_label_sloose", "cs_col_sloose", "cs_label_sgoal",
+		      "cs_col_sgoal", "cs_label_spoint", "cs_col_spoint", "cs_tipp_sort");
+
+ foreach ($fieldnames as $fn)  
+     eval("\$$fn = get_option(\"$fn\");"); var_dump($cs_label_steam);
+ if ($cs_label_place=="")  $cs_label_place   = __("Platz","wpcs");
+ if ($cs_label_player=="") $cs_label_player  = __("Spieler","wpcs");
+ if ($cs_label_upoints=="")$cs_albel_upoints = __("Punktestand","wpcs");
+ if ($cs_label_trend=="")  $cs_label_trend   = __("Trend","wpcs");
+ 
+ if ($cs_label_steam=="")  $cs_label_steam = __("Mannschaft","wpcs");
+ if ($cs_label_smatch=="") $cs_label_smatch= __("Spiele","wpcs");
+ if ($cs_label_swin==""  ) $cs_label_swin  = __("Siege","wpcs");
+ if ($cs_label_stie==""  ) $cs_label_stie  = __("Unentschieden","wpcs");
+ if ($cs_label_sloose=="") $cs_label_sloose= __("Niederlagen","wpcs");
+ if ($cs_label_sgoal=="" ) $cs_label_sgoal = __("Tore","wpcs");
+ if ($cs_label_spoint=="") $cs_label_spoint= __("Punkte","wpcs");
+ 
+ 
  // ausgabe der optionen und der tipptabelle
  // -------------------------------------------------------------------
 
@@ -111,11 +141,14 @@ function show_UserStats()
  $rank = get_ranking();
  $out .= "<h2>".__("Aktueller Punktestand","wpcs")."</h2>\n";
  $out .= "<table class='tablesorter'><tr>\n";
- $out .= '<th scope="col" style="text-align: center">'.__("Platz","wpcs").'</th>'."\n";
- $out .= '<th scope="col" style="text-align: center">'.__("Spieler","wpcs").'</th>'."\n";
- $out .= '<th width="20">'.__("Punktestand","wpcs").'</th>';
+ if (!$cs_col_place) 
+     $out .= '<th scope="col" style="text-align: center">'.$cs_label_place .'</th>'."\n";
+ if (!$cs_col_player)
+     $out .= '<th scope="col" style="text-align: center">'.$cs_label_player.'</th>'."\n";
+ if (!$cs_col_upoints)
+     $out .= '<th width="20">'.$cs_label_upoints.'</th>';
  if (get_option('cs_rank_trend'))
-     $out .= '<th width="20">'.__("Trend","wpcs").'</th>';
+     $out .= '<th width="20">'.$cs_label_trend.'</th>';
  $out .= "</tr>\n";
  
  $pointsbefore= -1;   
@@ -135,7 +168,12 @@ function show_UserStats()
    else
        $trend = "&rArr;"; 
 
-   $out .= "<tr><td align='center'>$i</td><td align='center'>".$row->user_nicename."</td><td align='center'>".$row->points. "</td>";
+   $out .= "<tr>";
+   
+   if (!$cs_col_place)   $out .= "<td align='center'>$i</td>";
+   if (!$cs_col_player)  $out .= "<td align='center'>".$row->user_nicename."</td>";
+   if (!$cs_col_upoints) $out .= "<td align='center'>".$row->points. "</td>";
+   
    if (get_option('cs_rank_trend'))
        $out .= "<td align='center'>$trend</td>";
    $out .= "</tr>";
@@ -172,29 +210,32 @@ function show_UserStats()
 
      $out .= "<script type='text/javascript'>jQuery('#cs_sh_$res->groupid').toggle( function () { jQuery(this).addClass('divclose'); }, function () { jQuery(this).removeClass('divclose');});</script>";
      $out .= "<table id='cs_stattab_$res->groupid' class='tablesorter' ><thead><tr>\n";
-     $out .= '<th style="text-align: center">'.__('Mannschaft',"wpcs")."</th>"."\n";
-     $out .= '<th style="text-align: center">'.__('Spiele',"wpcs").'</th>'."\n"; 
-     $out .= '<th style="text-align: center">'.__('Siege',"wpcs").'</th>'."\n"; 
-     $out .= '<th style="text-align: center">'.__('Unentschieden',"wpcs").'</th>'."\n"; 
-     $out .= '<th style="text-align: center">'.__('Niederlagen',"wpcs").'</th>'."\n";
-     $out .= '<th style="text-align: center">'.__('Tore',"wpcs").'</th>'."\n";
-     $out .= '<th align="center">'.__("Punkte","wpcs").'</th></tr>';
+     if (!$cs_col_steam)   $out .= '<th style="text-align: center">'.$cs_label_steam."</th>"."\n";
+     if (!$cs_col_smatch)  $out .= '<th style="text-align: center">'.$cs_label_smatch.'</th>'."\n"; 
+     if (!$cs_col_swin)    $out .= '<th style="text-align: center">'.$cs_label_swin.'</th>'."\n"; 
+     if (!$cs_col_stie)    $out .= '<th style="text-align: center">'.$cs_label_stie.'</th>'."\n"; 
+     if (!$cs_col_sloose)  $out .= '<th style="text-align: center">'.$cs_label_sloose.'</th>'."\n";
+     if (!$cs_col_sgoal)   $out .= '<th style="text-align: center">'.$cs_label_sgoal.'</th>'."\n";
+     if (!$cs_col_spoint)  $out .= '<th align="center">'.$cs_label_spoint.'</th></tr>';
      $out .= '</thead>'."\n";
    }
-
+   
    // hole statistiken des teams
    $stats=array();
    $stats=get_team_stats($res->tid);
    
    // zeile ausgeben
-   $out .= "<tr><td><img class='csicon' alt='icon1' width='20' src='".$iconpath . $res->icon."' />";
-   $out .= $res->name . "</td>";
-   $out .= "<td align=\"center\">".$stats['spiele']."</td>";
-   $out .= "<td align=\"center\">".$stats['siege']."</td>"; 
-   $out .= "<td align=\"center\">".$stats['unentschieden']."</td>"; 
-   $out .= "<td align=\"center\">".$stats['niederlagen']."</td>";
-   $out .= "<td align=\"center\"> ".$res->store." : " .$res->sgegentore." </td>";
-   $out .= "<td align='center'>" . $res->spoints." </td>";
+   $out .= "<tr>";
+   if (!$cs_col_steam) {
+       $out .= "<td><img class='csicon' alt='icon1' width='20' src='".$iconpath . $res->icon."' />";
+       $out .= $res->name . "</td>";
+   }
+   if (!$cs_col_smatch) $out .= "<td align=\"center\">".$stats['spiele']."</td>";
+   if (!$cs_col_swin)   $out .= "<td align=\"center\">".$stats['siege']."</td>"; 
+   if (!$cs_col_stie)   $out .= "<td align=\"center\">".$stats['unentschieden']."</td>"; 
+   if (!$cs_col_sloose) $out .= "<td align=\"center\">".$stats['niederlagen']."</td>";
+   if (!$cs_col_sgoal)  $out .= "<td align=\"center\"> ".$res->store." : " .$res->sgegentore." </td>";
+   if (!$cs_col_spoint) $out .= "<td align='center'>" . $res->spoints." </td>";
    $out .= "</tr>\n";
    
    // gruppenwechsel versorgen

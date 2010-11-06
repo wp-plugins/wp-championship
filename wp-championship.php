@@ -3,7 +3,7 @@
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de/wp-championship
 Description: wp-championship is championship plugin for wordpress designed for the WM 2010.
-Version: 2.6
+Version: 2.7
 Author: tuxlog 
 Author URI: http://www.tuxlog.de
 */
@@ -36,8 +36,12 @@ require_once("cs_admin_match.php");
 require_once("cs_admin_finals.php");
 require_once("cs_admin_users.php");
 require_once("cs_admin_stats.php");
+require_once("cs_admin_labels.php");
 require_once("cs_usertipp.php");
 require_once("cs_userstats.php");
+require_once("cs_stats.php");
+require_once("wpc_autoupdate.php");
+
 
 // activating deactivating the plugin
 register_activation_hook(__FILE__,'wp_championship_install');
@@ -96,7 +100,10 @@ function wp_championship_init()
   add_filter('the_excerpt', 'searchcsusertipp');
   
   add_filter('the_content', 'searchcsuserstats');
-  add_filter('the_excerpt', 'searchcsuserstats');
+  add_filter('the_excerpt', 'searchcsuserstats'); 
+
+  add_filter('the_content', 'searchcsstats');
+  add_filter('the_excerpt', 'searchcsstats');
 
   // javascript hinzufügen für tablesorter / floating menu
   wp_enqueue_script('cs_tablesort', '/' . PLUGINDIR . '/wp-championship/jquery.tablesorter.min.js',
@@ -121,6 +128,9 @@ function add_menus() {
    add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Users',"wpcs"), __('Mitspieler', "wpcs"), 8, $PPATH."cs_admin_users.php", "cs_admin_users") ; 
 
    add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Stats',"wpcs"), __('Statistiken', "wpcs"), 8, $PPATH."cs_admin_stats.php", "cs_admin_stats") ;
+
+   add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Bezeichungen',"wpcs"), __('Bezeichnungen', "wpcs"), 8, $PPATH."cs_admin_labels.php", "cs_admin_labels") ;
+
  }
   
 

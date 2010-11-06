@@ -403,6 +403,31 @@ function show_UserTippForm()
 // ausgabe der optionen und der tipptabelle
 // -------------------------------------------------------------------
 
+
+  //
+  // lese alternative bezeichnungen
+  //
+  $fieldnames = array ("cs_label_group", "cs_col_group", "cs_label_icon1", "cs_col_icon1", "cs_label_match",
+		       "cs_col_match", "cs_label_icon2", "cs_col_icon2", "cs_label_location", "cs_col_location",
+		       "cs_label_time", "cs_col_time", "cs_label_tip", "cs_col_tip", "cs_label_points",
+		       "cs_col_points", "cs_label_place", "cs_col_place", "cs_label_player", "cs_col_player",
+		       "cs_label_upoints", "cs_col_upoints", "cs_label_trend", "cs_col_trend", "cs_label_steam",
+		       "cs_col_steam", "cs_label_smatch", "cs_col_smatch", "cs_label_swin", "cs_col_swin", 
+		       "cs_label_stie", "cs_col_stie", "cs_label_sloose", "cs_col_sloose", "cs_label_sgoal",
+		       "cs_col_sgoal", "cs_label_spoint", "cs_col_spoint", "cs_tipp_sort");
+  
+  foreach ($fieldnames as $fn)  
+      eval("\$$fn = get_option(\"$fn\");"); var_dump($cs_label_steam);
+  if ($cs_label_group=="")    $cs_label_group   = __("Gruppe","wpcs");
+  if ($cs_label_icon1=="")    $cs_label_icon1   = "&nbsp;";
+  if ($cs_label_match==""  )  $cs_label_match   = __("Begegnung","wpcs");
+  if ($cs_label_icon2==""  )  $cs_label_icon2   = "&nbsp;";
+  if ($cs_label_location=="") $cs_label_loation =  __("Ort","wpcs");
+  if ($cs_label_time=="" )    $cs_label_time    = __("Datum<br />Zeit","wpcs");
+  if ($cs_label_tip=="")      $cs_label_tip     = __("Tipp<br/>Ergebnis","wpcs");
+  if ($cs_label_points=="")   $cs_label_points  = __("Punkte","wpcs");
+  
+
  // teamliste fuer select aufbauen
  $team1_select_html="";
  $sql="select tid,name from  $cs_team where name not like '#%' order by name;";
@@ -508,7 +533,7 @@ function show_UserTippForm()
  
 // sortierbare tabelle nur im tunier modus
  if ( get_option('cs_modus') == 1 )
-     $out .= "<script type='text/javascript'>jQuery(document).ready(function() { jQuery('#ptab').tablesorter({sortList:[[5,0]],headers:{1:{sorter:false},3:{sorter:false}}}); }); jQuery(document).ready(function() { jQuery('#ftab').tablesorter({sortList:[[0,0]],headers:{1:{sorter:false},3:{sorter:false}}}); });</script>\n";
+     $out .= "<script type='text/javascript'>jQuery(document).ready(function() { jQuery('#ptab').tablesorter({sortList:[[". --$cs_tipp_sort .",0]],headers:{1:{sorter:false},3:{sorter:false}}}); }); jQuery(document).ready(function() { jQuery('#ftab').tablesorter({sortList:[[0,0]],headers:{1:{sorter:false},3:{sorter:false}}}); });</script>\n";
 
  // collapse / expand für den bundesliga modus 
  if ( get_option('cs_modus') == 2 )
@@ -518,21 +543,21 @@ function show_UserTippForm()
  $out .= "<br /><h2>".__("Vorrundenspiele","wpcs")."</h2>\n"; 
  $out .= "<table id='ptab' class='tablesorter' ><thead><tr>\n";
  //$out .= '<th scope="col" style="text-align: center">Spiel-Nr.</th>'."\n";
-  if ( get_option('cs_modus') == 1 )
-      $out .= '<th scope="col" style="text-align: center">'.__("Gruppe","wpcs").'</th>'."\n";
- $out .= '<th >&nbsp;</th>'."\n";
- $out .= '<th scope="col" style="text-align: center">'.__('Begegnung',"wpcs")."</th>"."\n";
- $out .= '<th >&nbsp;</th>'."\n";
- $out .= '<th scope="col" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
- $out .= '<th id="p1stsort" scope="col" style="text-align: center">'.__("Datum<br />Zeit","wpcs").'</th>'."\n";
- $out .= '<th align="center">'.__("Tipp","wpcs").'<br />' . __("Ergebnis","wpcs").'</th>';
+ if ( get_option('cs_modus') == 1 and !$cs_col_group)
+     $out .= '<th scope="col" style="text-align: center">'.$cs_label_group.'</th>'."\n";
+ if (!$cs_col_icon1) $out .= '<th >'.$cs_label_icon1.'</th>'."\n";
+ if (!$cs_col_match) $out .= '<th scope="col" style="text-align: center">'.$cs_label_match."</th>"."\n";
+ if (!$cs_col_icon2) $out .= '<th >'.$cs_label_icon2.'</th>'."\n";
+ if (!$cs_col_location) $out .= '<th scope="col" style="text-align: center">'.$cs_label_location.'</th>'."\n";
+ if (!$cs_col_time) $out .= '<th id="p1stsort" scope="col" style="text-align: center">'.$cs_label_time.'</th>'."\n";
+ if (!$cs_col_tip) $out .= '<th align="center">'.$cs_label_tip.'</th>';
  if ($cs_goalsum > 0 and $cs_goalsum_auto==0)
      $out .= '<th align="center">'.__("Summe<br />Tore","wpcs").'</th>';
-  $out .= '<th align="center">'.__("Punkte","wpcs").'</th></tr>';
-
-  $out .= '</thead>'."\n"; 
-  if (get_option("cs_modus")==1)
-      $out .= '<tbody>'."\n";
+ if (!$cs_col_points) $out .= '<th align="center">'.$cs_label_points.'</th></tr>';
+ 
+ $out .= '</thead>'."\n"; 
+ if (get_option("cs_modus")==1)
+     $out .= '<tbody>'."\n";
 
  // match loop
  // hole match daten
@@ -579,15 +604,15 @@ function show_UserTippForm()
      $out .= "<h2>".__("Finalrunde","wpcs")."</h2>\n"; 
      $out .= "<table id='ftab' class='tablesorter'><thead><tr>\n";
      $out .= '<th scope="col" style="text-align: center">'.__("Spielnr.","wpcs").'</th>'."\n";
-     $out .= '<th>&nbsp;</th>'."\n";
-     $out .= '<th scope="col" style="text-align: center">'.__('Begegnung',"wpcs")."</th>"."\n";
-     $out .= '<th>&nbsp;</th>'."\n";
-     $out .= '<th scope="col" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
-     $out .= '<th id="f1stsort" scope="col" style="text-align: center">'.__("Datum<br />Zeit","wpcs").'</th>'."\n";
-     $out .= '<th align="center">'.__("Tipp","wpcs").'<br />'.__("Ergebnis","wpcs").'</th>';
+     $out .= '<th>'.$cs_label_icon1.'</th>'."\n";
+     $out .= '<th scope="col" style="text-align: center">'.$cs_label_match."</th>"."\n";
+     $out .= '<th>'.$cs_label_icon2.'</th>'."\n";
+     $out .= '<th scope="col" style="text-align: center">'.$cs_label_location.'</th>'."\n";
+     $out .= '<th id="f1stsort" scope="col" style="text-align: center">'.$cs_label_time.'</th>'."\n";
+     $out .= '<th align="center">'.$cs_label_tip.'</th>';
      if ($cs_goalsum > 0 and $cs_goalsum_auto == 0)
 	 $out .= '<th align="center">'.__("Summe<br />Tore","wpcs").'</th>';
-     $out .= '<th align="center">'.__("Punkte","wpcs").'</th></tr>';
+     $out .= '<th align="center">'.$cs_label_points.'</th></tr>';
      $out .= '</thead>'."\n"; 
      $out .= '<tbody>'."\n";
    }
@@ -610,19 +635,20 @@ function show_UserTippForm()
    if ($timediff != 0 )
        $match_tooltip = "title='Spielbeginn (lokal):".strftime("%d.%m %H:%M", $match_local_start)."'";
    $out .= "<tr>";
-   if ( get_option('cs_modus') == 1 )
+   if ( get_option('cs_modus') == 1 and !$cs_colgroup)
        $out .= "<td align=\"center\">".($res->round == "V" ? $res->groupid : $res->mid)."</td>";
-   if ($res->icon1!="")
+   if ($res->icon1!="" and !$cs_col_icon1)
      $out .= "<td align='center'><img class='csicon' alt='icon1' src='".$iconpath . $res->icon1."' /></td>";
    else
      $out .= "<td>&nbsp;</td>";
-   $out .= "<td align='center'>".($res->round=='V' ? $res->team1:team2text($res->team1)) . " - " . ($res->round=='V' ? $res->team2:team2text($res->team2)). "</td>";
-   if ($res->icon2!="")
-     $out .= "<td align='center'><img class='csicon' alt='icon2' src='".$iconpath . $res->icon2."' /></td>";
+   if (!$cs_col_match)
+       $out .= "<td align='center'>".($res->round=='V' ? $res->team1:team2text($res->team1)) . " - " . ($res->round=='V' ? $res->team2:team2text($res->team2)). "</td>";
+   if ($res->icon2!="" and !$cs_col_icon2)
+       $out .= "<td align='center'><img class='csicon' alt='icon2' src='".$iconpath . $res->icon2."' /></td>";
    else
-     $out .= "<td>&nbsp;</td>";
-   $out .= "<td align=\"center\">".$res->location."</td>";
-   $out .= "<td align=\"center\" ".$match_tooltip." >".$res->matchtime."</td>";
+       $out .= "<td>&nbsp;</td>";
+   if (!$cs_col_location) $out .= "<td align=\"center\">".$res->location."</td>";
+   if (!$cs_col_time)     $out .= "<td align=\"center\" ".$match_tooltip." >".$res->matchtime."</td>";
    $out .= "<td align='center'>";
 
    // fehlerklasse setzen, wenn erforderlich
