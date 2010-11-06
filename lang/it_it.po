@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-championship\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-06 07:02+0100\n"
+"POT-Creation-Date: 2010-11-06 08:15+0100\n"
 "PO-Revision-Date: 2010-02-14 15:56+0100\n"
 "Last-Translator: Davide Brognoli <davide.brognoli@gmail.com>\n"
 "Language-Team: hans matzen <webmaster ät tuxlog dot de>\n"
@@ -262,7 +262,6 @@ msgid "Begegnung hinzufügen"
 msgstr "Aggiungi partita"
 
 #: cs_admin_match.php:154 cs_admin_match.php:181 cs_stats.php:218
-#: cs_stats.php:484
 #, fuzzy
 msgid "Spieltag"
 msgstr "Partite"
@@ -568,7 +567,8 @@ msgstr "Vincitore - consiglio"
 msgid "Mitspieler speichern"
 msgstr "Salva il giocatore"
 
-#: cs_stats.php:48 cs_stats.php:351 cs_userstats.php:113 functions.php:488
+#: cs_stats.php:48 cs_stats.php:351 cs_stats.php:484 cs_userstats.php:113
+#: functions.php:488
 msgid "Spieler"
 msgstr "Giocatore"
 

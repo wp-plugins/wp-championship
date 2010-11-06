@@ -481,7 +481,7 @@ function readyState(func)
 </script>
 EOT;
 
-  $out .= "<div class='wpc-stats4-sel'><form action=''>" . __("Spieltag","wpcs").":";
+  $out .= "<div class='wpc-stats4-sel'><form action=''>" . __("Spieler","wpcs").":";
   $out .= "<select id='wpc_stats4_selector' size='1' onchange='wpc_stats4_update();' >";
   $sql1 = "SELECT user_nicename FROM `cs_users` inner join wp_users on ID=userid order by user_nicename;";
   $r1= $wpdb->get_results($sql1);
