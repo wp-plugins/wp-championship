@@ -67,7 +67,7 @@ function cs_admin_users()
       
       if ($results->anz == 0) {
 
-	$sql = "insert into ". $cs_table_prefix ."users values (". $_POST['user'] . "," . $_POST['isadmin'] . "," . $_POST['mailservice'] . "," . $_POST['stellv'] . ",".$_POST['champtipp'].",'1900-01-01 00:00:00');";
+	$sql = "insert into ". $cs_table_prefix ."users values (". $_POST['user'] . "," . $_POST['isadmin'] . "," . $_POST['mailservice'] . "," . $_POST['stellv'] . ",".$_POST['champtipp'].",'1900-01-01 00:00:00',-1);";
 	$results = $wpdb->query($sql);
 	if ( $results == 1 )
 	  admin_message ( __('Mitspieler erfolgreich angelegt.',"wpcs") );
