@@ -25,6 +25,18 @@ function wp_championship_install()
   include("globals.php");
   global $wpdb;
 
+
+  // add charset & collate like wp db class
+  $charset_collate = '';
+  
+  if ( version_compare(mysql_get_server_info(), '4.1.0', '>=') ) {
+      if ( ! empty($wpdb->charset) )
+	  $charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
+      if ( ! empty($wpdb->collate) )
+	  $charset_collate .= " COLLATE $wpdb->collate";
+  }
+  
+
   $sql = 'SHOW TABLES LIKE \''.$cs_table_prefix.'%\'';
   $results = $wpdb->query($sql);
 
@@ -40,7 +52,7 @@ function wp_championship_install()
             groupid varchar(2) NOT NULL,
             qualified boolean NOT NULL,
             primary key(tid)
-          )";
+          ) $charset_collate;";
 
       $results = $wpdb->query($sql);
      
@@ -57,7 +69,7 @@ function wp_championship_install()
             result2 integer not null,
             winner bool NOT NULL,
             primary key(mid)
-          )";
+          ) $charset_collate;";
 
       $results = $wpdb->query($sql);
    
@@ -71,7 +83,7 @@ function wp_championship_install()
             tipptime datetime not null,
             points integer not null,
             primary key(userid,mid)
-          )";
+          ) $charset_collate;";
 
       $results = $wpdb->query($sql);
 
@@ -84,7 +96,7 @@ function wp_championship_install()
             stellvertreter int not null,
             champion int NOT NULL,
             championtime datetime NOT NULL
-          )";
+          ) $charset_collate;";
 
       $results = $wpdb->query($sql); 
 

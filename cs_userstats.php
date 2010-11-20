@@ -108,7 +108,7 @@ function show_UserStats()
 		      "cs_col_sgoal", "cs_label_spoint", "cs_col_spoint", "cs_tipp_sort");
 
  foreach ($fieldnames as $fn)  
-     eval("\$$fn = get_option(\"$fn\");"); var_dump($cs_label_steam);
+     eval("\$$fn = get_option(\"$fn\");"); 
  if ($cs_label_place=="")  $cs_label_place   = __("Platz","wpcs");
  if ($cs_label_player=="") $cs_label_player  = __("Spieler","wpcs");
  if ($cs_label_upoints=="")$cs_albel_upoints = __("Punktestand","wpcs");

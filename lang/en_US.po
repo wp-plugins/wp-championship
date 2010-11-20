@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-championship\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-06 08:15+0100\n"
+"POT-Creation-Date: 2010-11-20 07:35+0100\n"
 "PO-Revision-Date: 2010-11-06 07:06+0100\n"
 "Last-Translator: Hans Matzen <webmaster ät tuxlog dot  de>\n"
 "Language-Team: hans matzen <webmaster ät tuxlog dot de>\n"
@@ -257,7 +257,7 @@ msgstr "Update match"
 msgid "Begegnung hinzufügen"
 msgstr "Add Match"
 
-#: cs_admin_match.php:154 cs_admin_match.php:181 cs_stats.php:218
+#: cs_admin_match.php:154 cs_admin_match.php:181 cs_stats.php:216
 msgid "Spieltag"
 msgstr "Match-Day"
 
@@ -558,50 +558,50 @@ msgstr "Winner-tipp"
 msgid "Mitspieler speichern"
 msgstr "Save player"
 
-#: cs_stats.php:48 cs_stats.php:351 cs_stats.php:484 cs_userstats.php:113
+#: cs_stats.php:45 cs_stats.php:357 cs_stats.php:490 cs_userstats.php:113
 #: functions.php:488
 msgid "Spieler"
 msgstr "Player"
 
-#: cs_stats.php:48 cs_userstats.php:123 cs_usertipp.php:428
+#: cs_stats.php:45 cs_userstats.php:123 cs_usertipp.php:428
 msgid "Punkte"
 msgstr "Points"
 
-#: cs_stats.php:71 cs_userstats.php:274 cs_usertipp.php:423
+#: cs_stats.php:69 cs_userstats.php:274 cs_usertipp.php:423
 msgid "Begegnung"
 msgstr "match"
 
-#: cs_stats.php:71 cs_userstats.php:278
+#: cs_stats.php:69 cs_userstats.php:278
 msgid "Ergebnis"
 msgstr "Result"
 
-#: cs_stats.php:71
+#: cs_stats.php:69
 msgid "Tipp"
 msgstr "Tipp"
 
-#: cs_stats.php:141 cs_stats.php:250 cs_stats.php:310 cs_stats.php:407
+#: cs_stats.php:139 cs_stats.php:252 cs_stats.php:316 cs_stats.php:413
 #: cs_userstats.php:54 cs_usertipp.php:65
 msgid "Sie sind nicht angemeldet."
 msgstr "You are not logged in"
 
-#: cs_stats.php:142 cs_stats.php:251 cs_stats.php:311 cs_stats.php:408
+#: cs_stats.php:140 cs_stats.php:253 cs_stats.php:317 cs_stats.php:414
 #: cs_userstats.php:55
 msgid "Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website"
 msgstr "To attend the guessing game, you need an acount at this website"
 
-#: cs_stats.php:166
+#: cs_stats.php:164
 msgid "Spieltagstatistik"
 msgstr "Day of event statistic"
 
-#: cs_stats.php:289
+#: cs_stats.php:295
 msgid "Tipphäufigkeit"
 msgstr "Tip - frequency of occurence"
 
-#: cs_stats.php:348
+#: cs_stats.php:354
 msgid "Tipphäufigkeit im Detail"
 msgstr "Tip - frequency of ocurence, detail"
 
-#: cs_stats.php:432
+#: cs_stats.php:438
 msgid "Spielertipps"
 msgstr "Player-Tips"
 

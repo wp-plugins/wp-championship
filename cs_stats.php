@@ -29,28 +29,26 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
     $args=array();
     $out = "";
 
+    // set cahracter set in case of wrong collation in cs tables
+    $sql0="SET CHARACTER SET $wpdb->charset;";
+    $r0= $wpdb->query($sql0);
+	
     if (isset($newday) and $newday !="") {
 	// Stats 1
-	$sql1 =<<<EOS
-	SELECT user_nicename, sum(points) as punkte
-	FROM `cs_tipp` as a 
-	inner join cs_match as b
-	on a.mid = b.mid
-	inner join wp_users c 
-	on c.ID = a.userid
-	WHERE date(b.matchtime) = '$newday' and points > 0
-	group by userid
-EOS;
+	if (get_option("cs_modus")==1)
+	    $sql1 = "SELECT b.user_nicename, sum(e.points) as punkte from $cs_users a inner join $wp_users b on a.userid = b.ID left outer join ( select c.* from $cs_tipp c inner join $cs_match d on c.mid = d.mid where date(d.matchtime) = '$newday' and c.points>0 ) e on e.userid = a.userid group by b.user_nicename order by sum(e.points) desc";
+	else
+	    $sql1 = "SELECT b.user_nicename, sum(e.points) as punkte from $cs_users a inner join $wp_users b on a.userid = b.ID left outer join ( select c.* from $cs_tipp c inner join $cs_match d on c.mid = d.mid where spieltag = '$newday' and c.points>0 ) e on e.userid = a.userid group by b.user_nicename order by sum(e.points) desc" ; 
 	$r1= $wpdb->get_results($sql1);
 	
-	
 	$out .= "<p>&nbsp;</p>";
-	$out .= "<table border='1' ><tr><td>" . __("Spieler","wpcs") . "</td><td>" . __("Punkte","wpcs") . "</td></tr>\n";
+	$out .= "<table border='1' ><tr><th>" . __("Spieler","wpcs") . "</th><th>" . __("Punkte","wpcs") . "</th></tr>\n";
 	
 	foreach ($r1 as $r) 
-	    $out .= "<tr><td>" . $r->user_nicename . "</td><td align='right'>" . $r->punkte . "</td></tr>\n";
+	    $out .= "<tr><td>" . $r->user_nicename . "</td><td align='right'>" . ($r->punkte== NULL?0:$r->punkte) . "</td></tr>\n";
 	
 	$out .= "</table>\n";
+
     } else {
 	// Stats 4
 	if (get_option("cs_modus")==1)
@@ -60,7 +58,7 @@ EOS;
 	$r1 = $wpdb->get_results($sql);
 	
 	// hole tipps des users
-	$sql="select mid,result1,result2 from  $cs_tipp inner join wp_users on ID=userid where user_nicename='".$username."' order by mid";
+	$sql="select mid,result1,result2 from  $cs_tipp inner join $wp_users on ID=userid where user_nicename='".$username."' order by mid";
 	$r2 = $wpdb->get_results($sql);
 
 	$tipps=array();
@@ -68,10 +66,10 @@ EOS;
 	    $tipps[$r->mid] = $r;
 
 	$out .= "<p>&nbsp;</p>";
-	$out .= "<table border='1' ><tr><td>" . __("Begegnung","wpcs") . "</td><td>" . __("Ergebnis","wpcs") . "</td><td>" . __("Tipp","wpcs") . "</td></tr>";
+	$out .= "<table border='1' ><tr><th>" . __("Begegnung","wpcs") . "</th><th>" . __("Ergebnis","wpcs") . "</th><th>" . __("Tipp","wpcs") . "</th></tr>";
 	
 	foreach ($r1 as $r) {
-	    $out .= "<tr><td>" . $r->team1 . " - " . $r->team2. "</td><td align='center'>" . $r->result1 . ":".$r->result2 . "</td>\n";
+	    $out .= "<tr><td>" . $r->team1 . " - " . $r->team2 . "</td><td align='center'>" . $r->result1 . ":".$r->result2 . "</td>\n";
 	    $tr1 =  ($tipps[$r->mid]->result1==-1?"-":$tipps[$r->mid]->result1);
 	    $tr2 =  ($tipps[$r->mid]->result2==-1?"-":$tipps[$r->mid]->result2);
 
@@ -217,7 +215,11 @@ EOT;
 
   $out .= "<div class='wpc-stats1-sel'><form action=''>" . __("Spieltag","wpcs").":";
   $out .= "<select id='wpc_stats1_selector' size='1' onchange='wpc_stats1_update();' >";
-  $sql1 = "SELECT date( matchtime ) as sday FROM `cs_match` GROUP BY date( matchtime );";
+ if (get_option("cs_modus")==1)
+     $sql1 = "SELECT date( matchtime ) as sday FROM $cs_match GROUP BY date( matchtime );";
+ else
+     $sql1 = "SELECT spieltag as sday FROM $cs_match where spieltag > 0 GROUP BY spieltag;";
+
   $r1= $wpdb->get_results($sql1);
 
   foreach ($r1 as $r) 
@@ -276,16 +278,20 @@ function show_Stats2()
 	SELECT 
 	IF(result1>result2,concat(cast(result1 as char), cast(result2 as char)), 
 	   concat(cast(result2 as char), cast(result1 as char))) as tip, count(*) as anzahl
-	FROM `cs_tipp` WHERE result1>0 and result2>0
+	FROM $cs_tipp WHERE result1>=0 and result2>=0
 	group by IF(result1>result2,concat(cast(result1 as char), 
 	      cast(result2 as char)), concat(cast(result2 as char), cast(result1 as char)))
 EOS;
     $r1= $wpdb->get_results($sql1);
     
     $urlparm="?";
+    // anzahl aller tipps ermitteln
+    foreach($r1 as $r)
+	$tanz = $tanz + $r->anzahl;
+
     foreach($r1 as $r) 
-	$urlparm .= $r->tip . "=" . $r->anzahl . "&";
-    
+	$urlparm .= $r->tip . "=" . round($r->anzahl / $tanz,2)*100 . "&";
+
     $out .= "<h2>".__('Tipphäufigkeit','wpcs')."</h2>";
     $out .= "<p>&nbsp;</p>";
     $out .= "<img src='" . site_url("wp-content/plugins/wp-championship/") . "func_pie.php" . $urlparm . "' alt='Piechart'/>";
@@ -336,10 +342,10 @@ function show_Stats3()
 	SELECT user_nicename,
 	IF(result1>result2,concat(cast(result1 as char), cast(result2 as char)), 
 	   concat(cast(result2 as char), cast(result1 as char))) as tip, count(*) as anzahl
-	FROM `cs_tipp`
-        inner join wp_users
+	FROM $cs_tipp
+        inner join $wp_users
         on ID=userid
-	WHERE result1>0 and result2>0
+	WHERE result1>=0 and result2>=0
 	group by userid, IF(result1>result2,concat(cast(result1 as char), 
 	      cast(result2 as char)), concat(cast(result2 as char), cast(result1 as char)))
 EOS;
@@ -348,7 +354,7 @@ EOS;
     $out .= "<h2>".__('Tipphäufigkeit im Detail','wpcs')."</h2>";
     $out .= "<p>&nbsp;</p>";
 
-    $out .= "<table border='1' ><tr><td>" . __("Spieler","wpcs") . "</td>\n";
+    $out .= "<table border='1' ><tr><th>" . __("Spieler","wpcs") . "</th>\n";
     
     // matrix aufbauen
     $sm = array();
@@ -368,7 +374,7 @@ EOS;
     asort($sm1);
     
     foreach($sm1 as $ek) 
-	$out .= "<td>" . $ek ."</td>";
+	$out .= "<th style='padding:5px;text-align:center;'>" . $ek ."</th>";
     $out .="</tr>";
 
     $olduser="";
@@ -483,7 +489,7 @@ EOT;
 
   $out .= "<div class='wpc-stats4-sel'><form action=''>" . __("Spieler","wpcs").":";
   $out .= "<select id='wpc_stats4_selector' size='1' onchange='wpc_stats4_update();' >";
-  $sql1 = "SELECT user_nicename FROM `cs_users` inner join wp_users on ID=userid order by user_nicename;";
+  $sql1 = "SELECT user_nicename FROM $cs_users inner join $wp_users on ID=userid order by user_nicename;";
   $r1= $wpdb->get_results($sql1);
 
   foreach ($r1 as $r) 
