@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2007-2010  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2007-2011  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -172,9 +172,49 @@ function wp_championship_install()
       $sql="update $cs_users set rang=-1;";
       $results = $wpdb->query($sql);
   }
+ 
+  // -----------------------------------------------------------------
+  // U P D A T E - table structure v2.9
+  // -----------------------------------------------------------------
+  $sql="select shortname from $cs_team;";
+  $results = $wpdb->query($sql);  
+  
+  if ($results == 0) {
+      // add columns for shortname
+      $sql="alter table $cs_team add column shortname varchar(5) NOT NULL after name";
+      $results = $wpdb->query($sql);
+      
+      $sql="update $cs_team set shortname=substring(name,1,5);";
+      $results = $wpdb->query($sql);
+  } 
 
+  $sql="select mailreceipt from $cs_users;";
+  $results = $wpdb->query($sql);  
+  
+  if ($results == 0) {
+      // add columns for mailreceipt
+      $sql="alter table $cs_users add column mailreceipt bool NOT NULL after mailservice";
+      $results = $wpdb->query($sql);
+      
+      $sql="update $cs_users set mailreceipt=0;";
+      $results = $wpdb->query($sql);
+  } 
 
+  $sql="select tippgroup from $cs_users;";
+  $results = $wpdb->query($sql);  
+  
+  if ($results == 0) {
+      // add columns for tippgroup
+      $sql="alter table $cs_users add column tippgroup varchar(20) NOT NULL after rang";
+      $results = $wpdb->query($sql);
+      
+      $sql="update $cs_users set tippgroup='';";
+      $results = $wpdb->query($sql);
+  } 
+  
+  //
   // Optionen / Parameter
+  //
 
   // Option: Anzahl der Gruppen in der Vorrunde; Werte: 1-12; 
   // Gibt die Anzahl der Gruppen in der Vorrunde an. Default: 8
@@ -312,7 +352,6 @@ function wp_championship_install()
       add_option("cs_rank_trend",$cs_rank_trend,"Enable rank trend?","yes");
   }; 
   
-
   wp_schedule_event(time(), 'hourly', 'cs_mailreminder');
 
 }
@@ -376,6 +415,4 @@ function wp_championship_deinstall()
   foreach($fieldnames as $fn)
       delete_option($fn);
 }
-
-
 ?>

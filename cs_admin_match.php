@@ -152,7 +152,7 @@ function cs_admin_match()
   // spieltag ausgeben wenn in liga-modus
   if ( get_option('cs_modus') == 2 ) {
       $out .= '<tr><th scope="row" valign="top"><label for="spieltag">'.__('Spieltag','wpcs').':</label></th>'."\n";
-      $out .= '<td><input name="spieltag" id="spieltag" type="text" value="'. ($res->spieltag==-1?"-":$res->spieltag) . '" size="3" /></td></tr>'."\n";
+      $out .= '<td><input name="spieltag" id="spieltag" type="text" value="'. ($results->spieltag==-1?"-":$results->spieltag) . '" size="3" /></td></tr>'."\n";
   }
 
   $out .= '</table>'."\n";

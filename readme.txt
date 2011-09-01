@@ -3,8 +3,8 @@ Contributors: tuxlog
 Donate link: http://www.tuxlog.de/
 Tags: championship,guessing, game, soccer, world, 2010, wordpress, plugin
 Requires at least: 2.5
-Tested up to: 3.0.1
-Stable tag: 2.8
+Tested up to: 3.1
+Stable tag: 2.9
 
 wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer 
 
@@ -43,7 +43,7 @@ ment and especially to Andy Chapman for doing a lot of tests
 
 	1.  Optional: load teams andmatches into your database (e.g. using phpmyadmin). SQL for the WM2010 can be found in the sql subdirectory
 
-	1.  Optional Update to v1.6: Please remember to deactivate and activate the plugin once for database updates
+	1.  Optional Update to v1.6, v2.5, v2.9: Please remember to deactivate and activate the plugin once for database updates
 
 == Frequently Asked Questions ==
 = Where can I get further information about the plugin? =
@@ -64,6 +64,20 @@ There are several resources to visit:
 2. wp-championship tipp dialog
 
 == Changelog ==
+
+= 2011-08-26 v2.9=
+* added the possibility to select all users in cs-stats4
+* fixed problem adding final match with bundesliga mode
+* fixed problem with jquery 1.4.4 and trigger in wordpress 3.1
+* added cs-stats5 an compact overview over one day
+* fixed that field spieltag was deleted when editing match
+* added shortname for teams for use in reports and stats
+* added widget for display the current ranking
+* fixed error in winner calculation in Bundesliga-mode
+* added confirmation mail feature
+* fix ranking when matches were deleted and old tipps were still present
+* added group feature for players (every user can be member of a tippgroup, stats can be calculated only for one group or for all)
+* fixed an incompatibility with FF6 and Wordpress adminbar
 
 = 2010-11-08 v2.8 =
 * fixed debug info dump

@@ -21,26 +21,10 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You
 are not allowed to call this page directly.'); }
 
 
-// apply the filter to the page or post content
-function searchcsuserstats($content) {
-
-  // look for wp-greet tag
-  if ( stristr( $content, '[cs-userstats]' )) {
-
-    // replace tag with html form
-    $search = '[cs-userstats]';
-    $replace= show_UserStats(); 
-    $content= str_replace ($search, $replace, $content);
-  }
-
-  return $content;
-
-  }
-
 // -----------------------------------------------------------------------------------
 // Funktion zur ausgabe der User Statistikseite
 // -----------------------------------------------------------------------------------
-function show_UserStats()
+function show_UserStats($atts)
 {
   include("globals.php");
   global $wpdb,$userdata;
@@ -55,7 +39,11 @@ function show_UserStats()
     $out .= __("Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website","wpcs")."<br />";
     return $out;
   }
-  
+
+  // parameter holen dabei übersteuert tippgruppe, tippgroup
+  $tippgroup = $atts['tippgroup'];	
+  $tippgroup = $atts['tippgruppe'];
+
   // for debugging
   //$wpdb->show_errors(true);
 
@@ -138,7 +126,7 @@ function show_UserStats()
    $out.= "<hr>".__("Der Gewinner des Turniers heißt:","wpcs")."<b>$cswinner</b><hr>";
  
  // ausgabe des aktuellen punktestandes und des ranges
- $rank = get_ranking();
+ $rank = get_ranking($tippgroup);
  $out .= "<h2>".__("Aktueller Punktestand","wpcs")."</h2>\n";
  $out .= "<table class='tablesorter'><tr>\n";
  if (!$cs_col_place) 
@@ -257,7 +245,7 @@ function show_UserStats()
    on a.tid1=b.tid
    inner join  $cs_team c
    on a.tid2=c.tid
-   where a.round='FF'
+   where a.round='F'
      order by origtime;
 EOD;
 

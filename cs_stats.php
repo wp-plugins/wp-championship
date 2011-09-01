@@ -1,280 +1,290 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2010  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2010,2011  Hans Matzen  (email : webmaster at tuxlog.de)
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
+/*
+ verwendet cs_stats.js für die ajaxeffekte 
+ */
+
 // if called directly, get parameters from GET and output the forecast html
-if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { 
-    // direktaufruf für Stats1
-    require_once( dirname(__FILE__) . '/../../../wp-config.php');
-    include("globals.php");
-    global $wpdb,$userdata;
-    
-    $newday   = (isset($_GET['newday'])?esc_attr($_GET['newday']):"");
-    $username = (isset($_GET['username'])?esc_attr($_GET['username']):"");
-    $args=array();
-    $out = "";
+if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
+	// direktaufruf für Stats1
+	require_once( dirname(__FILE__) . '/../../../wp-config.php');
+	include("globals.php");
+	global $wpdb,$userdata;
 
-    // set cahracter set in case of wrong collation in cs tables
-    $sql0="SET CHARACTER SET $wpdb->charset;";
-    $r0= $wpdb->query($sql0);
-	
-    if (isset($newday) and $newday !="") {
-	// Stats 1
-	if (get_option("cs_modus")==1)
-	    $sql1 = "SELECT b.user_nicename, sum(e.points) as punkte from $cs_users a inner join $wp_users b on a.userid = b.ID left outer join ( select c.* from $cs_tipp c inner join $cs_match d on c.mid = d.mid where date(d.matchtime) = '$newday' and c.points>0 ) e on e.userid = a.userid group by b.user_nicename order by sum(e.points) desc";
-	else
-	    $sql1 = "SELECT b.user_nicename, sum(e.points) as punkte from $cs_users a inner join $wp_users b on a.userid = b.ID left outer join ( select c.* from $cs_tipp c inner join $cs_match d on c.mid = d.mid where spieltag = '$newday' and c.points>0 ) e on e.userid = a.userid group by b.user_nicename order by sum(e.points) desc" ; 
-	$r1= $wpdb->get_results($sql1);
-	
-	$out .= "<p>&nbsp;</p>";
-	$out .= "<table border='1' ><tr><th>" . __("Spieler","wpcs") . "</th><th>" . __("Punkte","wpcs") . "</th></tr>\n";
-	
-	foreach ($r1 as $r) 
-	    $out .= "<tr><td>" . $r->user_nicename . "</td><td align='right'>" . ($r->punkte== NULL?0:$r->punkte) . "</td></tr>\n";
-	
-	$out .= "</table>\n";
+	$newday   = (isset($_GET['newday'])?esc_attr($_GET['newday']):"");
+	$newday5  = (isset($_GET['newday5'])?esc_attr($_GET['newday5']):"");
+	$username = (isset($_GET['username'])?esc_attr($_GET['username']):"");
+	$args=array();
+	$out = "";
 
-    } else {
-	// Stats 4
-	if (get_option("cs_modus")==1)
-	    $sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round in ('V','F') and result1>-1 and result2>-1 order by origtime;";
-	else
-	    $sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round = 'V' and result1>-1 and result2>-1 order by spieltag,origtime;"; 
-	$r1 = $wpdb->get_results($sql);
-	
-	// hole tipps des users
-	$sql="select mid,result1,result2 from  $cs_tipp inner join $wp_users on ID=userid where user_nicename='".$username."' order by mid";
-	$r2 = $wpdb->get_results($sql);
+	// set character set in case of wrong collation in cs tables
+	$sql0="SET CHARACTER SET $wpdb->charset;";
+	$r0= $wpdb->query($sql0);
 
-	$tipps=array();
-	foreach($r2 as $r)
-	    $tipps[$r->mid] = $r;
+	if (isset($newday) and $newday !="") {
+		// Stats 1
 
-	$out .= "<p>&nbsp;</p>";
-	$out .= "<table border='1' ><tr><th>" . __("Begegnung","wpcs") . "</th><th>" . __("Ergebnis","wpcs") . "</th><th>" . __("Tipp","wpcs") . "</th></tr>";
-	
-	foreach ($r1 as $r) {
-	    $out .= "<tr><td>" . $r->team1 . " - " . $r->team2 . "</td><td align='center'>" . $r->result1 . ":".$r->result2 . "</td>\n";
-	    $tr1 =  ($tipps[$r->mid]->result1==-1?"-":$tipps[$r->mid]->result1);
-	    $tr2 =  ($tipps[$r->mid]->result2==-1?"-":$tipps[$r->mid]->result2);
+		$stats1_tippgroup   = (isset($_GET['tippgroup'])?esc_attr($_GET['tippgroup']):"");
+		if ($stats1_tippgroup !="")
+		$tippgroup_sql=" where a.tippgroup='$stats1_tippgroup' ";
+			
+		if (get_option("cs_modus")==1)
+		$sql1 = "SELECT b.user_nicename, sum(e.points) as punkte from $cs_users a inner join $wp_users b on a.userid = b.ID left outer join ( select c.* from $cs_tipp c inner join $cs_match d on c.mid = d.mid where date(d.matchtime) = '$newday' and c.points>0 ) e on e.userid = a.userid $tippgroup_sql by b.user_nicename order by sum(e.points) desc";
+		else
+		$sql1 = "SELECT b.user_nicename, sum(e.points) as punkte from $cs_users a inner join $wp_users b on a.userid = b.ID left outer join ( select c.* from $cs_tipp c inner join $cs_match d on c.mid = d.mid where spieltag = '$newday' and c.points>0 ) e on e.userid = a.userid $tippgroup_sql group by b.user_nicename order by sum(e.points) desc" ;
+		$r1= $wpdb->get_results($sql1);
 
-	    $out .= "<td align='center'>" . $tr1 . ":" . $tr2 . "</td></tr>\n";
+		$out .= "<p>&nbsp;</p>";
+		$out .= "<table border='1' ><tr><th>" . __("Spieler","wpcs") . "</th><th>" . __("Punkte","wpcs") . "</th></tr>\n";
+
+		foreach ($r1 as $r)
+		$out .= "<tr><td>" . $r->user_nicename . "</td><td align='right'>" . ($r->punkte== NULL?0:$r->punkte) . "</td></tr>\n";
+
+		$out .= "</table>\n";
+	} else if (isset($newday5) and $newday5 !="") {
+		// Stats 5
+		
+		
+		// get data for header
+		if (get_option("cs_modus")==1)
+		$sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.shortname as shortname1,b.icon as icon1, c.name as team2,c.shortname as shortname2, c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round in ('V','F') and result1>-2 and result2>-2 and origtime=$newday5 order by origtime,mid;";
+		else
+		$sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.shortname as shortname1, b.icon as icon1, c.name as team2,c.shortname as shortname2, c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round = 'V' and result1>-2 and result2>-2 and spieltag=$newday5 order by spieltag,origtime,mid;";
+		$r1 = $wpdb->get_results($sql);
+
+		$out .= "<p>&nbsp;</p>";
+		$out .= "<table border='1' ><tr><th>" . __("Benutzername","wpcs") . "</th>";
+		foreach($r1 as $r) {
+			$short_team1 = (strlen(trim($r->shortname1))>0?$r->shortname1:substr($r->team1,0,3));
+			$short_team2 = (strlen(trim($r->shortname2))>0?$r->shortname2:substr($r->team2,0,3));
+
+			$out .= "<th>" . $short_team1 . "<br />" . ($r->result1==-1?"-":$r->result1) . ":" . ($r->result2==-1?"-":$r->result2) . "<br/>" . $short_team2 . "</th>";
+		}
+		$out .="<th>&empty;</th><th>".__("Punkte","wpcs")."</th>";
+		$out .="</tr>";
+
+		$stats5_tippgroup   = (isset($_GET['tippgroup'])?esc_attr($_GET['tippgroup']):"");
+		if ($stats5_tippgroup !="")
+			$tippgroup_sql=" where tippgroup='$stats5_tippgroup' ";
+		
+		// get data for table
+		$sql="select user_nicename, userid from $wp_users inner join $cs_users on ID=userid $tippgroup_sql order by user_nicename;";
+		$r2 = $wpdb->get_results($sql);
+
+		foreach($r2 as $r) {
+			// fetch results per day and user
+			if (get_option("cs_modus")==1)
+			$sql="select a.result1 as res1, a.result2 as res2, a.points as points, b.matchtime as origtime from $cs_match b left outer join $cs_tipp a on a.mid=b.mid and a.userid=$r->userid where origtime=$newday5 and b.result1>-1 and b.result2>-1 and b.round in ('V','F') order by origtime;";
+			else
+			$sql="select a.result1 as res1, a.result2 as res2, a.points as points, b.matchtime as origtime from $cs_match b left outer join $cs_tipp a on a.mid=b.mid and a.userid=$r->userid where spieltag=$newday5  and b.result1>-1 and b.result2>-1 and b.round ='V' order by spieltag,origtime;";
+
+			$r3 = $wpdb->get_results($sql);
+			if ($r3) {
+
+				$out .= "<tr><td>" . $r->user_nicename . "</td>";
+				$anz = 0;
+				$sum = 0;
+				foreach ($r3 as $s) {
+					if ( $s->res1 ==-1 or $s->res1 === NULL )
+					$out .= "<td>-:-<sub>-</sub></td>";
+					else {
+						$out .= "<td>" . $s->res1 . ":" . $s->res2 . "<sub>" . $s->points . "</sub></td>";
+						$sum += $s->points;
+						$anz += 1;
+					}
+				}
+				if ($anz > 0)
+				$out .= "<td>" . round($sum/$anz,2) . "</td>";
+				else
+				$out .= "<td>-</td>";
+				$out .= "<td>$sum</td>";
+				$out .= "</tr>";
+			}
+		}
+		$out .="</table>";
+	} else {
+		// Stats 4
+		$stats4_tippgroup   = (isset($_GET['wpc_stats4_tippgroup'])?esc_attr($_GET['wpc_stats4_tippgroup']):"");
+		if ($stats4_tippgroup !="")
+			$tippgroup_sql=" where tippgroup='$stats4_tippgroup' ";
+			
+		if (get_option("cs_modus")==1)
+		$sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round in ('V','F') and result1>-1 and result2>-1 order by origtime;";
+		else
+		$sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round = 'V' and result1>-1 and result2>-1 order by spieltag,origtime;";
+		$r1 = $wpdb->get_results($sql);
+
+		// hole tipps des users
+		if ( $username != "?") {
+			$sql="select mid,result1,result2 from  $cs_tipp inner join $wp_users on ID=userid where user_nicename='".$username."' order by mid";
+		} else {
+			$sql="select mid,result1,result2 from  $cs_tipp inner join $wp_users on ID=userid $tipgroup_sql order by mid";
+		}
+		$r2 = $wpdb->get_results($sql);
+
+		$tipps=array();
+		foreach($r2 as $r)
+		$tipps[$r->mid] = $r;
+
+		$out .= "<p>&nbsp;</p>";
+		$out .= "<table border='1' ><tr><th>" . __("Begegnung","wpcs") . "</th><th>" . __("Ergebnis","wpcs") . "</th><th>" . __("Tipp","wpcs") . "</th></tr>";
+
+		foreach ($r1 as $r) {
+			$out .= "<tr><td>" . $r->team1 . " - " . $r->team2 . "</td><td align='center'>" . $r->result1 . ":".$r->result2 . "</td>\n";
+			$tr1 =  ($tipps[$r->mid]->result1==-1?"-":$tipps[$r->mid]->result1);
+			$tr2 =  ($tipps[$r->mid]->result2==-1?"-":$tipps[$r->mid]->result2);
+
+			$out .= "<td align='center'>" . $tr1 . ":" . $tr2 . "</td></tr>\n";
+		}
+
+		$out .= "</table>\n";
+
 	}
-	
-	$out .= "</table>\n";
-
-    }
-    echo $out;
-}  
+	echo $out;
+}
 
 
-// apply the filter to the page or post content
-function searchcsstats($content) {
-
-  // look for wp-greet tag
-  if ( strpos( $content, '[cs-stats1]' ) > -1) {
-      // replace tag with html form
-      $search = '[cs-stats1]';
-      $replace= show_Stats1(); 
-      $content= str_replace ($search, $replace, $content);
-  }
-
-  // look for wp-greet tag
-  if ( strpos( $content, '[cs-stats2]' ) > -1) {
-      // replace tag with html form
-      $search = '[cs-stats2]';
-      $replace= show_Stats2(); 
-      $content= str_replace ($search, $replace, $content);
-  }
-
-  // look for wp-greet tag
-  if ( strpos( $content, '[cs-stats3]' ) > -1) {
-      // replace tag with html form
-      $search = '[cs-stats3]';
-      $replace= show_Stats3(); 
-      $content= str_replace ($search, $replace, $content);
-  }
-
-  // look for wp-greet tag
-  if ( strpos( $content, '[cs-stats4]' ) > -1) {
-      // replace tag with html form
-      $search = '[cs-stats4]';
-      $replace= show_Stats4(); 
-      $content= str_replace ($search, $replace, $content);
-  }
-
-  return $content;
-
-  }
 
 // -----------------------------------------------------------------------------------
 // Funktion zur Ausgabe der Statistik 1 Punkte jedes Spielers pro Spieltag
 // -----------------------------------------------------------------------------------
-function show_Stats1()
+function show_Stats1($atts)
 {
-  include("globals.php");
-  global $wpdb,$userdata;
-  
-  // initialisiere ausgabe variable
-  $out = "";
-  
-  // pruefe ob anwender angemeldet ist, wenn nicht gebe hinweis aus
-  // und beende die funktion
-  if ( !is_user_logged_in()){
-    $out .= __("Sie sind nicht angemeldet.","wpcs")."<br />";
-    $out .= __("Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website","wpcs")."<br />";
-    return $out;
-  }
-  
-  // for debugging
-  //$wpdb->show_errors(true);
+	include("globals.php");
+	global $wpdb,$userdata;
 
-  // lese anwenderdaten ein
-  get_currentuserinfo();
-  // merke die userid 
-  $uid = $userdata->ID;
-  
-  // userdaten lesen
-  $sql0="select * from $cs_users where userid=$uid";
-  $r0= $wpdb->get_results($sql0);
- 
-  // admin flag setzen
-  $is_admin=false;
-  if ( $r0[0]->admin == 1 ) 
-      $is_admin=true;
-  
-  // ermittle aktuelle uhrzeit
-  $currtime=date("Y-m-d H:i:s");
+	// initialisiere ausgabe variable
+	$out = "";
 
-  $out .= "<h2>" . __("Spieltagstatistik","wpcs") . "</h2>";
-$out .=<<<EOT
-<script type='text/javascript'>    
-    /*
-      javascript for ajax like request to update the stats
-      and corresponding data on the fly
-    */
+	// pruefe ob anwender angemeldet ist, wenn nicht gebe hinweis aus
+	// und beende die funktion
+	if ( !is_user_logged_in()){
+		$out .= __("Sie sind nicht angemeldet.","wpcs")."<br />";
+		$out .= __("Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website","wpcs")."<br />";
+		return $out;
+	}
 
-    /* get the data for the new location */
-    function wpc_stats1_update() {
-    
-    var newday  = document.getElementById("wpc_stats1_selector").value;
-    var siteuri = document.getElementById("wpc_selector_site").value; 
-    
-    jQuery.get(siteuri + "/cs_stats.php", 
-	       { newday: newday, header: "0" , selector: "1" },
-	       function(data){
-		   jQuery("div#wpc-stats1-res").html(data);
-	       });
-   }
+	// parameter holen dabei übersteuert tippgruppe, tippgroup
+	$tippgroup = $atts['tippgroup'];
+	$tippgroup = $atts['tippgruppe'];
 
-/* javascript to rebuild the onLoad event for triggering 
-   the first wpc_update call */
+	// for debugging
+	//$wpdb->show_errors(true);
 
-//create onDomReady Event
-window.onDomReady = initReady;
+	// lese anwenderdaten ein
+	get_currentuserinfo();
+	// merke die userid
+	$uid = $userdata->ID;
 
-// Initialize event depending on browser
-function initReady(fn)
-{
-    //W3C-compliant browser
-    if(document.addEventListener) {
-	document.addEventListener("DOMContentLoaded", fn, false);
-    }
-    //IE
-    else {
-	document.onreadystatechange = function(){readyState(fn)}
-    }
-      }
+	// userdaten lesen
+	$sql0="select * from $cs_users where userid=$uid";
+	$r0= $wpdb->get_results($sql0);
 
-//IE execute function
-function readyState(func)
-{
-    // DOM is ready
-      	if(document.readyState == "interactive" || document.readyState == "complete")
-      	{
-	    func();
-      	}
-}
-</script>
-EOT;
+	// admin flag setzen
+	$is_admin=false;
+	if ( $r0[0]->admin == 1 )
+	$is_admin=true;
 
-  $out .= "<div class='wpc-stats1-sel'><form action=''>" . __("Spieltag","wpcs").":";
-  $out .= "<select id='wpc_stats1_selector' size='1' onchange='wpc_stats1_update();' >";
- if (get_option("cs_modus")==1)
-     $sql1 = "SELECT date( matchtime ) as sday FROM $cs_match GROUP BY date( matchtime );";
- else
-     $sql1 = "SELECT spieltag as sday FROM $cs_match where spieltag > 0 GROUP BY spieltag;";
+	// ermittle aktuelle uhrzeit
+	$currtime=date("Y-m-d H:i:s");
 
-  $r1= $wpdb->get_results($sql1);
+	$out .= "<h2>" . __("Spieltagstatistik","wpcs") . "</h2>";
 
-  foreach ($r1 as $r) 
-      $out .= "<option value='" . $r->sday. "'>" . $r->sday . "</option>"; 
+	$out .= "<div class='wpc-stats1-sel'><form action=''>" . __("Spieltag","wpcs").":";
+	$out .= "<input id='wpc_stats1_tippgroup' type='hidden' value='$tippgroup' />";
+	$out .= "<select id='wpc_stats1_selector' size='1' onchange='wpc_stats1_update();' >";
+	if (get_option("cs_modus")==1)
+	$sql1 = "SELECT date( matchtime ) as sday FROM $cs_match GROUP BY date( matchtime );";
+	else
+	$sql1 = "SELECT spieltag as sday FROM $cs_match where spieltag > 0 GROUP BY spieltag;";
 
-  $out .= "</select>";
-  $out .= "<input id='wpc_selector_site' type='hidden' value='" . site_url("/wp-content/plugins/wp-championship")."' />";
-  $out .= "</form>";
-  $out .= "<script type='text/javascript'>window.onDomReady(wpc_stats1_update);</script>";
-  $out .= "</div>";
-  $out .= "<div id='wpc-stats1-res'></div>";
+	$r1= $wpdb->get_results($sql1);
 
-  return $out;
+	foreach ($r1 as $r)
+	$out .= "<option value='" . $r->sday. "'>" . $r->sday . "</option>";
+
+	$out .= "</select>";
+	$out .= "<input id='wpc_selector_site' type='hidden' value='" . site_url("/wp-content/plugins/wp-championship")."' />";
+	$out .= "</form>";
+	$out .= "<script type='text/javascript'>window.onDomReady(wpc_stats1_update);</script>";
+	$out .= "</div>";
+	$out .= "<div id='wpc-stats1-res'></div>";
+
+	return $out;
 }
 
 // -----------------------------------------------------------------------------------
 // Funktion zur Ausgabe der Statistik 2 Verteilung der Tipps üver alle User
 // -----------------------------------------------------------------------------------
-function show_Stats2()
+function show_Stats2($atts)
 {
-    include("globals.php");
-    global $wpdb,$userdata;
-    
-    // initialisiere ausgabe variable
-    $out = "";
-    
-    // pruefe ob anwender angemeldet ist, wenn nicht gebe hinweis aus
-    // und beende die funktion
-    if ( !is_user_logged_in()){
-	$out .= __("Sie sind nicht angemeldet.","wpcs")."<br />";
-	$out .= __("Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website","wpcs")."<br />";
-	return $out;
-    }
-    
-    // for debugging
-    //$wpdb->show_errors(true);
-    
-    // lese anwenderdaten ein
-    get_currentuserinfo();
-    // merke die userid 
-    $uid = $userdata->ID;
-    
-    // userdaten lesen
-    $sql0="select * from $cs_users where userid=$uid";
-    $r0= $wpdb->get_results($sql0);
-    
-    // admin flag setzen
-    $is_admin=false;
-    if ( $r0[0]->admin == 1 ) 
+	include("globals.php");
+	global $wpdb,$userdata;
+
+	// initialisiere ausgabe variable
+	$out = "";
+
+	// pruefe ob anwender angemeldet ist, wenn nicht gebe hinweis aus
+	// und beende die funktion
+	if ( !is_user_logged_in()){
+		$out .= __("Sie sind nicht angemeldet.","wpcs")."<br />";
+		$out .= __("Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website","wpcs")."<br />";
+		return $out;
+	}
+
+	// parameter holen dabei übersteuert tippgruppe, tippgroup
+	$tippgroup = $atts['tippgroup'];
+	$tippgroup = $atts['tippgruppe'];
+
+	// for debugging
+	//$wpdb->show_errors(true);
+
+	// lese anwenderdaten ein
+	get_currentuserinfo();
+	// merke die userid
+	$uid = $userdata->ID;
+
+	// userdaten lesen
+	$sql0="select * from $cs_users where userid=$uid";
+	$r0= $wpdb->get_results($sql0);
+
+	// admin flag setzen
+	$is_admin=false;
+	if ( $r0[0]->admin == 1 )
 	$is_admin=true;
-    
-    // ermittle aktuelle uhrzeit
-    $currtime=date("Y-m-d H:i:s");
-  
-    $sql1 =<<<EOS
+
+	// ermittle aktuelle uhrzeit
+	$currtime=date("Y-m-d H:i:s");
+
+	if ($tippgroup !="")
+	$sql1 =<<<EOS
+	SELECT 
+	IF(result1>result2,concat(cast(result1 as char), cast(result2 as char)), 
+	   concat(cast(result2 as char), cast(result1 as char))) as tip, count(*) as anzahl
+	FROM $cs_tipp a inner join $cs_users b on a.userid=b.userid 
+	WHERE result1>=0 and result2>=0 and tippgroup='$tippgroup'  
+	group by IF(result1>result2,concat(cast(result1 as char), 
+	      cast(result2 as char)), concat(cast(result2 as char), cast(result1 as char)))
+EOS;
+	else
+	$sql1 =<<<EOS
 	SELECT 
 	IF(result1>result2,concat(cast(result1 as char), cast(result2 as char)), 
 	   concat(cast(result2 as char), cast(result1 as char))) as tip, count(*) as anzahl
@@ -282,63 +292,80 @@ function show_Stats2()
 	group by IF(result1>result2,concat(cast(result1 as char), 
 	      cast(result2 as char)), concat(cast(result2 as char), cast(result1 as char)))
 EOS;
-    $r1= $wpdb->get_results($sql1);
-    
-    $urlparm="?";
-    // anzahl aller tipps ermitteln
-    foreach($r1 as $r)
+
+	$r1= $wpdb->get_results($sql1);
+
+	$urlparm="?";
+	// anzahl aller tipps ermitteln
+	foreach($r1 as $r)
 	$tanz = $tanz + $r->anzahl;
 
-    foreach($r1 as $r) 
+	foreach($r1 as $r)
 	$urlparm .= $r->tip . "=" . round($r->anzahl / $tanz,2)*100 . "&";
 
-    $out .= "<h2>".__('Tipphäufigkeit','wpcs')."</h2>";
-    $out .= "<p>&nbsp;</p>";
-    $out .= "<img src='" . site_url("wp-content/plugins/wp-championship/") . "func_pie.php" . $urlparm . "' alt='Piechart'/>";
+	$out .= "<h2>".__('Tipphäufigkeit','wpcs')."</h2>";
+	$out .= "<p>&nbsp;</p>";
+	$out .= "<img src='" . site_url("wp-content/plugins/wp-championship/") . "func_pie.php" . $urlparm . "' alt='Piechart'/>";
 
-    return $out;
+	return $out;
 }
 
 // -----------------------------------------------------------------------------------
 // Funktion zur Ausgabe der Statistik 3 Verteilung der Tipps pro Spieler
 // -----------------------------------------------------------------------------------
-function show_Stats3()
+function show_Stats3($atts)
 {
-    include("globals.php");
-    global $wpdb,$userdata;
-    
-    // initialisiere ausgabe variable
-    $out = "";
-    
-    // pruefe ob anwender angemeldet ist, wenn nicht gebe hinweis aus
-    // und beende die funktion
-    if ( !is_user_logged_in()){
-	$out .= __("Sie sind nicht angemeldet.","wpcs")."<br />";
-	$out .= __("Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website","wpcs")."<br />";
-	return $out;
-    }
-    
-    // for debugging
-    //$wpdb->show_errors(true);
-    
-    // lese anwenderdaten ein
-    get_currentuserinfo();
-    // merke die userid 
-    $uid = $userdata->ID;
-    
-    // userdaten lesen
-    $sql0="select * from $cs_users where userid=$uid";
-    $r0= $wpdb->get_results($sql0);
-    
-    // admin flag setzen
-    $is_admin=false;
-    if ( $r0[0]->admin == 1 ) 
+	include("globals.php");
+	global $wpdb,$userdata;
+
+	// initialisiere ausgabe variable
+	$out = "";
+
+	// pruefe ob anwender angemeldet ist, wenn nicht gebe hinweis aus
+	// und beende die funktion
+	if ( !is_user_logged_in()){
+		$out .= __("Sie sind nicht angemeldet.","wpcs")."<br />";
+		$out .= __("Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website","wpcs")."<br />";
+		return $out;
+	}
+
+	// parameter holen dabei übersteuert tippgruppe, tippgroup
+	$tippgroup = $atts['tippgroup'];
+	$tippgroup = $atts['tippgruppe'];
+
+	// for debugging
+	//$wpdb->show_errors(true);
+
+	// lese anwenderdaten ein
+	get_currentuserinfo();
+	// merke die userid
+	$uid = $userdata->ID;
+
+	// userdaten lesen
+	$sql0="select * from $cs_users where userid=$uid";
+	$r0= $wpdb->get_results($sql0);
+
+	// admin flag setzen
+	$is_admin=false;
+	if ( $r0[0]->admin == 1 )
 	$is_admin=true;
-    
-    // ermittle aktuelle uhrzeit
-    $currtime=date("Y-m-d H:i:s");
-  
-    $sql1 =<<<EOS
+
+	// ermittle aktuelle uhrzeit
+	$currtime=date("Y-m-d H:i:s");
+
+	if ($tippgroup!="")
+	$sql1 =<<<EOS
+	SELECT user_nicename,
+	IF(result1>result2,concat(cast(result1 as char), cast(result2 as char)), 
+	   concat(cast(result2 as char), cast(result1 as char))) as tip, count(*) as anzahl
+	FROM $cs_tipp a inner join $wp_users b on b.ID=a.userid
+	inner join $cs_users c on a.userid = c.userid
+	WHERE result1>=0 and result2>=0 and c.tippgroup='$tippgroup'
+	group by a.userid, IF(result1>result2,concat(cast(result1 as char), 
+	      cast(result2 as char)), concat(cast(result2 as char), cast(result1 as char)))
+EOS;
+	else
+	$sql1 =<<<EOS
 	SELECT user_nicename,
 	IF(result1>result2,concat(cast(result1 as char), cast(result2 as char)), 
 	   concat(cast(result2 as char), cast(result1 as char))) as tip, count(*) as anzahl
@@ -349,160 +376,190 @@ function show_Stats3()
 	group by userid, IF(result1>result2,concat(cast(result1 as char), 
 	      cast(result2 as char)), concat(cast(result2 as char), cast(result1 as char)))
 EOS;
-    $r1= $wpdb->get_results($sql1);
-    
-    $out .= "<h2>".__('Tipphäufigkeit im Detail','wpcs')."</h2>";
-    $out .= "<p>&nbsp;</p>";
 
-    $out .= "<table border='1' ><tr><th>" . __("Spieler","wpcs") . "</th>\n";
-    
-    // matrix aufbauen
-    $sm = array();
-    foreach ($r1 as $r) {
-	$erg = $r->tip[0] . ":" . $r->tip[1];
-	$sm[$r->user_nicename][$erg] = $r->anzahl;
-    }
+	$r1= $wpdb->get_results($sql1);
 
-    // erzeuge liste der vorkommenden ergebnisse
-    $sm1 = array();
-    foreach(array_keys($sm) as $uk) {
-	foreach(array_keys($sm[$uk]) as $ek) {
-	    array_push($sm1,$ek);
+	$out .= "<h2>".__('Tipphäufigkeit im Detail','wpcs')."</h2>";
+	$out .= "<p>&nbsp;</p>";
+
+	$out .= "<table border='1' ><tr><th>" . __("Spieler","wpcs") . "</th>\n";
+
+	// matrix aufbauen
+	$sm = array();
+	foreach ($r1 as $r) {
+		$erg = $r->tip[0] . ":" . $r->tip[1];
+		$sm[$r->user_nicename][$erg] = $r->anzahl;
 	}
-    }
-    $sm1 = array_unique($sm1);
-    asort($sm1);
-    
-    foreach($sm1 as $ek) 
+
+	// erzeuge liste der vorkommenden ergebnisse
+	$sm1 = array();
+	foreach(array_keys($sm) as $uk) {
+		foreach(array_keys($sm[$uk]) as $ek) {
+			array_push($sm1,$ek);
+		}
+	}
+	$sm1 = array_unique($sm1);
+	asort($sm1);
+
+	foreach($sm1 as $ek)
 	$out .= "<th style='padding:5px;text-align:center;'>" . $ek ."</th>";
-    $out .="</tr>";
+	$out .="</tr>";
 
-    $olduser="";
-    foreach ($sm as $uname => $r) {
-	if ($olduser != $uname) {
-	    if ($olduser !="") $out .= "</tr>\n";
-	    $out .= "<tr><td>" . $uname . "</td>";
+	$olduser="";
+	foreach ($sm as $uname => $r) {
+		if ($olduser != $uname) {
+			if ($olduser !="") $out .= "</tr>\n";
+			$out .= "<tr><td>" . $uname . "</td>";
+		}
+		foreach($sm1 as $erg) {
+			if (isset($r[$erg]) and $r[$erg]>0)
+			$out .= "<td align='right'>" . $r[$erg] . "</td>\n";
+			else
+			$out .= "<td align='right'>-</td>\n";
+		}
+		$olduser = $uname;
 	}
-	foreach($sm1 as $erg) {
-	    if (isset($r[$erg]) and $r[$erg]>0)
-		$out .= "<td align='right'>" . $r[$erg] . "</td>\n";
-	    else
-		$out .= "<td align='right'>-</td>\n";
-	}
-	$olduser = $uname;
-    }
-    $out .= "</tr></table>\n";
-    
-    return $out;
+	$out .= "</tr></table>\n";
+
+	return $out;
 }
 
 // -----------------------------------------------------------------------------------
 // Funktion zur Ausgabe der Statistik 4 Tipps eines ausgewählten Spielers
 // -----------------------------------------------------------------------------------
-function show_Stats4()
+function show_Stats4($atts)
 {
-  include("globals.php");
-  global $wpdb,$userdata;
-  
-  // initialisiere ausgabe variable
-  $out = "";
-  
-  // pruefe ob anwender angemeldet ist, wenn nicht gebe hinweis aus
-  // und beende die funktion
-  if ( !is_user_logged_in()){
-    $out .= __("Sie sind nicht angemeldet.","wpcs")."<br />";
-    $out .= __("Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website","wpcs")."<br />";
-    return $out;
-  }
-  
-  // for debugging
-  //$wpdb->show_errors(true);
+	include("globals.php");
+	global $wpdb,$userdata;
 
-  // lese anwenderdaten ein
-  get_currentuserinfo();
-  // merke die userid 
-  $uid = $userdata->ID;
-  
-  // userdaten lesen
-  $sql0="select * from $cs_users where userid=$uid";
-  $r0= $wpdb->get_results($sql0);
- 
-  // admin flag setzen
-  $is_admin=false;
-  if ( $r0[0]->admin == 1 ) 
-      $is_admin=true;
-  
-  // ermittle aktuelle uhrzeit
-  $currtime=date("Y-m-d H:i:s");
+	// initialisiere ausgabe variable
+	$out = "";
 
-  $out .= "<h2>" . __("Spielertipps","wpcs") . "</h2>";
-$out .=<<<EOT
-<script type='text/javascript'>    
-    /*
-      javascript for ajax like request to update the stats
-      and corresponding data on the fly
-    */
+	// pruefe ob anwender angemeldet ist, wenn nicht gebe hinweis aus
+	// und beende die funktion
+	if ( !is_user_logged_in()){
+		$out .= __("Sie sind nicht angemeldet.","wpcs")."<br />";
+		$out .= __("Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website","wpcs")."<br />";
+		return $out;
+	}
 
-    /* get the data for the new location */
-    function wpc_stats4_update() {
-    
-    var username  = document.getElementById("wpc_stats4_selector").value;
-    var siteuri = document.getElementById("wpc_selector_site4").value; 
-    
-    jQuery.get(siteuri + "/cs_stats.php", 
-	       { username: username, header: "0" , selector: "1" },
-	       function(data){
-		   jQuery("div#wpc-stats4-res").html(data);
-	       });
-   }
+	// parameter holen dabei übersteuert tippgruppe, tippgroup
+	$tippgroup = $atts['tippgroup'];
+	$tippgroup = $atts['tippgruppe'];
 
-/* javascript to rebuild the onLoad event for triggering 
-   the first wpc_update call */
+	// for debugging
+	//$wpdb->show_errors(true);
 
-//create onDomReady Event
-window.onDomReady = initReady;
+	// lese anwenderdaten ein
+	get_currentuserinfo();
+	// merke die userid
+	$uid = $userdata->ID;
 
-// Initialize event depending on browser
-function initReady(fn)
-{
-    //W3C-compliant browser
-    if(document.addEventListener) {
-	document.addEventListener("DOMContentLoaded", fn, false);
-    }
-    //IE
-    else {
-	document.onreadystatechange = function(){readyState(fn)}
-    }
-      }
+	// userdaten lesen
+	$sql0="select * from $cs_users where userid=$uid";
+	$r0= $wpdb->get_results($sql0);
 
-//IE execute function
-function readyState(func)
-{
-    // DOM is ready
-      	if(document.readyState == "interactive" || document.readyState == "complete")
-      	{
-	    func();
-      	}
+	// admin flag setzen
+	$is_admin=false;
+	if ( $r0[0]->admin == 1 )
+	$is_admin=true;
+
+	// ermittle aktuelle uhrzeit
+	$currtime=date("Y-m-d H:i:s");
+
+	$out .= "<h2>" . __("Spielertipps","wpcs") . "</h2>";
+
+	$out .= "<div class='wpc-stats4-sel'><form action=''>" . __("Spieler","wpcs").":";
+	$out .= "<input id='wpc_stats4_tippgroup' type='hidden' value='$tippgroup' />";
+	$out .= "<select id='wpc_stats4_selector' size='1' onchange='wpc_stats4_update();' >";
+	if ($tippgroup !="")
+	$sql1 = "SELECT user_nicename FROM $cs_users inner join $wp_users on ID=userid where tippgroup = '$tippgroup' order by user_nicename;";
+	else
+	$sql1 = "SELECT user_nicename FROM $cs_users inner join $wp_users on ID=userid order by user_nicename;";
+	$r1= $wpdb->get_results($sql1);
+
+	$out .= "<option value='?'>" . __("All","wpcs") . "</option>";
+	foreach ($r1 as $r)
+	$out .= "<option value='" . $r->user_nicename. "'>" . $r->user_nicename . "</option>";
+
+	$out .= "</select>";
+	$out .= "<input id='wpc_selector_site4' type='hidden' value='" . site_url("/wp-content/plugins/wp-championship")."' />";
+	$out .= "</form>";
+	$out .= "<script type='text/javascript'>window.onDomReady(wpc_stats4_update);</script>";
+	$out .= "</div>";
+	$out .= "<div id='wpc-stats4-res'></div>";
+
+	return $out;
 }
-</script>
-EOT;
 
-  $out .= "<div class='wpc-stats4-sel'><form action=''>" . __("Spieler","wpcs").":";
-  $out .= "<select id='wpc_stats4_selector' size='1' onchange='wpc_stats4_update();' >";
-  $sql1 = "SELECT user_nicename FROM $cs_users inner join $wp_users on ID=userid order by user_nicename;";
-  $r1= $wpdb->get_results($sql1);
 
-  foreach ($r1 as $r) 
-      $out .= "<option value='" . $r->user_nicename. "'>" . $r->user_nicename . "</option>"; 
+// -----------------------------------------------------------------------------------
+// Funktion zur Ausgabe der Statistik 5 Spieltagsübersicht
+// -----------------------------------------------------------------------------------
+function show_Stats5($atts)
+{
+	include("globals.php");
+	global $wpdb,$userdata;
 
-  $out .= "</select>";
-  $out .= "<input id='wpc_selector_site4' type='hidden' value='" . site_url("/wp-content/plugins/wp-championship")."' />";
-  $out .= "</form>";
-  $out .= "<script type='text/javascript'>window.onDomReady(wpc_stats4_update);</script>";
-  $out .= "</div>";
-  $out .= "<div id='wpc-stats4-res'></div>";
+	// initialisiere ausgabe variable
+	$out = "";
 
-  return $out;
+	// pruefe ob anwender angemeldet ist, wenn nicht gebe hinweis aus
+	// und beende die funktion
+	if ( !is_user_logged_in()){
+		$out .= __("Sie sind nicht angemeldet.","wpcs")."<br />";
+		$out .= __("Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website","wpcs")."<br />";
+		return $out;
+	}
+
+	// parameter holen dabei übersteuert tippgruppe, tippgroup
+	$tippgroup = $atts['tippgroup'];
+	$tippgroup = $atts['tippgruppe'];
+
+	// for debugging
+	//$wpdb->show_errors(true);
+
+	// lese anwenderdaten ein
+	get_currentuserinfo();
+	// merke die userid
+	$uid = $userdata->ID;
+
+	// userdaten lesen
+	$sql0="select * from $cs_users where userid=$uid";
+	$r0= $wpdb->get_results($sql0);
+
+	// admin flag setzen
+	$is_admin=false;
+	if ( $r0[0]->admin == 1 )
+	$is_admin=true;
+
+	// ermittle aktuelle uhrzeit
+	$currtime=date("Y-m-d H:i:s");
+
+	$out .= "<h2>" . __("Spieltagsübersicht","wpcs") . "</h2>";
+
+
+	$out .= "<div class='wpc-stats5-sel'><form action=''>" . __("Spieltag","wpcs").":";
+	$out .= "<input id='wpc_stats5_tippgroup' type='hidden' value='$tippgroup' />";
+	$out .= "<select id='wpc_stats5_selector' size='1' onchange='wpc_stats5_update();' >";
+	if (get_option("cs_modus")==1)
+	$sql1 = "SELECT date( matchtime ) as sday FROM $cs_match GROUP BY date( matchtime );";
+	else
+	$sql1 = "SELECT spieltag as sday FROM $cs_match where spieltag > 0 GROUP BY spieltag;";
+
+	$r1= $wpdb->get_results($sql1);
+
+	foreach ($r1 as $r)
+	$out .= "<option value='" . $r->sday. "'>" . $r->sday . "</option>";
+
+	$out .= "</select>";
+	$out .= "<input id='wpc_selector_site' type='hidden' value='" . site_url("/wp-content/plugins/wp-championship")."' />";
+	$out .= "</form>";
+	$out .= "<script type='text/javascript'>window.onDomReady(wpc_stats5_update);</script>";
+	$out .= "</div>";
+	$out .= "<div id='wpc-stats5-res'></div>";
+
+	return $out;
 }
 
 ?>

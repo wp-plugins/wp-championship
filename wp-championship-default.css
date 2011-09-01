@@ -135,3 +135,8 @@ span.topButtonA {
     border-color:#0066cc;
 }
 
+/* styles for widget */
+table.widgettable {
+    border-collapse:separate;
+    border-spacing:12px;
+}

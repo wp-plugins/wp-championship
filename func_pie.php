@@ -82,7 +82,7 @@ $im  = imagecreate (350, $height);
 $background = imagecolorallocate($im, 226, 226, 226);
 $border = imagecolorallocate($im,97,97,97);
 $font_color = imagecolorallocate($im,0,0,0);
-$font = 'ARIALMT.ttf';
+$font = './ARIALMT.ttf';
 
 $bright = array();
 foreach( $bright_list as $c ) {

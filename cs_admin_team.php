@@ -28,6 +28,7 @@ function cs_admin_team()
 {
   include("globals.php");
 
+
   // base url for links
   $thisform = "admin.php?page=wp-championship/cs_admin_team.php";
   // get group option and define group ids
@@ -35,7 +36,7 @@ function cs_admin_team()
   $cs_groups = get_option("cs_groups");
   // get sql object
   $wpdb =& $GLOBALS['wpdb'];
-
+ $wpdb->show_errors(true);
   // find out what we have to do
   $action = "";
   if ( isset( $_POST['submit'] ) )
@@ -78,7 +79,7 @@ function cs_admin_team()
     
     // insert new team into database
     if ( $errflag==0 and $action == "savenew" ) {
-      $sql = "insert into ". $cs_table_prefix ."team values (0,'" . $_POST['team_name'] . "','" . $_POST['team_icon'] . "','" . $_POST['group'] . "'," . $_POST['qualified'] . ");";
+      $sql = "insert into ". $cs_table_prefix ."team values (0,'" . $_POST['team_name'] . "','" . $_POST['team_shortname'] . "','" . $_POST['team_icon'] . "','" . $_POST['group'] . "'," . $_POST['qualified'] . ");";
       $results = $wpdb->query($sql);
       if ( $results == 1 )
 	admin_message ( __('Mannschaft erfolgreich angelegt.',"wpcs") );
@@ -88,7 +89,7 @@ function cs_admin_team()
     
     // update team 
     if ( $errflag==0 and $action == "update" ) {
-      $sql = "update ".$cs_table_prefix."team set name='" . $_POST['team_name'] . "', icon='" . $_POST['team_icon'] . "',groupid='" . $_POST['group'] . "',qualified=" . $_POST['qualified'] . " where tid=".$_POST['tid'].";";
+      $sql = "update ".$cs_table_prefix."team set name='" . $_POST['team_name'] . "', shortname='" . $_POST['team_shortname'] . "', icon='" . $_POST['team_icon'] . "',groupid='" . $_POST['group'] . "',qualified=" . $_POST['qualified'] . " where tid=".$_POST['tid'].";";
       $results = $wpdb->query($sql);
       if ( $results == 1 )
 	admin_message( __('Mannschaft erfolgreich gespeichert.',"wpcs") );
@@ -131,7 +132,9 @@ function cs_admin_team()
  
   $out .= '<table class="editform" width="100%" cellspacing="2" cellpadding="2"><tr>';
   $out .= '<th width="33%" scope="row" valign="top"><label for="team_name">'.__('Name',"wpcs").':</label></th>'."\n";
-  $out .= '<td width="67%"><input name="team_name" id="team_name" type="text" value="'.$results->name.'" size="40" /></td></tr>'."\n";
+  $out .= '<td width="67%"><input name="team_name" id="team_name" type="text" value="'.$results->name.'" size="40" onblur="calc_shortname();" /></td></tr>'."\n";
+  $out .= '<th width="33%" scope="row" valign="top"><label for="team_shortname">'.__('Shortname',"wpcs").':</label></th>'."\n";
+  $out .= '<td width="67%"><input name="team_shortname" id="team_shortname" type="text" value="'.$results->shortname.'" size="5" maxlength="5" /></td></tr>'."\n";
   $out .= '<tr><th scope="row" valign="top"><label for="team_icon">'.__('Symbol / Wappen',"wpcs").' :</label></th>'."\n";
   $out .= '<td><input name="team_icon" id="team_icon" type="text" value="'.$results->icon.'" size="40" /></td></tr>'."\n";
   $out .= '<tr><th scope="row" valign="top"><label for="group">'.__('Gruppe','wpcs').':</label></th>'."\n";
@@ -179,6 +182,7 @@ function cs_admin_team()
   $out .= "<table class=\"widefat\"><thead><tr>\n";
   $out .= '<th scope="col" style="text-align: center">ID</th>'."\n";
   $out .= '<th scope="col">'.__('Name',"wpcs")."</th>"."\n";
+  $out .= '<th scope="col">'.__('Shortname',"wpcs")."</th>"."\n";
   $out .= '<th scope="col">'.__("Symbol / Wappen","wpcs").'</th>'."\n";
   $out .= '<th scope="col" width="90" style="text-align: center">'.__('Gruppe',"wpcs").'</th>'."\n";
   $out .= '<th scope="col" width="90" style="text-align: center">'.__('Platzierung',"wpcs").'</th>'."\n";
@@ -189,6 +193,7 @@ function cs_admin_team()
   $results = $wpdb->get_results($sql);
   foreach($results as $res) {
     $out .= "<tr><td align=\"center\">".$res->tid."</td><td>".$res->name."</td>";
+    $out .= "<td>".$res->shortname."</td>";
     $out .= "<td><img src='".$iconpath. $res->icon."' alt='icon' />".$res->icon."</td><td align=\"center\">&nbsp;".$res->groupid."</td>";
     $out .= "<td align=\"center\">".$res->qualified."</td>";
     $out .= "<td align=\"center\"><a href=\"".$thisform."&amp;action=modify&amp;tid=".$res->tid."\">".__("Ändern","wpcs")."</a>&nbsp;&nbsp;&nbsp;";

@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2006-2010  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2006-2011  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,23 +19,6 @@
 */
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You 
 are not allowed to call this page directly.'); }
-
-// apply the filter to the page or post content
-function searchcsusertipp($content) {
-
-  // look for wp-greet tag
-  if ( stristr( $content, '[cs-usertipp]' )) {
-
-    // replace tag with html form
-    $search = '[cs-usertipp]';
-    $replace= show_UserTippForm(); 
-    $content= str_replace ($search, $replace, $content);
-  }
-
-  return $content;
-
-  }
-
 
 // funktion zum holen einer url (wird verwendet um die lokale zeitzone des users zu ermitteln)
 function file_get_contents_utf8($fn) {
@@ -72,8 +55,8 @@ function show_UserTippForm()
  // javascript für floating link ausgeben
  $cs_floating_link = get_option("cs_floating_link");
  if ($cs_floating_link > 0 )
-     $out .= get_float_js() . "</p>";
- 
+     $out .= get_float_js();
+      
  // lese anwenderdaten ein
  get_currentuserinfo();
  // merke die userid 
@@ -161,14 +144,16 @@ function show_UserTippForm()
 	$_POST['stellvertreter']=0;
     if ( $_POST['mailservice'] == '' )
 	$_POST['mailservice']=0;
+    if ( $_POST['mailreceipt'] == '' )
+	$_POST['mailreceipt']=0;
     if ( $_POST['champion'] == '' )
 	$_POST['champion']=-1;
     
     // user einstellungen speichern
     if ($r1->anz > 0) { 
-	$sql0 = "update  $cs_users set mailservice= ".$_POST['mailservice']." , stellvertreter=".$_POST['stellvertreter']." where userid=$uid;";
+	$sql0 = "update  $cs_users set mailservice= ".$_POST['mailservice']." , stellvertreter=".$_POST['stellvertreter']." , mailreceipt=".$_POST['mailreceipt']." where userid=$uid;";
     } else {
-	$sql0 = "insert into  $cs_users values ($uid,0,".$_POST['mailservice'].",".$_POST['stellvertreter'].",0,'0000-00-00 00:00:00',-1);"; 
+	$sql0 = "insert into  $cs_users values ($uid,0,".$_POST['mailservice'].",".$_POST['mailreceipt'].",".$_POST['stellvertreter'].",0,'0000-00-00 00:00:00',-1);"; 
     }
     $r3 = $wpdb->query($sql0);
     
@@ -250,31 +235,33 @@ function show_UserTippForm()
 
    // wenn alles in ordnung ist $errflag == 0, dann speichere den tipp
    if ($errflag == 0) {
-     // tipp speichern
-     foreach ($_POST as $key => $value) {
-       if ( substr($key,0,4) == "gt1_" or substr($key,0,4)=="gt2_" or substr($key,0,4)=="gt3_") {
-	 // speichere tipp fuer spiel mid
-	 $mid=substr($key,4);
-	 
-	 // pruefe ob satz bereits vorhanden
-	 $sql1="select * from $cs_tipp where userid=$uid and mid=$mid;";
-	 $r1 = $wpdb->get_row($sql1);
-
-	 if ($r1) {
-	     if ( $r1->result1 != (int) $_POST['gt1_'.$mid] or	
-		  $r1->result2 != (int) $_POST['gt2_'.$mid] or
-		  $r1->result3 != (int) $_POST['gt3_'.$mid])  {
-		 $sql2="update  $cs_tipp set result1=". (int) $_POST['gt1_'.$mid].", result2=".(int) $_POST['gt2_'.$mid].", result3=".(int) $_POST['gt3_'.$mid].", tipptime='$currtime' where userid=$uid and mid=$mid;"; 
-		 $r2 = $wpdb->query($sql2);
-	     }
-	 } else {
-	     $sql2="insert into  $cs_tipp values ($uid, $mid, ".(int) $_POST['gt1_'.$mid].", ". (int) $_POST['gt2_'.$mid].", ".(int) $_POST['gt3_'.$mid].",'$currtime',-1);";
-	     $r2 = $wpdb->query($sql2);
-	 }
-	
+       // tipp speichern
+       $have_tipps=array();
+       foreach ($_POST as $key => $value) {
+	   if ( substr($key,0,4) == "gt1_" or substr($key,0,4)=="gt2_" or substr($key,0,4)=="gt3_") {
+	       // speichere tipp fuer spiel mid
+	       $mid=substr($key,4);
+	       
+	       // pruefe ob satz bereits vorhanden
+	       $sql1="select * from $cs_tipp where userid=$uid and mid=$mid;";
+	       $r1 = $wpdb->get_row($sql1);
+	       
+	       if ($r1) {
+		   if ( $r1->result1 != (int) $_POST['gt1_'.$mid] or	
+			$r1->result2 != (int) $_POST['gt2_'.$mid] or
+			$r1->result3 != (int) $_POST['gt3_'.$mid])  {
+		       $sql2="update  $cs_tipp set result1=". (int) $_POST['gt1_'.$mid].", result2=".(int) $_POST['gt2_'.$mid].", result3=".(int) $_POST['gt3_'.$mid].", tipptime='$currtime' where userid=$uid and mid=$mid;"; 
+		       $r2 = $wpdb->query($sql2);
+		   }
+	       } else {
+		   $sql2="insert into  $cs_tipp values ($uid, $mid, ".(int) $_POST['gt1_'.$mid].", ". (int) $_POST['gt2_'.$mid].", ".(int) $_POST['gt3_'.$mid].",'$currtime',-1);";
+		   $r2 = $wpdb->query($sql2);
+	       }
+	       // tipp merken fuer tipp bestätigungsmail
+	       $have_tipps[$mid]=$_POST['gt1_'.$mid] . ":" . $_POST['gt2_'.$mid];
+	   }
        }
-     }
-     $out .= __("Die Tipps wurden erfolgreich gespeichert.","wpcs")."<br/>";
+       $out .= __("Die Tipps wurden erfolgreich gespeichert.","wpcs")."<br/>";
    }
  
      
@@ -362,6 +349,8 @@ function show_UserTippForm()
      // mailservice durchfuehren (verschickt mails an alle die sie haben wollten)
      if ($have_results)
        mailservice();
+     if ($have_tipps)
+	 mailservice3($uid, $have_tipps);
    } // end is_admin
 
 
@@ -501,7 +490,7 @@ function show_UserTippForm()
 
  // persönliche Einstellungen
  $out .= "<h2>".__("Einstellungen","wpcs")."</h2>\n";
- $out .= "<table class='tablesorter' >\n"; 
+ $out .= "<table>\n"; 
 
  $out .= "<tr>";
  if ( ! $cs_stellv_schalter )
@@ -510,7 +499,9 @@ function show_UserTippForm()
    $out .= "<td>&nbsp;<input type='hidden' name='stellvertreter' value='-' /></td>";
 
  $out .= "<td><input type='checkbox' name='mailservice' value='1'";
- $out .= ($r0[0]->mailservice==1?'checked="checked"':'') ." /> ".__("Mailservice","wpcs")."</td></tr>";
+ $out .= ($r0[0]->mailservice==1?'checked="checked"':'') ." /> ".__("Mailservice","wpcs")."<br />";
+ $out .= "<input type='checkbox' name='mailreceipt' value='1'";
+ $out .= ($r0[0]->mailreceipt==1?'checked="checked"':'') ." /> ".__("Mailreceipt","wpcs")."</td></tr>";
  $out .='<tr><td align="center" colspan="2">'.__("Sieger-Tipp","wpcs").": ";
  
  // weltmeistertipp kann nur bis tunierbeginn abgegeben werden
@@ -533,11 +524,11 @@ function show_UserTippForm()
  
 // sortierbare tabelle nur im tunier modus
  if ( get_option('cs_modus') == 1 )
-     $out .= "<script type='text/javascript'>jQuery(document).ready(function() { jQuery('#ptab').tablesorter({sortList:[[". --$cs_tipp_sort .",0]],headers:{1:{sorter:false},3:{sorter:false}}}); }); jQuery(document).ready(function() { jQuery('#ftab').tablesorter({sortList:[[0,0]],headers:{1:{sorter:false},3:{sorter:false}}}); });</script>\n";
+     $out .= "<script type='text/javascript'><!--\njQuery(document).ready(function() { jQuery('#ptab').tablesorter({sortList:[[". --$cs_tipp_sort .",0]],headers:{1:{sorter:false},3:{sorter:false}}}); }); jQuery(document).ready(function() { jQuery('#ftab').tablesorter({sortList:[[0,0]],headers:{1:{sorter:false},3:{sorter:false}}}); });\n//--></script>\n";
 
  // collapse / expand für den bundesliga modus 
  if ( get_option('cs_modus') == 2 )
-     $out .= "<script type='text/javascript'>jQuery(document).ready(function() { var toggleMinus = '".site_url(PLUGINDIR . "/wp-championship/arrow_down.jpg")."'; var togglePlus = '".site_url(PLUGINDIR . "/wp-championship/arrow_right.jpg")."'; var AsubHead = jQuery('tbody th:first-child'); AsubHead.prepend('<img src=\"' + toggleMinus + '\" alt=\"collapse this section\" />'); jQuery('img', AsubHead).addClass('clickable') .click(function() { var toggleSrc = jQuery(this).attr('src'); if ( toggleSrc == toggleMinus ) { jQuery(this).attr('src', togglePlus) .parents('tr').siblings().fadeOut('fast'); } else{ jQuery(this).attr('src', toggleMinus) .parents('tr').siblings().fadeIn('fast'); }; });  jQuery('img').trigger('click'); jQuery('img','#currspieltag').trigger('click'); })</script>\n"; 
+     $out .= "<script type='text/javascript'><!--\njQuery(document).ready(function() { var toggleMinus = '".site_url(PLUGINDIR . "/wp-championship/arrow_down.jpg")."'; var togglePlus = '".site_url(PLUGINDIR . "/wp-championship/arrow_right.jpg")."'; var AsubHead = jQuery('tbody th:first-child'); AsubHead.prepend('<img src=\"' + toggleMinus + '\" alt=\"collapse this section\" />'); jQuery('img', AsubHead).addClass('clickable') .click(function() { var toggleSrc = jQuery(this).attr('src'); if ( toggleSrc == toggleMinus ) { jQuery(this).attr('src', togglePlus) .parents('tr').siblings().fadeOut('fast'); } else{ jQuery(this).attr('src', toggleMinus) .parents('tr').siblings().fadeIn('fast'); }; }); jQuery('.clickable').trigger('click'); jQuery('img','#currspieltag').trigger('click'); });\n//--></script>\n"; 
 
 
  $out .= "<br /><h2>".__("Vorrundenspiele","wpcs")."</h2>\n"; 
@@ -726,8 +717,7 @@ function show_UserTippForm()
  }
  $out .= '</tbody></table>'."\n&nbsp;";
 
- $out .= "<div class='submit' align='right'><input type='submit' class='wpcs-button' name='update' value='".__("Änderungen speichern","wpcs")."' /></div></form><p>&nbsp;";
-
+ $out .= "<div class='submit' align='right'><input type='submit' class='wpcs-button' name='update' value='".__("Änderungen speichern","wpcs")."' /></div></form>";
 
  return $out;
 }

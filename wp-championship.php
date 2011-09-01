@@ -3,12 +3,12 @@
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de/wp-championship
 Description: wp-championship is championship plugin for wordpress designed for the WM 2010.
-Version: 2.8
+Version: 2.9
 Author: tuxlog 
 Author URI: http://www.tuxlog.de
 */
 
-/*  Copyright 2007-2010  Hans Matzen  (email : webmaster at tuxlog dot de)
+/*  Copyright 2007-2011  Hans Matzen  (email : webmaster at tuxlog dot de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ require_once("cs_usertipp.php");
 require_once("cs_userstats.php");
 require_once("cs_stats.php");
 require_once("wpc_autoupdate.php");
+require_once("class_cs_widget.php");
 
 
 // activating deactivating the plugin
@@ -56,6 +57,12 @@ add_action('admin_menu', 'add_menus');
 
 // init plugin
 add_action('init', 'wp_championship_init');
+
+// admin init plugin
+add_action('admin_init', 'wp_championship_admin_init');
+
+// register class
+add_action('widgets_init', create_function('', 'return register_widget("cs_widget");')); 
 
 //
 // just return the css link
@@ -94,22 +101,36 @@ function wp_championship_init()
     $locale = 'en_US';
   if(function_exists('load_textdomain') and $locale != "de_DE") 
     load_textdomain("wpcs",ABSPATH . "wp-content/plugins/wp-championship/lang/".$locale.".mo");
+     
+  if (function_exists('add_shortcode')) {
+  	add_shortcode('cs-usertipp', 'show_UserTippForm');
+    add_shortcode('cs-userstats','show_UserStats');
+  	add_shortcode('cs-stats1',   'show_Stats1');
+  	add_shortcode('cs-stats2',   'show_Stats2');
+  	add_shortcode('cs-stats3',   'show_Stats3');
+  	add_shortcode('cs-stats4',   'show_Stats4');
+  	add_shortcode('cs-stats5',   'show_Stats5');
+  }
 
-  // Action calls for all functions 
-  add_filter('the_content', 'searchcsusertipp');
-  add_filter('the_excerpt', 'searchcsusertipp');
-  
-  add_filter('the_content', 'searchcsuserstats');
-  add_filter('the_excerpt', 'searchcsuserstats'); 
-
-  add_filter('the_content', 'searchcsstats');
-  add_filter('the_excerpt', 'searchcsstats');
-
-  // javascript hinzufügen für tablesorter / floating menu
+  // javascript hinzufügen für tablesorter / floating menu und statistik ajaxeffekt
   wp_enqueue_script('cs_tablesort', '/' . PLUGINDIR . '/wp-championship/jquery.tablesorter.min.js',
 		    array('jquery'), "2.0.3");
   wp_enqueue_script('cs_dimensions', '/' . PLUGINDIR . '/wp-championship/jquery.dimensions.js',
-		    array('jquery'), "1.2");
+		    array('jquery'), "1.2"); 
+  wp_enqueue_script('cs_stats', '/' . PLUGINDIR . '/wp-championship/cs_stats.js',
+		    array('jquery'), "9999");
+
+ 
+ 
+
+
+}
+
+function wp_championship_admin_init()
+{
+    // javascript hinzufügen für tablesorter / floating menu und statistik ajaxeffekt
+    wp_enqueue_script('cs_admin', '/' . PLUGINDIR . '/wp-championship/cs_admin.js',
+		      array(), "9999");
 }
 
 // adds the admin menustructure
