@@ -1,0 +1,142 @@
+/* reset ie defaults */
+* { margin:0; padding:0; aborder:0;}
+
+/* team icon style */
+img.csicon
+{
+    position: relative;
+    top: auto;
+    apadding: 2px;
+    left: 2px;
+    width: 25px;
+}
+
+.cs_inputerror
+{
+    background-color: red;
+}
+
+/* submit buttons */
+input.wpcs-button {
+    border-width: 2px ;
+    border-style: outset;
+    border-color: #DDDBDE;
+}
+
+/* style for tablesorter */
+table.tablesorter {
+    font-size: 7px;
+    background-color: #eeeeee;
+    width: 470px;
+    border: 1px solid #000;
+}
+
+table.tablesorter th {
+    /* text-align: left;*/
+    /*padding: 5px;*/
+    border: 1px solid #000;
+}
+
+table.tablesorter td {
+     border: 1px solid #000;
+}
+/*
+table.tablesorter .even {
+    background-color: #3D3D3D;
+}
+table.tablesorter .odd {
+    background-color: #6E6E6E;
+}
+*/
+table.tablesorter .header {
+    background-image: url(bg.png);
+    background-repeat: no-repeat;
+    /*border-left: 1px solid #FFF;
+    border-right: 1px solid #000;
+    border-top: 1px solid #FFF;*/
+    padding-left: 25px;
+    padding-right: 2px;
+    height: auto;
+    width: 100px;
+}
+table.tablesorter .headerSortUp {
+    background-image: url(asc.png);
+    background-repeat: no-repeat;
+}
+table.tablesorter .headerSortDown {
+    background-image: url(desc.png);
+    background-repeat: no-repeat;
+}
+
+h2.cs_stathead {
+    font-size: 18px;
+    font-weight: bold;
+    background-image: url(arrow_down.jpg);
+    background-repeat: no-repeat;
+    padding-left: 15px;
+    cursor:pointer;
+    text-decoration:underline;
+}
+
+h2.cs_grouphead {
+    font-size: 16px;
+    font-weight: bold;
+    background-image: url(arrow_down.jpg);
+    background-repeat: no-repeat;
+    padding-left: 15px;
+    cursor:pointer;
+    text-decoration:underline;
+}
+
+h2.divclose {
+    background-image: url(arrow_right.jpg);
+    background-repeat: no-repeat;
+}
+
+span.topButtonA {
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration:underline;
+}
+
+/* for floating menu */
+#WPCSfloatMenu {
+    position:absolute;
+    top:240px;
+    left:50%;
+    margin-left:-600px;
+    width:150px;
+}
+
+#WPCSfloatMenu ul {
+    margin-bottom:20px;
+    list-style-type: none;
+    list-style-image: none;
+}
+
+/* override kubricks raquo setting */
+#WPCSfloatMenu ul li:before {
+    content: "";
+}
+
+#WPCSfloatMenu ul li a {
+    display:block;
+    border:1px solid #999;
+    background-color:#222;
+    border-left:4px solid #999;
+    text-decoration:none;
+    color:#fff;
+    padding:5px 5px 5px 15px;
+}
+
+#WPCSfloatMenu ul li a:hover {
+    color:#0066cc;
+    background-color:#ffffff;
+    border-color:#0066cc;
+}
+
+/* styles for widget */
+table.widgettable {
+    border-collapse:separate;
+    border-spacing:12px;
+}

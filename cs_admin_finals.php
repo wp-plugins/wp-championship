@@ -83,7 +83,7 @@ function cs_admin_finals()
     $sql="select count(*) as anz from $cs_team where name='#".$team1."';";
     $r0 = $wpdb->get_row($sql);
     if ( $r0->anz == 0) {
-      $sql="insert into  $cs_team values (0,'#$team1','','',1);";
+      $sql="insert into  $cs_team values (0,'#$team1','','','',1);";
       $results = $wpdb->query($sql);
  
       if ( $results == 1 )
@@ -95,7 +95,7 @@ function cs_admin_finals()
     $sql="select count(*) as anz from $cs_team where name='#".$team2."';";
     $r0 = $wpdb->get_row($sql);
     if ( $r0->anz == 0) {
-      $sql="insert into  $cs_team values (0,'#$team2','','',1);";
+      $sql="insert into  $cs_team values (0,'#$team2','','','',1);";
       $results = $wpdb->query($sql);
       if ( $results == 1 )
 	admin_message ( __('Mannschaft 2 automatisch hinzugefügt.',"wpcs") );
@@ -119,7 +119,7 @@ function cs_admin_finals()
       $r0 = $wpdb->get_row($sql);
       $tid2 = $r0->tid2;
  
-      $sql = "insert into ". $cs_table_prefix ."match values (0,'F'," . $tid1 . "," . $tid2 . ",'" . $_POST['location'] . "','" . $_POST['matchtime'] . "',-1,-1,-1,$tid1,$tid2);";
+      $sql = "insert into ". $cs_table_prefix ."match values (0,'F',-1," . $tid1 . "," . $tid2 . ",'" . $_POST['location'] . "','" . $_POST['matchtime'] . "',-1,-1,-1,$tid1,$tid2);";
       $results = $wpdb->query($sql);
       if ( $results == 1 )
 	admin_message ( __('Finalbegegnung erfolgreich angelegt.',"wpcs") );

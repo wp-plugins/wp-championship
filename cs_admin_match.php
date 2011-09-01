@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2007,2008  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2007-2010  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -60,7 +60,8 @@ function cs_admin_match()
       $errflag=1;
     if ( $_POST['location']=="" )
       $_POST['location']=__("nowhere","wpcs");
-
+    if ( $_POST['spieltag']=="" )
+	$_POST['spieltag']=0;
     
     // send a message about mandatory data
     if ( $errflag == 1 )
@@ -72,7 +73,7 @@ function cs_admin_match()
     
     // insert new match into database
     if ( $errflag==0 and $action == "savenew" ) {
-      $sql = "insert into ". $cs_table_prefix ."match values (0,'V'," . $_POST['team1'] . "," . $_POST['team2'] . ",'" . $_POST['location'] . "','" . $_POST['matchtime'] . "',-1,-1,-1,-1,-1);";
+      $sql = "insert into ". $cs_table_prefix ."match values (0,'V'," . $_POST['spieltag'] . "," . $_POST['team1'] . "," . $_POST['team2'] . ",'" . $_POST['location'] . "','" . $_POST['matchtime'] . "',-1,-1,-1,-1,-1);";
       $results = $wpdb->query($sql);
       if ( $results == 1 )
 	admin_message ( __('Begegnung erfolgreich angelegt.',"wpcs") );
@@ -82,7 +83,7 @@ function cs_admin_match()
     
     // update team 
     if ( $errflag==0 and $action == "update" ) {
-      $sql = "update ".$cs_table_prefix."match set tid1=" . $_POST['team1'] . ", tid2=" . $_POST['team2'] . ",location='" . $_POST['location'] . "',matchtime='" . $_POST['matchtime'] . "' where mid=".$_POST['mid'].";";
+      $sql = "update ".$cs_table_prefix."match set tid1=" . $_POST['team1'] . ", tid2=" . $_POST['team2'] . ",location='" . $_POST['location'] . "',matchtime='" . $_POST['matchtime'] . "',spieltag=" . $_POST['spieltag'] . " where mid=".$_POST['mid'].";";
       $results = $wpdb->query($sql);
       if ( $results == 1 )
 	admin_message( __('Begegnung erfolgreich gespeichert.',"wpcs") );
@@ -147,7 +148,12 @@ function cs_admin_match()
   $out .= '<tr><th scope="row" valign="top"><label for="location">'.__('Ort','wpcs').':</label></th>'."\n";
   $out .= '<td><input name="location" id="location" type="text" value="'. $results->location.'" size="40" /></td></tr>'."\n";
   $out .= '<tr><th scope="row" valign="top"><label for="matchtime">'.__('Datum / Zeit','wpcs').':</label></th>'."\n";
-  $out .= '<td><input name="matchtime" id="matchtime" type="text" value="'. $results->matchtime.'" size="40" /></td></tr>'."\n";
+  $out .= '<td><input name="matchtime" id="matchtime" type="text" value="'. $results->matchtime.'" size="40" /></td></tr>'."\n"; 
+  // spieltag ausgeben wenn in liga-modus
+  if ( get_option('cs_modus') == 2 ) {
+      $out .= '<tr><th scope="row" valign="top"><label for="spieltag">'.__('Spieltag','wpcs').':</label></th>'."\n";
+      $out .= '<td><input name="spieltag" id="spieltag" type="text" value="'. ($results->spieltag==-1?"-":$results->spieltag) . '" size="3" /></td></tr>'."\n";
+  }
 
   $out .= '</table>'."\n";
   
@@ -171,14 +177,18 @@ function cs_admin_match()
   $out .= '<th scope="col">'.__("Mannschaft 2","wpcs").'</th>'."\n";
   $out .= '<th scope="col" width="90" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
   $out .= '<th scope="col" width="90" style="text-align: center">'.__('Datum / Zeit',"wpcs").'</th>'."\n";
+  if ( get_option('cs_modus') == 2 )
+      $out .= '<th scope="col" width="10" style="text-align: center">'.__('Spieltag',"wpcs").'</th>'."\n";	   
   $out .= '<th colspan="2" style="text-align: center">'.__('Aktion',"wpcs").'</th></tr></thead>'."\n";
   // match loop
-  $sql="select a.mid as mid,b.name as team1,c.name as team2,a.location as location,a.matchtime as matchtime from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round='V' order by mid;";
+  $sql="select a.mid as mid,b.name as team1,c.name as team2,a.location as location,a.matchtime as matchtime, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round='V' order by mid;";
   $results = $wpdb->get_results($sql);
   foreach($results as $res) {
     $out .= "<tr><td align=\"center\">".$res->mid."</td><td>".$res->team1."</td>";
     $out .= "<td>".$res->team2."</td><td align=\"center\">".$res->location."</td>";
-    $out .= "<td align=\"center\">".$res->matchtime."</td>";
+    $out .= "<td align=\"center\">".$res->matchtime."</td>"; 
+    if ( get_option('cs_modus') == 2 )
+	$out .= "<td align=\"center\">".($res->spieltag==-1?"-":$res->spieltag)."</td>";
     $out .= "<td align=\"center\"><a href=\"".$thisform."&amp;action=modify&amp;mid=".$res->mid."\">".__("Ändern","wpcs")."</a>&nbsp;&nbsp;&nbsp;";
     $out .= "<a href=\"".$thisform."&amp;action=remove&amp;mid=".$res->mid."\">".__("Löschen","wpcs")."</a></td></tr>\n";
   }
