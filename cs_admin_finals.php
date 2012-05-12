@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2007,2008  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2007-2011  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -220,26 +220,26 @@ function cs_admin_finals()
   $placesel2_html=get_place_selector(get_option("cs_group_teams"),'fplace2',$p2);
   
   $wsel1_html = '<select name="winner1"><option value="-1" '.($w1 ==-1 ? 'selected="selected"':'').'>-</option><option value="1" '.($w1 =='W' ? 'selected="selected"':'').'>Gewinner</option><option value="0" '.($w1 =='V' ? 'selected="selected"':'').'>Verlierer</option></select>';
- $wsel2_html = '<select name="winner2"><option value="-1" '.($w2 ==-1 ? 'selected="selected"':'').'>-</option><option value="1" '.($w2 =='W' ? 'selected="selected"':'').'>Gewinner</option><option value="0" '.($w2 =='V' ? 'selected="selected"':'').'>Verlierer</option></select>';
+  $wsel2_html = '<select name="winner2"><option value="-1" '.($w2 ==-1 ? 'selected="selected"':'').'>-</option><option value="1" '.($w2 =='W' ? 'selected="selected"':'').'>Gewinner</option><option value="0" '.($w2 =='V' ? 'selected="selected"':'').'>Verlierer</option></select>';
 
   // select header for update or add match
   if ( $action == 'edit' ) {
     $out .= '<div class="wrap"><h2>'.__('Finalbegegnung ändern',"wpcs").'</h2><div id="ajax-response"></div>'."\n"; 
-  $out .= '<form name="modifymatch" id="modifymatch" method="post" action=""><input type="hidden" name="action" value="modifymatch" /><input type="hidden" name="mid" value="'.$results->mid.'" />'."\n";
+  $out .= '<form name="modifymatch" id="modifymatch" method="post" action="#"><input type="hidden" name="action" value="modifymatch" /><input type="hidden" name="mid" value="'.$results->mid.'" />'."\n";
   } else {
     $out .= '<div class="wrap"><h2>'.__('Finalbegegnung hinzufügen',"wpcs").'</h2><div id="ajax-response"></div>'."\n";
- $out .= '<form name="addmatch" id="addmatch" method="post" action=""><input type="hidden" name="action" value="addmatch" />'."\n";
+ $out .= '<form name="addmatch" id="addmatch" method="post" action="#"><input type="hidden" name="action" value="addmatch" />'."\n";
   }
  
-  $out .= '<table class="editform" width="100%" cellspacing="2" cellpadding="2"><tr>';
-  $out .= '<th width="33%" scope="row" valign="top"><label for="matchid1">'.__('Mannschaft 1 ',"wpcs").':</label></th>'."\n";
-  $out .= '<td width="67%">Gruppe:'.$groupsel1_html.' Platz:'.$placesel1_html.' oder '.$wsel1_html.' Match Nr. <select id="matchid1" name="matchid1">'.$match1_select_html.'</select></td></tr>'."\n";
-  $out .= '<tr><th scope="row" valign="top"><label for="matchid2">'.__('Mannschaft 2',"wpcs").' :</label></th>'."\n";
-   $out .= '<td width="67%">Gruppe:'.$groupsel2_html.' Platz:'.$placesel2_html.' oder '.$wsel2_html.' Match Nr. <select id="matchid2" name="matchid2">'.$match2_select_html.'</select></td></tr>'."\n";
+  $out .= '<table class="editform" style="width:100%" ><tr>';
+  $out .= '<th style="width:33%" scope="row" ><label for="matchid1">'.__('Mannschaft 1 ',"wpcs").':</label></th>'."\n";
+  $out .= '<td style="width:67%">Gruppe:'.$groupsel1_html.' Platz:'.$placesel1_html.' oder '.$wsel1_html.' Match Nr. <select id="matchid1" name="matchid1">'.$match1_select_html.'</select></td></tr>'."\n";
+  $out .= '<tr><th scope="row" ><label for="matchid2">'.__('Mannschaft 2',"wpcs").' :</label></th>'."\n";
+  $out .= '<td style="width:67%">Gruppe:'.$groupsel2_html.' Platz:'.$placesel2_html.' oder '.$wsel2_html.' Match Nr. <select id="matchid2" name="matchid2">'.$match2_select_html.'</select></td></tr>'."\n";
 
-  $out .= '<tr><th scope="row" valign="top"><label for="location">'.__('Ort','wpcs').':</label></th>'."\n";
+  $out .= '<tr><th scope="row" ><label for="location">'.__('Ort','wpcs').':</label></th>'."\n";
   $out .= '<td><input name="location" id="location" type="text" value="'. $results->location.'" size="40" /></td></tr>'."\n";
-  $out .= '<tr><th scope="row" valign="top"><label for="matchtime">'.__('Datum / Zeit','wpcs').':</label></th>'."\n";
+  $out .= '<tr><th scope="row" ><label for="matchtime">'.__('Datum / Zeit','wpcs').':</label></th>'."\n";
   $out .= '<td><input name="matchtime" id="matchtime" type="text" value="'. $results->matchtime.'" size="40" /></td></tr>'."\n";
 
   $out .= '</table>'."\n";
@@ -262,17 +262,17 @@ function cs_admin_finals()
   $out .= '<th scope="col" style="text-align: center">ID</th>'."\n";
   $out .= '<th scope="col">'.__('Mannschaft 1',"wpcs")."</th>"."\n";
   $out .= '<th scope="col">'.__("Mannschaft 2","wpcs").'</th>'."\n";
-  $out .= '<th scope="col" width="90" style="text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
-  $out .= '<th scope="col" width="90" style="text-align: center">'.__('Datum / Zeit',"wpcs").'</th>'."\n";
-  $out .= '<th colspan="2" style="text-align: center">'.__('Aktion',"wpcs").'</th></tr></thead>'."\n";
+  $out .= '<th scope="col" style="width:90px;text-align: center">'.__('Ort',"wpcs").'</th>'."\n";
+  $out .= '<th scope="col" style="width:90px;text-align: center">'.__('Datum / Zeit',"wpcs").'</th>'."\n";
+  $out .= '<th style="text-align: center">'.__('Aktion',"wpcs").'</th></tr></thead>'."\n";
   // match loop
   $sql="select a.mid as mid,b.name as team1,c.name as team2,a.location as location,a.matchtime as matchtime from $cs_match a inner join $cs_team b on a.ptid1=b.tid inner join $cs_team c on a.ptid2=c.tid where a.round='F' order by mid;";
   $results = $wpdb->get_results($sql);
   foreach($results as $res) {
-    $out .= "<tr><td align=\"center\">".$res->mid."</td><td>".team2text($res->team1)."</td>";
-    $out .= "<td>".team2text($res->team2)."</td><td align=\"center\">".$res->location."</td>";
-    $out .= "<td align=\"center\">".$res->matchtime."</td>";
-    $out .= "<td align=\"center\"><a href=\"".$thisform."&amp;action=modify&amp;mid=".$res->mid."\">".__("Ändern","wpcs")."</a>&nbsp;&nbsp;&nbsp;";
+    $out .= "<tr><td style='text-align:center'>".$res->mid."</td><td>".team2text($res->team1)."</td>";
+    $out .= "<td>".team2text($res->team2)."</td><td style='text-align:center'>".$res->location."</td>";
+    $out .= "<td style='text-align:center'>".$res->matchtime."</td>";
+    $out .= "<td style='text-align:center'><a href=\"".$thisform."&amp;action=modify&amp;mid=".$res->mid."\">".__("Ändern","wpcs")."</a>&nbsp;&nbsp;&nbsp;";
     $out .= "<a href=\"".$thisform."&amp;action=remove&amp;mid=".$res->mid."\">".__("Löschen","wpcs")."</a></td></tr>\n";
   }
   $out .= '</table></div>'."\n";

@@ -6,7 +6,7 @@ if ( !class_exists('cs_widget') )
     {
 	function cs_widget()
 	{
-	    $widget_ops = array('classname' => 'wpcs_widget',
+	    $widget_ops = array('classname' => 'cs_widget',
 				'description' => 'WP Championship Widget');
 	    $control_ops = array('width' => 300, 'height' => 150);
 	    $this->WP_Widget('wp-championship', 'WP Championship', 
@@ -15,7 +15,7 @@ if ( !class_exists('cs_widget') )
 	
 	function widget( $args, $instance )
 	{ 
-	    pdebug(1,"Start of function class cs_widget::widget ()");
+	   
 
    
 	    include ( ABSPATH . 'wp-content/plugins/wp-championship/globals.php' );
@@ -35,26 +35,25 @@ if ( !class_exists('cs_widget') )
 	    echo $before_widget; 
 	    if ( $title )
 		echo $before_title . $title . $after_title;
-	    
- 
-	    //Table Head         
-	    echo "<table  class='widgettable'>";
-	    echo "<tr>";
-	    echo "<th>&nbsp;</th>";
-	    echo "<th align='left'>".__("Name","wpcs")."</th>";
-	    echo "<th align='center'>P</th>";
-	    if($showAverage == '1') { echo "<th align='center'>&Oslash;</th>"; }
-	    if($showAmountTipps == '1') { echo "<th align='center'>T</th>"; }
-	    if($showUserTendence == '1') { echo "<th align='center'>&nbsp;</th>"; }
-	    echo "</tr>";
 
-	    //Table Content
-	    
 	    //Query User and Points
 	    $limit = $AmountUsers;
 	    $sql = "select b.user_nicename, b.display_name, a.userid,sum(a.points) as points, c.rang as oldrank from $cs_tipp a inner join $wp_users b on a.userid=b.ID inner join $cs_users c on a.userid=c.userid where points <> -1 group by b.user_nicename, a.userid order by points DESC LIMIT $limit;";
 	    $res = $wpdb->get_results($sql);
-	    
+ 
+	    if (!empty($res)) {
+	    //Table Head         
+	    echo "<table  class='widgettable'>";
+	    echo "<tr>";
+	    echo "<td>&nbsp;</td>";
+	    echo "<td align='left'>".__("Name","wpcs")."</td>";
+	    echo "<td align='center'>P</td>";
+	    if($showAverage == '1') { echo "<td align='center'>&Oslash;</td>"; }
+	    if($showAmountTipps == '1') { echo "<td align='center'>T</td>"; }
+	    if($showUserTendence == '1') { echo "<td align='center'>&nbsp;</td>"; }
+	    echo "</tr>";
+
+	    //Table Content	    
 	    $pointsbefore= -1;   
 	    $i=0; $j=1;           
 	    foreach ($res as $row) {
@@ -90,13 +89,16 @@ if ( !class_exists('cs_widget') )
 		}
 	    }
 	    
+	    // Table foot
 	    echo "</tr></table>";
 	    if($showFullRanking == '1' && $FullRankingURL) { 
 		echo '<div style="text-align:center"><a href="http://'.$FullRankingURL.'">'.$FullRankingURLTitle.'</a></div>'; }
-	    
+	    } else {
+	    	echo __("Es sind noch keine Spielergebnisse vorhanden.",'wpcs');
+	    }
 	    echo $after_widget;
 	    
-	    pdebug(1,"End of function  class cs_widget::widget () ");
+	    
 	}
 	
 
@@ -122,7 +124,7 @@ if ( !class_exists('cs_widget') )
 	
 	function form( $instance )
 	{
-	    pdebug(1,"Start of cs_widget::form()");
+	   
 
             // Vorbelegung
 	    $defaults = array(
@@ -187,7 +189,7 @@ if ( !class_exists('cs_widget') )
       </p>             
       <?php
 
-	    pdebug(1,"End of cs_widget::form()");
+	   
 	}
 	
     } // end of class

@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2007,2008  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2007-2011  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -43,9 +43,9 @@ function cs_admin_team()
 	$action = "savenew";
   elseif ( isset( $_POST['update'] ) )
     $action = "update";
-  elseif ( $_GET['action'] == 'remove' )
+  elseif ( isset($_GET['action']) && $_GET['action'] == 'remove' )
     $action = "remove";
-  elseif ( $_GET['action'] == 'modify' )
+  elseif ( isset($_GET['action']) && $_GET['action'] == 'modify' )
     $action = "edit";
 
 
@@ -110,10 +110,11 @@ function cs_admin_team()
 
  
   // output teams add/modify form
+  $resed=array('name'=>"", 'shortname'=>"",'icon'=>"",'groupid'=>"",'qualified'=>"");
   if ( $action == 'edit' ) {
     // select data to modify
     $sql= "select * from  $cs_team where tid=".$_GET['tid'].";";
-    $results = $wpdb->get_row($sql);
+    $resed = $wpdb->get_row($sql,ARRAY_A);
   }
   
   //
@@ -124,41 +125,40 @@ function cs_admin_team()
   // select header for update or add team
   if ( $action == 'edit' ) {
     $out .= '<div class="wrap"><h2>'.__('Mannschaft ändern',"wpcs").'</h2><div id="ajax-response"></div>'."\n"; 
-  $out .= '<form name="modifyteam" id="modifyteam" method="post" action=""><input type="hidden" name="action" value="modifyteam" /><input type="hidden" name="tid" value="'.$results->tid.'" />'."\n";
+  $out .= '<form name="modifyteam" id="modifyteam" method="post" action="#"><input type="hidden" name="action" value="modifyteam" /><input type="hidden" name="tid" value="'.$resed['tid'].'" />'."\n";
   } else {
     $out .= '<div class="wrap"><h2>'.__('Mannschaft hinzufügen',"wpcs").'</h2><div id="ajax-response"></div>'."\n";
- $out .= '<form name="addteam" id="addteam" method="post" action=""><input type="hidden" name="action" value="addteam" />'."\n";
+ $out .= '<form name="addteam" id="addteam" method="post" action="#"><input type="hidden" name="action" value="addteam" />'."\n";
   }
  
-  $out .= '<table class="editform" width="100%" cellspacing="2" cellpadding="2"><tr>';
-  $out .= '<th width="33%" scope="row" valign="top"><label for="team_name">'.__('Name',"wpcs").':</label></th>'."\n";
-  $out .= '<td width="67%"><input name="team_name" id="team_name" type="text" value="'.$results->name.'" size="40" onblur="calc_shortname();" /></td></tr>'."\n";
-  $out .= '<th width="33%" scope="row" valign="top"><label for="team_shortname">'.__('Shortname',"wpcs").':</label></th>'."\n";
-  $out .= '<td width="67%"><input name="team_shortname" id="team_shortname" type="text" value="'.$results->shortname.'" size="5" maxlength="5" /></td></tr>'."\n";
-  $out .= '<tr><th scope="row" valign="top"><label for="team_icon">'.__('Symbol / Wappen',"wpcs").' :</label></th>'."\n";
-  $out .= '<td><input name="team_icon" id="team_icon" type="text" value="'.$results->icon.'" size="40" /></td></tr>'."\n";
-  $out .= '<tr><th scope="row" valign="top"><label for="group">'.__('Gruppe','wpcs').':</label></th>'."\n";
+  $out .= '<table class="editform" style="width:100%"><tr>';
+  $out .= '<th style="width:33%" scope="row" ><label for="team_name">'.__('Name',"wpcs").':</label></th>'."\n";
+  $out .= '<td style="width:67%"><input name="team_name" id="team_name" type="text" value="'.$resed['name'].'" size="40" onblur="calc_shortname();" /></td></tr>'."\n";
+  $out .= '<th style="width:33%" scope="row" ><label for="team_shortname">'.__('Shortname',"wpcs").':</label></th>'."\n";
+  $out .= '<td style="width:67%"><input name="team_shortname" id="team_shortname" type="text" value="'.$resed['shortname'].'" size="5" maxlength="5" /></td></tr>'."\n";
+  $out .= '<tr><th scope="row" ><label for="team_icon">'.__('Symbol / Wappen',"wpcs").' :</label></th>'."\n";
+  $out .= '<td><input name="team_icon" id="team_icon" type="text" value="'.$resed['icon'].'" size="40" /></td></tr>'."\n";
+  $out .= '<tr><th scope="row" ><label for="group">'.__('Gruppe','wpcs').':</label></th>'."\n";
   $out .= '<td><select name="group" id="group" class="postform">'."\n";
   // build group selection box 
   for ($i = 0; $i < $cs_groups; $i++) {
     $charone=substr($groupstr,$i,1);
     $out .= '<option value="'.$charone.'"';
-    if ( $charone == $results->groupid )
+    if ( $charone == $resed['groupid'] )
       $out .= ' selected="selected"';
     $out .= '>'.$charone.'</option>';
   }
 
   $out .= '</select></td>	</tr>';
-   $out .= '<tr><th scope="row" valign="top"><label for="qualified">'.__('Platzierung der Vorrunde','wpcs').'</label></th>'."\n";
+   $out .= '<tr><th scope="row" ><label for="qualified">'.__('Platzierung der Vorrunde','wpcs').':</label></th>'."\n";
   
-  $sql="select count(*) as anz from $cs_team where groupid='".$results->groupid.
-"';";
+  $sql="select count(*) as anz from $cs_team where groupid='".$resed['groupid']."';";
   $res1 = $wpdb->get_row($sql);
   $out .= '<td><select name="qualified" id="qualified" class="postform">'."\n";
   // build qualified selection box 
   for ($i = 0; $i <= $res1->anz; $i++) {
     $out .= '<option value="'.$i.'"';
-    if ( $i == $results->qualified )
+    if ( $i == $resed['qualified'] )
       $out .= ' selected="selected"';
     $out .= '>'.$i.'</option>';
   }
@@ -184,19 +184,19 @@ function cs_admin_team()
   $out .= '<th scope="col">'.__('Name',"wpcs")."</th>"."\n";
   $out .= '<th scope="col">'.__('Shortname',"wpcs")."</th>"."\n";
   $out .= '<th scope="col">'.__("Symbol / Wappen","wpcs").'</th>'."\n";
-  $out .= '<th scope="col" width="90" style="text-align: center">'.__('Gruppe',"wpcs").'</th>'."\n";
-  $out .= '<th scope="col" width="90" style="text-align: center">'.__('Platzierung',"wpcs").'</th>'."\n";
-  $out .= '<th colspan="2" style="text-align: center">'.__('Aktion',"wpcs").'</th>'."</tr></thead>\n";
+  $out .= '<th scope="col" style="text-align: center;width:90px">'.__('Gruppe',"wpcs").'</th>'."\n";
+  $out .= '<th scope="col" style="text-align: center;width:90px">'.__('Platzierung',"wpcs").'</th>'."\n";
+  $out .= '<th scope="col" style="text-align: center">'.__('Aktion',"wpcs").'</th>'."</tr></thead>\n";
   // teams loop
   $iconpath = get_option("siteurl") . "/wp-content/plugins/wp-championship/icons/";
   $sql="select * from  $cs_team where name not like '#%' order by tid;";
   $results = $wpdb->get_results($sql);
   foreach($results as $res) {
-    $out .= "<tr><td align=\"center\">".$res->tid."</td><td>".$res->name."</td>";
+    $out .= "<tr><td style='text-align:center'>".$res->tid."</td><td>".$res->name."</td>";
     $out .= "<td>".$res->shortname."</td>";
-    $out .= "<td><img src='".$iconpath. $res->icon."' alt='icon' />".$res->icon."</td><td align=\"center\">&nbsp;".$res->groupid."</td>";
-    $out .= "<td align=\"center\">".$res->qualified."</td>";
-    $out .= "<td align=\"center\"><a href=\"".$thisform."&amp;action=modify&amp;tid=".$res->tid."\">".__("Ändern","wpcs")."</a>&nbsp;&nbsp;&nbsp;";
+    $out .= "<td><img src='".$iconpath. $res->icon."' alt='icon' />".$res->icon."</td><td style='text-align:center'>&nbsp;".$res->groupid."</td>";
+    $out .= "<td style='text-align:center'>".$res->qualified."</td>";
+    $out .= "<td style='text-align:center'><a href=\"".$thisform."&amp;action=modify&amp;tid=".$res->tid."\">".__("Ändern","wpcs")."</a>&nbsp;&nbsp;&nbsp;";
     $out .= "<a href=\"".$thisform."&amp;action=remove&amp;tid=".$res->tid."\">".__("Löschen","wpcs")."</a></td></tr>\n";
 
   }

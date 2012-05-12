@@ -1,10 +1,10 @@
 === wp-championship ===
 Contributors: tuxlog
 Donate link: http://www.tuxlog.de/
-Tags: championship,guessing, game, soccer, world, 2010, wordpress, plugin
-Requires at least: 2.5
-Tested up to: 3.1
-Stable tag: 2.9
+Tags: championship,guessing, game, soccer, world, 2012, wordpress, plugin
+Requires at least: 2.7
+Tested up to: 3.3.4
+Stable tag: 3.0
 
 wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer 
 
@@ -64,6 +64,26 @@ There are several resources to visit:
 2. wp-championship tipp dialog
 
 == Changelog ==
+
+= 2011-05-12 v3.0 =
+* fixed button style in admin dialog
+* added XMLRPC interface to wp-championship for use with smartphone apps
+* fixed width of menu entry in wp admin menu
+* fixed widget layout on twentyeleven
+* adopt default css to twentyeleven
+* added demo mode (activate in wp-championship.php)
+* fixed an incompatibility with wordpress MU and register_activation/deactivation
+* adopted to HTML5 for 3.3 compatibility
+* added SQL for EM2012 (folder sql)
+* fixed heading for location in tipp table
+* fixed confirmation mail (teams and time were not displayed, for finals set team to n/a)
+* fixed wrong message (Mail could not be sent...) when deactivating the mailreceipt
+* added auto add feature to automatically add new users to guessing game (see admin dialog to activate)
+* fixed mailservice receipt was only send for admins
+* cleanup php warning (a bit)
+* cleanup html validity
+* fixed stats4 when all players were selected only part of the tipps was shown
+
 
 = 2011-08-26 v2.9=
 * added the possibility to select all users in cs-stats4

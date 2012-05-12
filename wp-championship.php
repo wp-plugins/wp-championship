@@ -3,12 +3,12 @@
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de/wp-championship
 Description: wp-championship is championship plugin for wordpress designed for the WM 2010.
-Version: 2.9
+Version: 3.0
 Author: tuxlog 
 Author URI: http://www.tuxlog.de
 */
 
-/*  Copyright 2007-2011  Hans Matzen  (email : webmaster at tuxlog dot de)
+/*  Copyright 2007-2012  Hans Matzen  (email : webmaster at tuxlog dot de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,7 +28,11 @@ Author URI: http://www.tuxlog.de
 // globale konstanten einlesen / Parameter
 include ("globals.php");
 // include setup functions
+//$plugin_prefix_root = plugin_dir_path( __FILE__ );
+//$plugin_prefix_filename = "{$plugin_prefix_root}/setup.php";
+//include_once $plugin_prefix_filename;
 require_once("setup.php");
+
 // admin dialog
 require_once("cs_admin.php");
 require_once("cs_admin_team.php");
@@ -42,8 +46,14 @@ require_once("cs_userstats.php");
 require_once("cs_stats.php");
 require_once("wpc_autoupdate.php");
 require_once("class_cs_widget.php");
+// xmlrpc extension laden wenn diese aktiviert ist
+if (get_option("cs_xmlrpc") > 0)
+	require_once("cs_xmlrpc.php");
 
-
+// set this to the demo user id to enable demo mode, everything can be read without being logged in
+// or to 0 or false to disable demo mode
+static $wpcs_demo=0;
+	
 // activating deactivating the plugin
 register_activation_hook(__FILE__,'wp_championship_install');
 // aktion fuer erinnerungsmails hinzufügen
@@ -64,6 +74,9 @@ add_action('admin_init', 'wp_championship_admin_init');
 // register class
 add_action('widgets_init', create_function('', 'return register_widget("cs_widget");')); 
 
+if (get_option("cs_newuser_auto")==1) {
+	add_action('user_register','cs_add_user');
+}
 //
 // just return the css link
 // this function is called via the wp_head hook
@@ -85,12 +98,7 @@ function wpcs_css()
 
 // add css im header hinzufügen 
 add_action('wp_head', 'wpcs_css');
-
-// add widgets
-// widget #1: nextgames, shows the n coming games with date and location
-// widget #2: highscore, shows the n first players with their points
-// widget #3: finalround, shows the finalround table
-// widget #4: lastresults, shows the n last results 
+add_action('admin_head', 'wpcs_css');
 
 
 function wp_championship_init()
@@ -120,10 +128,6 @@ function wp_championship_init()
   wp_enqueue_script('cs_stats', '/' . PLUGINDIR . '/wp-championship/cs_stats.js',
 		    array('jquery'), "9999");
 
- 
- 
-
-
 }
 
 function wp_championship_admin_init()
@@ -131,6 +135,9 @@ function wp_championship_admin_init()
     // javascript hinzufügen für tablesorter / floating menu und statistik ajaxeffekt
     wp_enqueue_script('cs_admin', '/' . PLUGINDIR . '/wp-championship/cs_admin.js',
 		      array(), "9999");
+	wp_enqueue_script('jquery');
+    wp_enqueue_script('jquery-ui-core');
+    wp_enqueue_script('jquery-ui-tabs');  
 }
 
 // adds the admin menustructure
@@ -138,7 +145,7 @@ function add_menus() {
 
   $PPATH=ABSPATH.PLUGINDIR."/wp-championship/";
 
-  add_menu_page('wp-championship','wp-champion', 8, $PPATH."cs_admin.php","cs_admin",	site_url("/wp-content/plugins/wp-championship") . '/worldcup-icon.png');
+  add_menu_page('wp-champion',__('Tippspiel',"wpcs"), 8, $PPATH."cs_admin.php","cs_admin",	site_url("/wp-content/plugins/wp-championship") . '/worldcup-icon.png');
 
   add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Teams',"wpcs"), __('Mannschaften', "wpcs"), 8, $PPATH."cs_admin_team.php", "cs_admin_team") ;
 

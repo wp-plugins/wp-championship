@@ -171,7 +171,7 @@ function get_ranking($tippgroup="") {
 		$sql = "select b.user_nicename, a.userid,sum(a.points) as points, c.rang as oldrank from $cs_tipp a inner join $wp_users b on a.userid=b.ID inner join $cs_users c on a.userid=c.userid inner join $cs_match d on a.mid = d.mid where points <> -1 group by b.user_nicename, a.userid order by points DESC;";
 	}
 	$res = $wpdb->get_results($sql);
-
+	
 	return $res;
 }
 
@@ -612,7 +612,7 @@ function mailservice2()
 	}
 }
 
-// verschickt an die abonnenten das aktuelle ranking
+// verschickt an die abonnenten die Bestätigungsmail
 function mailservice3($userid, $tipps)
 {
 	include("globals.php");
@@ -636,12 +636,17 @@ function mailservice3($userid, $tipps)
 
 	foreach ($tipps as $key=>$val) {
 		$sql="select b.name as name1, c.name as name2, a.matchtime as matchtime from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join cs_team c on a.tid2=c.tid where mid=$key;";
-		$resm=$wpdb->get_results($sql);
+		$resm=$wpdb->get_row($sql);
 		$t1 = $resm->name1;
 		$t2 = $resm->name2;
 		$t3 = $resm->matchtime;
-
-		$msg .= "<tr><td align='center'>$t1 : $t2</td><td align='center'>".$val."</td><td align='center'>".$t3. "</td>";
+		
+		if (substr($t1,0,1)=="#")
+			$t1=__("n/a","wpcs");
+		if (substr($t2,0,1)=="#")
+			$t2=__("n/a","wpcs");
+		
+		$msg .= "<tr><td align='center'>$t1 : $t2</td><td align='center'>".($val=="-1:-1"?" -:- ":$val)."</td><td align='center'>".$t3. "</td>";
 		$msg .= "</tr>";
 
 
@@ -671,12 +676,12 @@ function get_cswinner()
 	// tunier beendet?
 	$sql0="select count(*) as anz from $cs_match where winner=-1;";
 	$row=$wpdb->get_row($sql0);
-
+	
 	if ( $row->anz == 0 ) {
 		if (get_option("cs_modus")==1) {
 			 
 	  // selektiere winner team als gewinner des letzten spiels = finale
-	  $sql1="select case winner when 1 then tid1 when 2 then tid2 else 0 end as wteam from $cs_match order by matchtime desc limit 0,1;";
+	  $sql1="select case winner when 1 then tid1 when 2 then tid2 else 0 end as wteam from $cs_match where round='F' order by matchtime desc limit 0,1;";
 	  $row=$wpdb->get_row($sql1);
 	  $wteam = $row->wteam;
 	   
@@ -772,5 +777,25 @@ function store_current_ranking() {
 		// gruppenwechsel versorgen
 		$pointsbefore = $row->points;
 	}
+}
+
+//
+// fuegt den user mit userid id dem tippspiel hinzu
+//
+function cs_add_user($id) {
+	include("globals.php");
+	global $wpdb;
+	
+	$sql="select count(*) as anz from $cs_users where userid=".$id.";";
+	$results = $wpdb->get_row($sql);
+	
+	if ($results->anz == 0) {
+		$sql = "insert into ". $cs_table_prefix ."users values (". $id . ",0,0,0,0,-1,'1900-01-01 00:00:00',-1,'".''."');";
+		$results = $wpdb->query($sql);
+		//if ( $results == 1 )
+		//	admin_message ( __('Mitspieler erfolgreich angelegt.',"wpcs") );
+		//else
+		//	admin_message( __('Datenbankfehler; Vorgang abgebrochen.',"wpcs") );
+	} 
 }
 ?>

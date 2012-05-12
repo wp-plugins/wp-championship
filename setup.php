@@ -25,7 +25,6 @@ function wp_championship_install()
   include("globals.php");
   global $wpdb;
 
-
   // add charset & collate like wp db class
   $charset_collate = '';
   
@@ -36,9 +35,8 @@ function wp_championship_install()
 	  $charset_collate .= " COLLATE $wpdb->collate";
   }
   
-
-  $sql = 'SHOW TABLES LIKE \''.$cs_table_prefix.'%\'';
-  $results = $wpdb->query($sql);
+  $sql = "SHOW TABLES LIKE '$cs_team'";
+  $results = ($wpdb->get_var($sql) == $cs_team); 
 
   if ($results == 0)
     {
