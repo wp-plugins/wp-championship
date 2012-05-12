@@ -52,12 +52,12 @@ function cs_admin_stats()
  $rank = get_ranking();
  $i=0;
  $out .= "<h2>".__("Aktueller Punktestand","wpcs")."</h2>\n";
- $out .= "<table border='1' width='500' cellpadding='0'><tr>\n";
+ $out .= "<table border='1' style='width:500px' ><tr>\n";
  $out .= '<th scope="col" style="text-align: center">Platz</th>'."\n";
  $out .= '<th scope="col" style="text-align: center">Spieler</th>'."\n";
- $out .= '<th width="20">'.__("Punktestand","wpcs").'</th>'."\n";
- $out .= '<th width="20">'.__("Anzahl Tipps","wpcs").'</th>'."\n";
- $out .= '<th width="20">'.__("Champion-Tipp","wpcs").'</th>'."</tr>\n";
+ $out .= '<th style="width:20">'.__("Punktestand","wpcs").'</th>'."\n";
+ $out .= '<th style="width:20">'.__("Anzahl Tipps","wpcs").'</th>'."\n";
+ $out .= '<th style="width:20">'.__("Champion-Tipp","wpcs").'</th>'."</tr>\n";
 
  $i=0;
  $j=1;
@@ -71,14 +71,14 @@ function cs_admin_stats()
      $j += 1;
    
    // ermittle anzahl abgegebener tipps
-   $sql="select count(*) as anz from $cs_tipp where result1<>-1 and result2<>-1 and userid=".$row->userid.";";
+   $sql="select count(*) as anz from $cs_tipp a inner join $cs_match b on a.mid=b.mid where a.result1<>-1 and a.result2<>-1 and userid=".$row->userid.";";
    $r0=$wpdb->get_row($sql);
    
    // ermittle champion tipp
    $sql="select name from $cs_team a inner join $cs_users b on a.tid = b.champion where userid=".$row->userid.";";
    $r1=$wpdb->get_row($sql);
    
-   $out .= "<tr><td align='center'>$i</td><td align='center'>".$row->user_nicename."</td><td align='center'>".$row->points. "</td><td align='center'>".$r0->anz."</td><td>".$r1->name."</td></tr>";
+   $out .= "<tr><td style='text-align:center'>$i</td><td style='text-align:center'>".$row->user_nicename."</td><td style='text-align:center'>".$row->points. "</td><td style='text-align:center'>".$r0->anz."</td><td>".$r1->name."</td></tr>";
    // gruppenwechsel versorgen
    $pointsbefore = $row->points;
  }
