@@ -138,10 +138,10 @@ function calc_points($new=false)
 	$sql="select max(matchtime) as mtime from $cs_match where round='F';";
 	$ftime = $wpdb->get_row($sql);
 	$fmatchtime = $ftime->mtime;
+	
 	$sql="select case winner when 1 then tid1 when 2 then tid2 end as winner from $cs_match a where a.round='F' and a.winner <> -1 and matchtime = '$fmatchtime';";
 	$res=$wpdb->get_row($sql);
-
-	$champion = $res->winner;
+	$champion = (isset($res)?$res->winner:-999);
 
 	if ($champion) {
 		$sql="select userid from $cs_users where champion=$champion;";
@@ -517,7 +517,7 @@ function mailservice()
 		$msg .= "<tr><td align='center'>$i</td><td align='center'>".$row->user_nicename."</td><td align='center'>".$row->points. "</td>";
 		if (get_option('cs_rank_trend'))
 		$msg .= "<td align='center'>$trend</td>";
-		$out .= "</tr>";
+		$msg .= "</tr>";
 
 
 		// gruppenwechsel versorgen

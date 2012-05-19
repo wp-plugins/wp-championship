@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2007-2011  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2007-2012  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -44,9 +44,9 @@ function cs_admin_finals()
 	$action = "savenew";
   elseif ( isset( $_POST['update'] ) )
     $action = "update";
-  elseif ( $_GET['action'] == 'remove' )
+  elseif ( isset($_GET['action']) && $_GET['action'] == 'remove' )
     $action = "remove";
-  elseif ( $_GET['action'] == 'modify' )
+  elseif ( isset($_GET['action']) && $_GET['action'] == 'modify' )
     $action = "edit";
 
 
@@ -159,6 +159,7 @@ function cs_admin_finals()
 
  
   // output teams add/modify form
+  $w1=-1; $w2=-1;$g1=-1;$g2=-1;$p1=-1;$p2=-1;$m1=-1;$m2=-1;
   if ( $action == 'edit' ) {
     // select data to modify
     $sql= "select * from  $cs_match where mid=".$_GET['mid'].";";
@@ -238,9 +239,9 @@ function cs_admin_finals()
   $out .= '<td style="width:67%">Gruppe:'.$groupsel2_html.' Platz:'.$placesel2_html.' oder '.$wsel2_html.' Match Nr. <select id="matchid2" name="matchid2">'.$match2_select_html.'</select></td></tr>'."\n";
 
   $out .= '<tr><th scope="row" ><label for="location">'.__('Ort','wpcs').':</label></th>'."\n";
-  $out .= '<td><input name="location" id="location" type="text" value="'. $results->location.'" size="40" /></td></tr>'."\n";
+  $out .= '<td><input name="location" id="location" type="text" value="'. (isset($results->location)?$results->location:'').'" size="40" /></td></tr>'."\n";
   $out .= '<tr><th scope="row" ><label for="matchtime">'.__('Datum / Zeit','wpcs').':</label></th>'."\n";
-  $out .= '<td><input name="matchtime" id="matchtime" type="text" value="'. $results->matchtime.'" size="40" /></td></tr>'."\n";
+  $out .= '<td><input name="matchtime" id="matchtime" type="text" value="'. (isset($results->matchtime)?$results->matchtime:'').'" size="40" /></td></tr>'."\n";
 
   $out .= '</table>'."\n";
   

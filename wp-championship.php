@@ -3,7 +3,7 @@
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de/wp-championship
 Description: wp-championship is championship plugin for wordpress designed for the WM 2010.
-Version: 3.0
+Version: 3.1
 Author: tuxlog 
 Author URI: http://www.tuxlog.de
 */
@@ -145,19 +145,19 @@ function add_menus() {
 
   $PPATH=ABSPATH.PLUGINDIR."/wp-championship/";
 
-  add_menu_page('wp-champion',__('Tippspiel',"wpcs"), 8, $PPATH."cs_admin.php","cs_admin",	site_url("/wp-content/plugins/wp-championship") . '/worldcup-icon.png');
+  add_menu_page('wp-champion',__('Tippspiel',"wpcs"), 'manage_options', $PPATH."cs_admin.php","cs_admin",	site_url("/wp-content/plugins/wp-championship") . '/worldcup-icon.png');
 
-  add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Teams',"wpcs"), __('Mannschaften', "wpcs"), 8, $PPATH."cs_admin_team.php", "cs_admin_team") ;
+  add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Teams',"wpcs"), __('Mannschaften', "wpcs"), 'manage_options', $PPATH."cs_admin_team.php", "cs_admin_team") ;
 
-   add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Matches',"wpcs"), __('Vorrunde', "wpcs"), 8, $PPATH."cs_admin_match.php", "cs_admin_match") ; 
+  add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Matches',"wpcs"), __('Vorrunde', "wpcs"), 'manage_options', $PPATH."cs_admin_match.php", "cs_admin_match") ; 
  
-   add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Finals',"wpcs"), __('Finalrunde', "wpcs"), 8, $PPATH."cs_admin_finals.php", "cs_admin_finals") ; 
+  add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Finals',"wpcs"), __('Finalrunde', "wpcs"), 'manage_options', $PPATH."cs_admin_finals.php", "cs_admin_finals") ; 
 
-   add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Users',"wpcs"), __('Mitspieler', "wpcs"), 8, $PPATH."cs_admin_users.php", "cs_admin_users") ; 
+  add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Users',"wpcs"), __('Mitspieler', "wpcs"), 'manage_options', $PPATH."cs_admin_users.php", "cs_admin_users") ; 
 
-   add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Stats',"wpcs"), __('Statistiken', "wpcs"), 8, $PPATH."cs_admin_stats.php", "cs_admin_stats") ;
+  add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Stats',"wpcs"), __('Statistiken', "wpcs"), 'manage_options', $PPATH."cs_admin_stats.php", "cs_admin_stats") ;
 
-   add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Bezeichungen',"wpcs"), __('Bezeichnungen', "wpcs"), 8, $PPATH."cs_admin_labels.php", "cs_admin_labels") ;
+  add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Bezeichungen',"wpcs"), __('Bezeichnungen', "wpcs"), 'manage_options', $PPATH."cs_admin_labels.php", "cs_admin_labels") ;
 
  }
   

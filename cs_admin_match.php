@@ -44,9 +44,9 @@ function cs_admin_match()
 	$action = "savenew";
   elseif ( isset( $_POST['update'] ) )
     $action = "update";
-  elseif ( $_GET['action'] == 'remove' )
+  elseif ( isset($_GET['action']) && $_GET['action'] == 'remove' )
     $action = "remove";
-  elseif ( $_GET['action'] == 'modify' )
+  elseif ( isset($_GET['action']) && $_GET['action'] == 'modify' )
     $action = "edit";
 
 
@@ -60,8 +60,8 @@ function cs_admin_match()
       $errflag=1;
     if ( $_POST['location']=="" )
       $_POST['location']=__("nowhere","wpcs");
-    if ( $_POST['spieltag']=="" )
-	$_POST['spieltag']=0;
+    if ( !isset($_POST['spieltag']) || $_POST['spieltag']=="" )
+		$_POST['spieltag']=0;
     
     // send a message about mandatory data
     if ( $errflag == 1 )
@@ -121,12 +121,12 @@ function cs_admin_match()
   $results1 = $wpdb->get_results($sql);
   foreach($results1 as $res) {
     $team1_select_html .= "<option value='".$res->tid."' ";
-    if ($res->tid == $results->tid1)
+    if (isset($results->tid1) && $res->tid == $results->tid1)
       $team1_select_html .="selected='selected'";
     $team1_select_html .=">".$res->name."</option>\n";
  
     $team2_select_html .= "<option value='".$res->tid."' ";
-    if ($res->tid == $results->tid2)
+    if (isset($results->tid2) && $res->tid == $results->tid2)
       $team2_select_html .="selected='selected'";
     $team2_select_html .=">".$res->name."</option>\n";
   }
@@ -146,9 +146,9 @@ function cs_admin_match()
   $out .= '<tr><th scope="row" ><label for="team2">'.__('Mannschaft 2',"wpcs").' :</label></th>'."\n";
   $out .= '<td><select id="team2" name="team2">'.$team2_select_html.'</select></td></tr>'."\n";
   $out .= '<tr><th scope="row" ><label for="location">'.__('Ort','wpcs').':</label></th>'."\n";
-  $out .= '<td><input name="location" id="location" type="text" value="'. $results->location.'" size="40" /></td></tr>'."\n";
+  $out .= '<td><input name="location" id="location" type="text" value="'. (isset($results->location)?$results->location:"").'" size="40" /></td></tr>'."\n";
   $out .= '<tr><th scope="row" ><label for="matchtime">'.__('Datum / Zeit','wpcs').':</label></th>'."\n";
-  $out .= '<td><input name="matchtime" id="matchtime" type="text" value="'. $results->matchtime.'" size="40" /></td></tr>'."\n"; 
+  $out .= '<td><input name="matchtime" id="matchtime" type="text" value="'. (isset($results->matchtime)?$results->matchtime:"").'" size="40" /></td></tr>'."\n"; 
   // spieltag ausgeben wenn in liga-modus
   if ( get_option('cs_modus') == 2 ) {
       $out .= '<tr><th scope="row"><label for="spieltag">'.__('Spieltag','wpcs').':</label></th>'."\n";

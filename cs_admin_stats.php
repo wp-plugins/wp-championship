@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2008  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2008-2012  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -78,7 +78,11 @@ function cs_admin_stats()
    $sql="select name from $cs_team a inner join $cs_users b on a.tid = b.champion where userid=".$row->userid.";";
    $r1=$wpdb->get_row($sql);
    
-   $out .= "<tr><td style='text-align:center'>$i</td><td style='text-align:center'>".$row->user_nicename."</td><td style='text-align:center'>".$row->points. "</td><td style='text-align:center'>".$r0->anz."</td><td>".$r1->name."</td></tr>";
+   $out .= "<tr><td style='text-align:center'>$i</td>";
+   $out .= "<td style='text-align:center'>".$row->user_nicename."</td>";
+   $out .= "<td style='text-align:center'>".$row->points. "</td>";
+   $out .= "<td style='text-align:center'>".$r0->anz."</td>";
+   $out .= "<td style='text-align:center'>".(isset($r1->name)?$r1->name:'-')."</td></tr>";
    // gruppenwechsel versorgen
    $pointsbefore = $row->points;
  }

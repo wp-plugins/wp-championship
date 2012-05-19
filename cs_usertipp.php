@@ -18,8 +18,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
-	die('You
-			are not allowed to call this page directly.');
+	die('You are not allowed to call this page directly.');
 }
 
 // funktion zum holen einer url (wird verwendet um die lokale zeitzone des users zu ermitteln)
@@ -139,7 +138,7 @@ function show_UserTippForm()
 				check_admin_referer( 'wpcs-usertipp-update');
 
 			// wurde als stellvertreter gespeichert?
-			if ($_POST['cs_stellv'] and ! $cs_stellv_schalter) {
+			if (isset($_POST['cs_stellv']) && ! $cs_stellv_schalter) {
 				$realuser=$uid;
 				$uid=$_POST['cs_stellv'];
 			}
@@ -151,9 +150,9 @@ function show_UserTippForm()
 			// datenfelder auf gueltigkeit pruefen
 			if ( $_POST['stellvertreter'] == -1 or $_POST['stellvertreter'] == "-")
 				$_POST['stellvertreter']=0;
-			if ( $_POST['mailservice'] == '' )
+			if ( !isset($_POST['mailservice']) || $_POST['mailservice'] == '' )
 				$_POST['mailservice']=0;
-			if ( $_POST['mailreceipt'] == '' )
+			if ( !isset($_POST['mailreceipt']) || $_POST['mailreceipt'] == '' )
 				$_POST['mailreceipt']=0;
 			if ( $_POST['champion'] == '' )
 				$_POST['champion']=-1;
@@ -258,7 +257,7 @@ function show_UserTippForm()
 						if ($r1) {
 							if ( $r1->result1 != (int) $_POST['gt1_'.$mid] or
 									$r1->result2 != (int) $_POST['gt2_'.$mid] or
-									$r1->result3 != (int) $_POST['gt3_'.$mid])  {
+									(isset($_POST['gt3_'.$mid]) and $r1->result3 != (int) $_POST['gt3_'.$mid]) )  {
 								$sql2="update  $cs_tipp set result1=". (int) $_POST['gt1_'.$mid].", result2=".(int) $_POST['gt2_'.$mid].", result3=".(int) $_POST['gt3_'.$mid].", tipptime='$currtime' where userid=$uid and mid=$mid;";
 								$r2 = $wpdb->query($sql2);
 							}
@@ -307,15 +306,17 @@ function show_UserTippForm()
 				foreach ($_POST as $key => $value) {
 					$mkey = substr($key,0,4);
 					if ( $mkey == "rt1_" ) {
-						$mid=substr($key,4);
-						if  ( !(  ($_POST[$key] == -1 and $_POST['rt2_'.$mid] == -1) or ($_POST[$key] >= 0 and $_POST['rt2_'.$mid] >= 0) )) {
+						$mid=substr($key,4); 
+						if  ( !(  ($_POST['rt1_'.$mid] == -1 and $_POST['rt2_'.$mid] == -1) or 
+								  ($_POST['rt1_'.$mid] >= 0 and $_POST['rt2_'.$mid] >= 0) )) {
 							$out .= __("Es fehlt eine Seite des Ergebnisses oder eine Eingabe ist fehlerhaft.","wpcs")."<br />\n";
 							$errflag += 1;
 							$errlist[$key] = $key;
+							
 						}
 					}
 				}
-					
+
 				// wenn alles in ordnung ist $errflag == 0, dann speichere die ergebnisse
 				if ($errflag == 0) {
 					// tipp speichern
@@ -361,13 +362,13 @@ function show_UserTippForm()
 			// mailservice durchfuehren (verschickt mails an alle die sie haben wollten)
 			if ($have_results)
 				mailservice();
-			if ($have_tipps and $_POST['mailreceipt']!=0)
+			if (isset($have_tipps) and $_POST['mailreceipt']!=0)
 				mailservice3($uid, $have_tipps);
 
 
 			// wurde als stellvertreter gespeichert dann nach speichern
 			// wieder umschalten auf realuser
-			if ($_POST['cs_stellv'])
+			if (isset($_POST['cs_stellv']))
 				$uid=$realuser;
 		}
 	} // end of demo if
@@ -667,30 +668,38 @@ function show_UserTippForm()
 		if (!$cs_col_time)     $out .= "<td style='text-align:center' ".$match_tooltip." >".$res->matchtime."</td>";
 		$out .= "<td style='text-align:center'>";
 
+		
 		// fehlerklasse setzen, wenn erforderlich
 		if (array_key_exists('gt1_'.$res->mid,$errlist)) {
 			$errclass = " cs_inputerror ";
 		} else {
 			$errclass="";
 		}
+		
+		$leftsidetipp = (isset($_POST['gt1_'.$res->mid]) && $_POST['gt1_'.$res->mid]!=-1 || array_key_exists('gt1_'.$res->mid,$errlist)?$_POST['gt1_'.$res->mid]:"");
 		if ($res->result1!=-1 or $blog_now > $match_start or
-				($res->round=='V' and get_option('cs_lock_round1')))
-			$out .= $_POST['gt1_'.$res->mid]." : ";
-		else
-			$out .= "<input class='cs_entry $errclass' name='gt1_".$res->mid."' id='gt1_".$res->mid."' type='text' value='".(isset($_POST['gt1_'.$res->mid])?$_POST['gt1_'.$res->mid]:"")."' size='1' maxlength='2' />";
-
+				($res->round=='V' and get_option('cs_lock_round1'))) {
+			//$out .= $_POST['gt1_'.$res->mid]." : ";
+			$out .= $leftsidetipp." : ";
+		} else {
+			//$out .= "<input class='cs_entry $errclass' name='gt1_".$res->mid."' id='gt1_".$res->mid."' type='text' value='".(isset($_POST['gt1_'.$res->mid])?$_POST['gt1_'.$res->mid]:"")."' size='1' maxlength='2' />";
+			$out .= "<input class='cs_entry $errclass' name='gt1_".$res->mid."' id='gt1_".$res->mid."' type='text' value='".$leftsidetipp."' size='1' maxlength='2' />";
+		}
 		// fehlerklasse setzen, wenn erforderlich
-		if (array_key_exists('gt2_'.$res->mid,$errlist))
+		if (array_key_exists('gt2_'.$res->mid,$errlist) or array_key_exists('gt1_'.$res->mid,$errlist))
 			$errclass = " cs_inputerror ";
 		else
 			$errclass="";
 
+		$rightsidetipp = (isset($_POST['gt2_'.$res->mid])  && $_POST['gt2_'.$res->mid]!=-1 || array_key_exists('gt2_'.$res->mid,$errlist)?$_POST['gt2_'.$res->mid]:"");
 		if ($res->result2 != -1 or $blog_now > $match_start or
-				($res->round=='V' and get_option('cs_lock_round1')))
-			$out .= $_POST['gt2_'.$res->mid];
-		else
-			$out .= " : <input class='cs_entry $errclass' name='gt2_".$res->mid."' id='gt2_".$res->mid."' type='text' value='".(isset($_POST['gt2_'.$res->mid])?$_POST['gt2_'.$res->mid]:"")."' size='1' maxlength='2' />";
-
+				($res->round=='V' and get_option('cs_lock_round1'))) {
+			//$out .= $_POST['gt2_'.$res->mid];
+			$out .= $rightsidetipp;
+		} else {
+			//$out .= " : <input class='cs_entry $errclass' name='gt2_".$res->mid."' id='gt2_".$res->mid."' type='text' value='".(isset($_POST['gt2_'.$res->mid])?$_POST['gt2_'.$res->mid]:"")."' size='1' maxlength='2' />";
+			$out .= " : <input class='cs_entry $errclass' name='gt2_".$res->mid."' id='gt2_".$res->mid."' type='text' value='".$rightsidetipp."' size='1' maxlength='2' />";
+		}
 		$out .= "<br />";
 
 		// der admin darf ergebnisse erfassen, alle anderen duerfen sie nur sehen
@@ -732,8 +741,9 @@ function show_UserTippForm()
 			else
 				$out .= "<td><input class='cs_entry $errclass' name='gt3_".$res->mid."' id='gt3_".$res->mid."' type='text' size='1' maxlength='2' value='$gt3_value' /></td> ";
 		}
-
-		$out .= "<td style='text-align:center'>".($_POST['pt_'.$res->mid] == -1 ? "-" : $_POST['pt_'.$res->mid] )."</td>";
+		
+		
+		$out .= "<td style='text-align:center'>".(isset($_POST['pt_'.$res->mid]) && $_POST['pt_'.$res->mid] != -1 ? $_POST['pt_'.$res->mid]:"-" )."</td>";
 		$out .= "</tr>\n";
 
 		// gruppenwechsel versorgen

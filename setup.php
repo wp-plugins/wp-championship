@@ -219,7 +219,7 @@ function wp_championship_install()
   $cs_groups=get_option("cs_groups");
   if ($cs_groups == "") {
     $cs_groups="8";
-    add_option("cs_groups",$cs_groups,"Number of groups","yes");
+    add_option("cs_groups",$cs_groups,"","yes");
   };
   
 
@@ -227,21 +227,21 @@ function wp_championship_install()
   $cs_pts_winner=get_option("cs_pts_winner");
   if ($cs_pts_winner == "") {
     $cs_pts_winner="3";
-    add_option("cs_pts_winner",$cs_pts_winner,"Points for winning team","yes");
+    add_option("cs_pts_winner",$cs_pts_winner,"","yes");
   };
 
   // Option: Punkte für Verlierer, Wert: ganzzahlig numerisch, Default: 0
   $cs_pts_looser=get_option("cs_pts_looser");
   if ($cs_pts_looser == "") {
     $cs_pts_looser="0";
-    add_option("cs_pts_looser",$cs_pts_looser,"Points for winning team","yes");
+    add_option("cs_pts_looser",$cs_pts_looser,"","yes");
   };  
   
   // Option: Punkte für Unentschieden , Wert: ganzzahlig numerisch, Default: 1
   $cs_pts_deuce=get_option("cs_pts_deuce");
   if ($cs_pts_deuce == "") {
     $cs_pts_deuce="1";
-    add_option("cs_pts_deuce",$cs_pts_deuce,"Points for deuce","yes");
+    add_option("cs_pts_deuce",$cs_pts_deuce,"","yes");
   };
   
   // Option: Anzahl der Teams in der Finalrunde; Werte: 16, 8, 4; Default: 16; 
@@ -250,7 +250,7 @@ function wp_championship_install()
   $cs_final_teams=get_option("cs_final_teams");
   if ($cs_final_teams == "") {
     $cs_final_teams="16";
-    add_option("cs_final_teams",$cs_final_teams,"Number of teams in alround","yes");
+    add_option("cs_final_teams",$cs_final_teams,"","yes");
   };
 
   // Option: Anzahl der Teams pro Gruppe, die maximal in die 
@@ -258,21 +258,21 @@ function wp_championship_install()
   $cs_group_teams= get_option("cs_group_teams");
   if ($cs_group_teams == "") {
     $cs_group_teams="2";
-    add_option("cs_group_teams",$cs_group_teams,"Number of teams per group joining the finalround","yes");
+    add_option("cs_group_teams",$cs_group_teams,"","yes");
   };
   
   // Option: Punkte für richtigen Tipp, Wert: ganzzahlig numerisch, Default:3
   $cs_pts_tipp= get_option("cs_pts_tipp");
   if ($cs_pts_tipp == "") {
     $cs_pts_tipp="1";
-    add_option("cs_pts_tipp",$cs_pts_tipp,"Points for wright tipp","yes");
+    add_option("cs_pts_tipp",$cs_pts_tipp,"","yes");
   };
   
   // Option: Punkte für richtige Tendenz, Wert: ganzzahlig numerisch, Default:1
   $cs_pts_tendency=get_option("cs_pts_tendency");
   if ($cs_pts_tendency == "") {
     $cs_pts_tendency="1";
-    add_option("cs_pts_tendency",$cs_pts_tendency,"Points wright tendency","yes");
+    add_option("cs_pts_tendency",$cs_pts_tendency,"","yes");
   };
 
   // Option: Punkte für richtige Tendenz und Tordifferenz, Wert: ganzzahlig 
@@ -280,7 +280,7 @@ function wp_championship_install()
   $cs_pts_supertipp=get_option("cs_pts_supertipp");
   if ($cs_pts_supertipp == "") {
     $cs_pts_supertipp="5";
-    add_option("cs_pts_supertipp",$cs_pts_supertipp,"Points for wright supertipp","yes");
+    add_option("cs_pts_supertipp",$cs_pts_supertipp,"","yes");
   };
 
   // Option: Punkte für richtigen Champion, Wert: ganzzahlig numerisch, 
@@ -288,7 +288,7 @@ function wp_championship_install()
    $cs_pts_champ=get_option("cs_pts_champ");
   if ($cs_pts_champ == "") {
     $cs_pts_champ="1";
-    add_option("cs_pts_champ",$cs_pts_champ,"Points for wright champion tipp","yes");
+    add_option("cs_pts_champ",$cs_pts_champ,"","yes");
   };
 
   // Option: Punkte für einseitig richtigen Tipp, Wert: ganzzahlig numerisch, 
@@ -296,7 +296,7 @@ function wp_championship_install()
    $cs_pts_oneside=get_option("cs_pts_oneside");
   if ($cs_pts_oneside == "") {
     $cs_pts_oneside="0";
-    add_option("cs_pts_oneside",$cs_pts_oneside,"Points for one side correct tip","yes");
+    add_option("cs_pts_oneside",$cs_pts_oneside,"","yes");
   };
 
   // Option: Schwellwert für Summer der Tore Tipp, Wert: ganzzahlig numerisch, 
@@ -304,7 +304,7 @@ function wp_championship_install()
    $cs_goalsum=get_option("cs_goalsum");
   if ($cs_goalsum == "") {
     $cs_goalsum="0";
-    add_option("cs_goalsum",$cs_goalsum,"Threshold for points for sum of goals","yes");
+    add_option("cs_goalsum",$cs_goalsum,"","yes");
   };
 
   // Option: Punkte für Summe der Tore, Wert: ganzzahlig numerisch, 
@@ -312,42 +312,42 @@ function wp_championship_install()
    $cs_pts_goalsum=get_option("cs_pts_goalsum");
   if ($cs_pts_goalsum == "") {
     $cs_pts_goalsum="0";
-    add_option("cs_pts_goalsum",$cs_pts_goalsum,"Points for sum of goals tip","yes");
+    add_option("cs_pts_goalsum",$cs_pts_goalsum,"","yes");
   };
 
   // Option: Stellvertreterfunktion abstellen, Wert: bool, Default: 0
   $cs_stellv_schalter=get_option("cs_stellv_schalter");
   if ($cs_stellv_schalter == "") {
     $cs_stellv_schalter="1";
-    add_option("cs_stellv_schalter",$cs_stellv_schalter,"Disable substitute?","yes");
+    add_option("cs_stellv_schalter",$cs_stellv_schalter,"","yes");
   }; 
 
   // Option: Turniermodus, Wert: int, Default: 1
   $cs_modus=get_option("cs_modus");
   if ($cs_modus == "") {
     $cs_modus="1";
-    add_option("cs_modus",$cs_modus,"championship modus","yes");
+    add_option("cs_modus",$cs_modus,"","yes");
   };
 
   // Option: Floating Link einschalten, Wert: bool, Default: 1
   $cs_floating_link=get_option("cs_floating_link");
   if ($cs_floating_link == "") {
     $cs_floating_link="1";
-    add_option("cs_floating_link",$cs_floating_link,"Enable floating link?","yes");
+    add_option("cs_floating_link",$cs_floating_link,"","yes");
   }; 
 
   // Option: Vorrunden-Tipps sperren, Wert: bool, Default: 0
   $cs_lock_round1=get_option("cs_lock_round1");
   if ($cs_lock_round1 == "") {
       $cs_lock_round1="0";
-      add_option("cs_lock_round1",$cs_lock_round1,"lock tipps for round1?","yes");
+      add_option("cs_lock_round1",$cs_lock_round1,"","yes");
   }; 
  
   // Option: Platzierungstrend berechnen, Wert: bool, Default: 1
   $cs_rank_trend=get_option("cs_rank_trend");
   if ($cs_rank_trend == "") {
       $cs_rank_trend="1";
-      add_option("cs_rank_trend",$cs_rank_trend,"Enable rank trend?","yes");
+      add_option("cs_rank_trend",$cs_rank_trend,"","yes");
   }; 
   
   wp_schedule_event(time(), 'hourly', 'cs_mailreminder');
