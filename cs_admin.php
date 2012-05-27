@@ -96,6 +96,7 @@ function cs_admin()
 	update_option( "cs_xmlrpc_shortname", $_POST['cs_xmlrpc_shortname'] );
 	update_option( "cs_xmlrpc_news", $_POST['cs_xmlrpc_news'] );
 	update_option( "cs_newuser_auto", $_POST['cs_newuser_auto'] );
+	update_option( "cs_hovertable", $_POST['cs_hovertable'] );
 	
 	admin_message( __('Einstellungen erfolgreich gespeichert.',"wpcs") );
     }
@@ -173,6 +174,7 @@ function cs_admin()
   $cs_xmlrpc_shortname= get_option("cs_xmlrpc_shortname");
   $cs_xmlrpc_news= get_option("cs_xmlrpc_news");
   $cs_newuser_auto= get_option("cs_newuser_auto");
+  $cs_hovertable= get_option("cs_hovertable");
   
   // build form
   $out = "";
@@ -335,6 +337,14 @@ $out.= '/><br /></th>'."\n";
 	 $out .= " checked='checked' ";
  $out .= '/></td></tr>'."\n"; 
 
+ // switch to activate/deactivate bubble group table when hovering over the group id
+ $out .= '<tr><td colspan="2">&nbsp;</td>';
+ $out .= '<th scope="row" ><label for="cs_hovertable">'.__('Gruppentabelle auf Tippseite einblenden',"wpcs").':</label></th>'."\n";
+ $out .= '<td ><input name="cs_hovertable" id="cs_hovertable" type="checkbox" value="1"  ';
+ if ($cs_hovertable > 0 )
+ 	$out .= " checked='checked' ";
+ $out .= '/></td></tr>'."\n";
+ 
  // switch to lock round1
  $out .= '<tr><td colspan="2">&nbsp;</td><th scope="row" ><label for="cs_lock_round1">'.__('Vorrunden-Tipps sperren',"wpcs").':</label></th>'."\n";
  $out .= '<td ><input name="cs_lock_round1" id="cs_lock_round1" type="checkbox" value="1"  ';

@@ -182,3 +182,13 @@ th.wpc-label {
 	width:30%;
 	text-align:left;
 }
+
+.tooltip-red
+{
+	background-color: #FCE5CE;
+	/*color: #F38F2A; */
+	color: #000000;
+	padding:10px 10px 10px 10px;
+	font-weight:bold;
+	z-index:100;
+}

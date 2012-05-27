@@ -3,7 +3,7 @@
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de/wp-championship
 Description: wp-championship is championship plugin for wordpress designed for the WM 2010.
-Version: 3.1
+Version: 3.2
 Author: tuxlog 
 Author URI: http://www.tuxlog.de
 */
@@ -104,12 +104,15 @@ add_action('admin_head', 'wpcs_css');
 function wp_championship_init()
 {
   // get translation 
-  $locale = get_locale();
+  $locale = get_locale(); 
   if ( empty($locale) )
     $locale = 'en_US';
-  if(function_exists('load_textdomain') and $locale != "de_DE") 
-    load_textdomain("wpcs",ABSPATH . "wp-content/plugins/wp-championship/lang/".$locale.".mo");
-     
+  if(function_exists('load_textdomain') and $locale != "de_DE") { 
+  	//load_plugin_textdomain("wpcs",false,"wp-championship/lang");
+  	load_textdomain("wpcs",ABSPATH . "wp-content/plugins/wp-championship/lang/".$locale.".mo");
+  }
+  
+  
   if (function_exists('add_shortcode')) {
   	add_shortcode('cs-usertipp', 'show_UserTippForm');
     add_shortcode('cs-userstats','show_UserStats');
@@ -122,10 +125,12 @@ function wp_championship_init()
 
   // javascript hinzufügen für tablesorter / floating menu und statistik ajaxeffekt
   wp_enqueue_script('cs_tablesort', '/' . PLUGINDIR . '/wp-championship/jquery.tablesorter.min.js',
-		    array('jquery'), "2.0.3");
+		    array('jquery'), "2.0.3",true);
   wp_enqueue_script('cs_dimensions', '/' . PLUGINDIR . '/wp-championship/jquery.dimensions.js',
 		    array('jquery'), "1.2"); 
   wp_enqueue_script('cs_stats', '/' . PLUGINDIR . '/wp-championship/cs_stats.js',
+		    array('jquery'), "9999"); 
+  wp_enqueue_script('cs_hovertable', '/' . PLUGINDIR . '/wp-championship/jquery.tooltip.js',
 		    array('jquery'), "9999");
 
 }

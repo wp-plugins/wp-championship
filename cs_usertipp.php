@@ -42,6 +42,9 @@ function show_UserTippForm()
 
 	// initialisiere ausgabe variable
 	$out = "";
+	
+	// hovertable count init
+	$hovertable_count = 0;
 
 	// pruefe ob anwender angemeldet ist, wenn nicht gebe hinweis aus
 	// und beende die funktion
@@ -400,6 +403,7 @@ function show_UserTippForm()
 	if ($cs_floating_link)
 		$out .= '<div id="WPCSfloatMenu"><ul class="menu1"><li><a href="#" onclick="window.scrollTo(0,0); return false;"> ' . __("Nach oben",'wpcs') . ' </a></li></ul></div>';
 
+	
 	// -------------------------------------------------------------------
 	// ausgabe der optionen und der tipptabelle
 	// -------------------------------------------------------------------
@@ -511,9 +515,9 @@ function show_UserTippForm()
 	else
 		$out .= "<td>&nbsp;<input type='hidden' name='stellvertreter' value='-' /></td>";
 
-	$out .= "<td><input type='checkbox' name='mailservice' value='1'";
+	$out .= "<td><input type='checkbox' name='mailservice' value='1' ";
 	$out .= ($r0[0]->mailservice==1?'checked="checked"':'') ." /> ".__("Mailerinnerung","wpcs")."<br />";
-	$out .= "<input type='checkbox' name='mailreceipt' value='1'";
+	$out .= "<input type='checkbox' name='mailreceipt' value='1' ";
 	$out .= ($r0[0]->mailreceipt==1?'checked="checked"':'') ." /> ".__("Mailbestätigung","wpcs")."</td></tr>";
 
 	if (get_option("cs_pts_champ") > 0) {
@@ -538,9 +542,10 @@ function show_UserTippForm()
 	$iconpath = get_option("siteurl") . "/wp-content/plugins/wp-championship/icons/";
 
 	// sortierbare tabelle nur im tunier modus
-	if ( get_option('cs_modus') == 1 )
+	if ( get_option('cs_modus') == 1 ) {
+		if (!$cs_tippsort >= 1) $cs_tipp_sort=1;
 		$out .= "<script type='text/javascript'><!--\njQuery(document).ready(function() { jQuery('#ptab').tablesorter({sortList:[[". --$cs_tipp_sort .",0]],headers:{1:{sorter:false},3:{sorter:false}}}); }); jQuery(document).ready(function() { jQuery('#ftab').tablesorter({sortList:[[0,0]],headers:{1:{sorter:false},3:{sorter:false}}}); });\n//--></script>\n";
-
+	}
 	// collapse / expand für den bundesliga modus
 	if ( get_option('cs_modus') == 2 )
 		$out .= "<script type='text/javascript'><!--\njQuery(document).ready(function() { var toggleMinus = '".site_url(PLUGINDIR . "/wp-championship/arrow_down.jpg")."'; var togglePlus = '".site_url(PLUGINDIR . "/wp-championship/arrow_right.jpg")."'; var AsubHead = jQuery('tbody th:first-child'); AsubHead.prepend('<img src=\"' + toggleMinus + '\" alt=\"collapse this section\" />'); jQuery('img', AsubHead).addClass('clickable') .click(function() { var toggleSrc = jQuery(this).attr('src'); if ( toggleSrc == toggleMinus ) { jQuery(this).attr('src', togglePlus) .parents('tr').siblings().fadeOut('fast'); } else{ jQuery(this).attr('src', toggleMinus) .parents('tr').siblings().fadeIn('fast'); }; }); jQuery('.clickable').trigger('click'); jQuery('img','#currspieltag').trigger('click'); });\n//--></script>\n";
@@ -647,8 +652,15 @@ function show_UserTippForm()
 		if ($timediff != 0 )
 			$match_tooltip = "title='Spielbeginn (lokal):".strftime("%d.%m %H:%M", $match_local_start)."'";
 		$out .= "<tr>";
-		if ( get_option('cs_modus') == 1 and (!isset($cs_col_group) or !$cs_col_group))
-			$out .= "<td style='text-align:center'>".($res->round == "V" ? $res->groupid : $res->mid)."</td>";
+		if ( get_option('cs_modus') == 1 and (!isset($cs_col_group) or !$cs_col_group)) {
+			if (get_option('cs_hovertable') == 1 and $res->round == "V") {
+				$hid = "cs_hovertable_" . $hovertable_count;
+				$hovertable_count++;
+				$hlink = plugins_url('cs_groupstats.php',__FILE__)."?groupid=".($res->round == "V" ? $res->groupid : $res->mid);
+				$out .= "<td style='text-align:center'><div><a href='$hlink' id='$hid'  >".($res->round == "V" ? $res->groupid : $res->mid)."</a></div></td>";
+			} else
+				$out .= "<td style='text-align:center'>".($res->round == "V" ? $res->groupid : $res->mid)."</td>";
+		}
 		if (!$cs_col_icon1) {
 			if ($res->icon1!="")
 				$out .= "<td style='text-align:center'><img class='csicon' alt='icon1' src='".$iconpath . $res->icon1."' /></td>";
@@ -754,6 +766,18 @@ function show_UserTippForm()
 
 	$out .= "<div class='submit' style='text-align:right'><input type='submit' class='wpcs-button' name='update' value='".__("Änderungen speichern","wpcs")."' /></div></form>";
 
+	//
+	// ausgabe javascript fuer hovertable funktion
+	//
+	if (get_option("cs_hovertable") == 1) {
+		$out .= "<script type='text/javascript'>";
+		$out .= 'jQuery(document).ready(function() {';
+		for ($i=0;$i<$hovertable_count;$i++) {
+			$out .= 'jQuery("#cs_hovertable_'.$i.'").tooltip({cssClass: "tooltip-red"});'."\n";
+		}
+		$out .= "});</script>";
+	}
+	
 	return $out;
 }
 
