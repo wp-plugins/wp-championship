@@ -3,7 +3,7 @@
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de/wp-championship
 Description: wp-championship is championship plugin for wordpress designed for the WM 2010.
-Version: 3.2
+Version: 3.3
 Author: tuxlog 
 Author URI: http://www.tuxlog.de
 */

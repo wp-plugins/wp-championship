@@ -341,7 +341,7 @@ EOL;
 		eval("\$$fn = get_option(\"$fn\");");
 		if ($csx_label_place=="")  $csx_label_place   = __("Platz","wpcs");
 		if ($csx_label_player=="") $csx_label_player  = __("Spieler","wpcs");
-		if ($csx_label_upoints=="")$csx_albel_upoints = __("Punktestand","wpcs");
+		if ($csx_label_upoints=="")$csx_label_upoints = __("Punktestand","wpcs");
 		if ($csx_label_trend=="")  $csx_label_trend   = __("Trend","wpcs");
 
 		if ($csx_label_steam=="")  $csx_label_steam = __("Mannschaft","wpcs");
@@ -361,6 +361,7 @@ EOL;
 
 		$groupid_old = "";
 
+		if ($count=="Vorrunde" or $count=="Beide"){
 		$out .= "<h3  class='xwpc_head'>".__("Vorrunde","wpcs")."</h3>\n";
 		$out .= "<div id='cs_stattab_v'>";
 
@@ -406,8 +407,9 @@ EOL;
 			$groupid_old = $res->groupid;
 		}
 		$out .= "</table><p>&nbsp;</p></div>\n";
-
-
+		}
+		
+		if ($count=="Finalrunde" or $count=="Beide"){ 
 		// Finalrunde ausgeben
 		$sql1=<<<EOD
    select a.mid as mid, b.icon as icon1, b.name as name1,
@@ -464,7 +466,7 @@ EOD;
 		}
 		if (!empty($results))
 		$out .= "</table>\n";
-
+		}
 
 		return $out;
 
