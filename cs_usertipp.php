@@ -543,7 +543,7 @@ function show_UserTippForm()
 
 	// sortierbare tabelle nur im tunier modus
 	if ( get_option('cs_modus') == 1 ) {
-		if (!$cs_tippsort >= 1) $cs_tipp_sort=1;
+		if (!$cs_tipp_sort >= 1) $cs_tipp_sort=1;
 		$out .= "<script type='text/javascript'><!--\njQuery(document).ready(function() { jQuery('#ptab').tablesorter({sortList:[[". --$cs_tipp_sort .",0]],headers:{1:{sorter:false},3:{sorter:false}}}); }); jQuery(document).ready(function() { jQuery('#ftab').tablesorter({sortList:[[0,0]],headers:{1:{sorter:false},3:{sorter:false}}}); });\n//--></script>\n";
 	}
 	// collapse / expand für den bundesliga modus

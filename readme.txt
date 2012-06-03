@@ -4,7 +4,7 @@ Donate link: http://www.tuxlog.de/
 Tags: championship,guessing, game, soccer, world, 2012, wordpress, plugin
 Requires at least: 2.7
 Tested up to: 3.3.2
-Stable tag: 3.3
+Stable tag: 3.4
 
 wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer 
 
@@ -19,10 +19,11 @@ Features:
  + for each user you can set a substitute
  + sends mails about current game status (if wanted)
  + define game admin to edit match results   
- + shows some stats for admin and users
+ + shows different stats for admin and users
  + sql for the EM2008 championship in switzerland and austria
  + sql for the WM2010 championship in south-africa
-
+ + sql for the EM2012 championship in ukraine/polen
+ 
 Credits:
 Thanks go to all who support this plugin, with  hints and suggestions for improv
 ment and especially to Andy Chapman for doing a lot of tests
@@ -65,23 +66,27 @@ There are several resources to visit:
 
 == Changelog ==
 
-= 2011-06-01 v3.3 =
+= 2012-06-03 v3.4 =
+* fixed problem with table sorting option
+* fixed some typos in readme.txt
+
+= 2012-06-01 v3.3 =
 * fixed xmlrpc statistic 7 (all tables were displayed independent of the parameter)
 * fixed first tipp when user was not in cs_users
 
 
-= 2011-05-20 v3.2 =
+= 2012-05-20 v3.2 =
 * added hover table feature to tipp dialog (shows an ajax like group table when hovering over the group id)
 * fixed uninitialized value fpr cs_sort_tipp
 
-= 2011-05-18 v3.1 =
+= 2012-05-18 v3.1 =
 * fixed deprecated use of user_level (leads to many many php notices)
 * fixed problem with entering a wrong tipp as first tipp (all tips were set to -1)
 * fixed html error in confirmation mail
 * removed deprecated parameter from add_option in setup.php (leads to many php notices during activation)
 * clean up some php notices on the admin dialogs
 
-= 2011-05-12 v3.0 =
+= 2012-05-12 v3.0 =
 * fixed button style in admin dialog
 * added XMLRPC interface to wp-championship for use with smartphone apps
 * fixed width of menu entry in wp admin menu
