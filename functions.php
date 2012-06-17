@@ -563,9 +563,8 @@ function mailservice2()
 	$mnow  = gmdate( 'Y-m-d H:i:s', $now );
 	$mthen = gmdate( 'Y-m-d H:i:s', $then );
 
-	$sql = "select mid from cs_match where matchtime > '$mnow' and matchtime <= '$then';";
+	$sql = "select mid from cs_match where matchtime > '$mnow' and matchtime <= '$mthen';";
 	$res_mid = $wpdb->get_results($sql);
-
 
 
 	$mids="(";
@@ -575,7 +574,7 @@ function mailservice2()
 	$mids .= "-9999)";
 
 	// holen der userids, die fuer diese match ids noch nicht getippt haben
-	$sql ="select a.userid, b.mid from cs_users a, cs_match b where b.mid in $mids and not exists ( select userid, mid from cs_tipp where userid=a.userid and mid=b.mid ) order by a.userid, b.mid;";
+	$sql ="select a.userid, b.mid from cs_users a, cs_match b where b.mid in $mids and not exists ( select userid, mid from cs_tipp where userid=a.userid and mid=b.mid and result1!=-1) order by a.userid, b.mid;";
 	$res_user = $wpdb->get_results($sql);
 
 	// fuer jeden user mit fehlendem tipp email zusammenstellen und senden

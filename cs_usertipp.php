@@ -169,7 +169,7 @@ function show_UserTippForm()
 			$r3 = $wpdb->query($sql0);
 
 			// championtipp speichern und auf zulaessigkeit pruefen
-			$blog_now =  current_time('mysql',false);
+			$blog_now =  current_time('mysql',0);
 
 			$sql="select min(matchtime) as mintime from $cs_match";
 			$mr = $wpdb->get_row($sql);
@@ -353,7 +353,7 @@ function show_UserTippForm()
 				}
 					
 				// aktuelle mitspieler platzierung speichern
-				if (get_option('cs_rank_trend'))
+				if (get_option('cs_rank_trend') and $have_results)
 					store_current_ranking();
 				// punkt nach eingabe neu berechnen
 				calc_points();
@@ -451,7 +451,7 @@ function show_UserTippForm()
 
 	// userliste fuer select aufbauen
 	$user1_select_html="";
-	$sql="select ID,user_nicename from $wp_users order by user_nicename;";
+	$sql="select ID,user_nicename from $wp_users inner join $cs_users on ID=userid order by user_nicename;";
 	$results1 = $wpdb->get_results($sql);
 	$user1_select_html .= "<option value='-1'>-</option>";
 	foreach($results1 as $res) {

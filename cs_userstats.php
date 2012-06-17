@@ -139,6 +139,7 @@ function show_UserStats($atts)
      $out .= '<th style="width:20;text-align: center">'.$cs_label_trend.'</th>';
  $out .= "</tr>\n";
  
+ 
  $pointsbefore= -1;   
  $i=0; $j=1;
  foreach ($rank as $row) {
@@ -149,7 +150,7 @@ function show_UserStats($atts)
    } else
      $j += 1;
 
-   if ($i < $row->oldrank )
+   if ($i < $row->oldrank or $row->oldrank==-1 )
        $trend = "&uArr;";
    elseif ($i > $row->oldrank )
        $trend = "&dArr;";
