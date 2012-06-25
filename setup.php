@@ -303,7 +303,7 @@ function wp_championship_install()
   // Default: 0
    $cs_goalsum=get_option("cs_goalsum");
   if ($cs_goalsum == "") {
-    $cs_goalsum="0";
+    $cs_goalsum="-1";
     add_option("cs_goalsum",$cs_goalsum,"","yes");
   };
 

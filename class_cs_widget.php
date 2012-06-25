@@ -38,8 +38,7 @@ if ( !class_exists('cs_widget') )
 
 			//Query User and Points
 			$limit = $AmountUsers;
-			$sql = "select b.user_nicename, b.display_name, a.userid,sum(a.points) as points, c.rang as oldrank from $cs_tipp a inner join $wp_users b on a.userid=b.ID inner join $cs_users c on a.userid=c.userid where points <> -1 group by b.user_nicename, a.userid order by points DESC LIMIT $limit;";
-			$res = $wpdb->get_results($sql);
+			$res = get_ranking();
 
 			if (!empty($res)) {
 				//Table Head
@@ -62,7 +61,9 @@ if ( !class_exists('cs_widget') )
 				//Table Content
 				$pointsbefore= -1;
 				$i=0; $j=1;
+				$k=0;
 				foreach ($res as $row) {
+					if ($k >= $limit) break;
 					if ($row->points != $pointsbefore) {
 		    			$i = $i + $j;
 		    			$j=1;
@@ -78,7 +79,7 @@ if ( !class_exists('cs_widget') )
 
 					echo "<tr>";
 					echo "<td align='left'>$i.</td>";
-					echo "<td align='left'>".$row->display_name."</td>";
+					echo "<td align='left'>".$row->user_nicename."</td>";
 					echo "<td align='center'>".$row->points. "</td>";
 					if($showAverage == '1') {
 		    			//$sql="select count(*) as anz from cs_tipp where userid='$row->userid' AND result1 != -1 AND result2 != -1";
@@ -97,6 +98,9 @@ if ( !class_exists('cs_widget') )
 					
 					// gruppenwechsel versorgen
 					$pointsbefore = $row->points;
+					
+					// Ausgabezaehler erhoehen
+					$k +=1;
 				}
 					
 				// Table foot

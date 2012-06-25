@@ -32,6 +32,7 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 	$newday   = (isset($_GET['newday'])?esc_attr($_GET['newday']):"");
 	$newday5  = (isset($_GET['newday5'])?esc_attr($_GET['newday5']):"");
 	$username = (isset($_GET['username'])?esc_attr($_GET['username']):"");
+	$match    = (isset($_GET['match'])?esc_attr($_GET['match']):"");
 	$args=array();
 	$out = "";
 
@@ -129,10 +130,16 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 		if ($stats4_tippgroup !="")
 			$tippgroup_sql=" tippgroup='$stats4_tippgroup' and ";
 			
+		$blog_now = current_time('mysql',0);
+		
+		$match_sql="";
+		if ($match!="?")
+			$match_sql=" and mid=$match ";
+		
 		if (get_option("cs_modus")==1)
-		$sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round in ('V','F') and result1>-1 and result2>-1 order by origtime;";
+		$sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round in ('V','F') and matchtime < '$blog_now' $match_sql order by origtime;";
 		else
-		$sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round = 'V' and result1>-1 and result2>-1 order by spieltag,origtime;";
+		$sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round = 'V' and matchtime < '$blog_now' $match_sql order by spieltag,origtime;";
 		$r1 = $wpdb->get_results($sql);
 
 		// hole tipps des users
@@ -161,8 +168,8 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 		
 
 		$out .= "<p>&nbsp;</p>";
-		if ($username != "?" ) 
-			$out .= "<div>" . __("Die Tipps von","wpcs") . " " . $username . "</div>";
+		//if ($username != "?" ) 
+		//	$out .= "<div>" . __("Die Tipps von","wpcs") . " " . $username . "</div>";
 		$out .= "<table border='1' ><tr><th>" . __("Begegnung","wpcs") . "</th>";
 		if ($username == "?" )
 			$out .= "<th>" . __("Mitspieler","wpcs") . "</th>"; 
@@ -177,6 +184,9 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 					$ctipp = $tipps[$r->mid][$s];
 					$tr1 =  (isset($ctipp->result1) && $ctipp->result1!=-1?$ctipp->result1:"-");
 					$tr2 =  (isset($ctipp->result2) && $ctipp->result2!=-1?$ctipp->result2:"-");
+					$rr1 =  (isset($r->result1) && $r->result1!=-1?$r->result1:"-");
+					$rr2 =  (isset($r->result2) && $r->result2!=-1?$r->result2:"-");
+						
 					if ($tr1!="-") {
 						if ($lteam != $r->team1 . " - " . $r->team2)
 							$out .= "<tr><td>" . $r->team1 . " - " . $r->team2 . "</td>";
@@ -185,7 +195,7 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 						$lteam = $r->team1 . " - " . $r->team2;
 						if ($username == "?" )
 							$out .= "<td style='text-align:center'>" . $ctipp->user_nicename . "</td>\n";
-						$out .= "<td style='text-align:center'>" . $r->result1 . ":".$r->result2 . "</td>\n";
+						$out .= "<td style='text-align:center'>" . $rr1 . ":" . $rr2 . "</td>\n";
 						$out .= "<td style='text-align:center'>" . $tr1 . ":" . $tr2 . "</td></tr>\n";
 					}
 				}
@@ -519,7 +529,14 @@ function show_Stats4($atts)
 	else
 		$sql1 = "SELECT user_nicename FROM $cs_users inner join $wp_users on ID=userid order by user_nicename;";
 	$r1= $wpdb->get_results($sql1);
-
+	
+	$blog_now = current_time('mysql',0);
+	if (get_option("cs_modus")==1)
+		$sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round in ('V','F') and matchtime < '$blog_now' order by origtime;";
+	else
+		$sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round = 'V' and matchtime < '$blog_now' order by spieltag,origtime;";
+	$r2 = $wpdb->get_results($sql);
+	
 	$out .= "<h2>" . __("Spielertipps","wpcs") . "</h2>";
 	
 	$out .= "<div class='wpc-stats4-sel'><form action='#'>" . __("Spieler","wpcs").":";
@@ -529,8 +546,15 @@ function show_Stats4($atts)
 	$out .= "<option value='?'>" . __("All","wpcs") . "</option>";
 	foreach ($r1 as $r)
 		$out .= "<option value='" . $r->user_nicename. "'>" . $r->user_nicename . "</option>";
-
 	$out .= "</select>";
+	
+	$out .= " " . __("Spiel","wpcs").":";
+	$out .= "<select id='wpc_stats4_selector2' size='1' onchange='wpc_stats4_update();' >";
+	$out .= "<option value='?'>" . __("All","wpcs") . "</option>";
+	foreach ($r2 as $r)
+		$out .= "<option value='" . $r->mid. "'>" . $r->team1 . " - " . $r->team2 . "</option>";
+	$out .= "</select>";
+	
 	$out .= "<input id='wpc_selector_site4' type='hidden' value='" . site_url("/wp-content/plugins/wp-championship")."' />";
 	$out .= "</form>";
 	$out .= "<script type='text/javascript'>window.onDomReady(wpc_stats4_update);</script>";

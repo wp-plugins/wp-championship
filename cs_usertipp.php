@@ -206,9 +206,10 @@ function show_UserTippForm()
 					}
 
 					// leere felder auf -1 setzen
-					if ($_POST[$key]=="")
+					if (trim($_POST[$key])=="") {
 						$_POST[$key] = -1;
-
+					}
+					
 					// pruefe ob das spiel schon begonnen hat
 					$sql1="select matchtime from  $cs_match where mid=$mid";
 					$r1 = $wpdb->get_results($sql1);
@@ -218,8 +219,9 @@ function show_UserTippForm()
 					}
 
 					// pruefe ob torsummen tipp erlaubt und im range ist
-					if ($cs_goalsum > 0 and $cs_goalsum_auto==0 and $mkey=="gt3_") {
-						if ( $_POST[$key] < $cs_goalsum and $_POST[$key] > -1) {
+					if ($cs_goalsum > -1 and $cs_goalsum_auto==0 and $mkey=="gt3_") {
+						//$_POST[$key]=(int) $_POST[$key];
+						if ( $_POST[$key] < $cs_goalsum and $_POST[$key] >= 0) {
 							$out .= __("Die Summe der Tore muss größer als der Schwellwert sein","wpcs")."(".$cs_goalsum.").<br />\n";
 							$errflag += 1;
 							$errlist[$key]=$key;
@@ -562,7 +564,7 @@ function show_UserTippForm()
 	if (!$cs_col_location) $out .= '<th scope="col" style="text-align: center">'.$cs_label_location.'</th>'."\n";
 	if (!$cs_col_time) $out .= '<th id="p1stsort" scope="col" style="text-align: center">'.$cs_label_time.'</th>'."\n";
 	if (!$cs_col_tip) $out .= '<th style="text-align:center">'.$cs_label_tip.'</th>';
-	if ($cs_goalsum > 0 and $cs_goalsum_auto==0)
+	if ($cs_goalsum > -1 and $cs_goalsum_auto==0)
 		$out .= '<th style="text-align:center">'.__("Summe<br />Tore","wpcs").'</th>';
 	if (!$cs_col_points)
 		$out .= '<th style="text-align:center">'.$cs_label_points.'</th></tr>';
@@ -596,7 +598,7 @@ function show_UserTippForm()
 			$_POST[ 'gt1_'.$res->mid ] = "";
 		if (isset($_POST[ 'gt2_'.$res->mid ]) and $_POST[ 'gt2_'.$res->mid ] == -1 and ! array_key_exists('gt2_'.$res->mid,$errlist))
 			$_POST[ 'gt2_'.$res->mid ] = "";
-		if ($_POST[ 'gt3_'.$res->mid ] == -1)
+		if (isset($_POST[ 'gt3_'.$res->mid ]) and $_POST[ 'gt3_'.$res->mid ] == -1 and ! array_key_exists('gt3_'.$res->mid,$errlist))
 			$_POST[ 'gt3_'.$res->mid ] = "";
 
 
@@ -626,7 +628,7 @@ function show_UserTippForm()
 			if (!$cs_col_location) $out .= '<th scope="col" style="text-align: center">'.$cs_label_location.'</th>'."\n";
 			if (!$cs_col_time) $out .= '<th id="p1stsort" scope="col" style="text-align: center">'.$cs_label_time.'</th>'."\n";
 			if (!$cs_col_tip) $out .= '<th style="text-align:center">'.$cs_label_tip.'</th>';
-			if ($cs_goalsum > 0 and $cs_goalsum_auto==0)
+			if ($cs_goalsum > -1 and $cs_goalsum_auto==0)
 				$out .= '<th style="text-align:center">'.__("Summe<br />Tore","wpcs").'</th>';
 			if (!$cs_col_points) $out .= '<th style="text-align:center">'.$cs_label_points.'</th></tr>';
 
@@ -740,14 +742,14 @@ function show_UserTippForm()
 		} else
 			$out .= ($res->result1==-1 ? "-" : $res->result1) . ":" . ($res->result2==-1 ? "-" : $res->result2) . "</td>";
 
-		if ($cs_goalsum > 0 and $cs_goalsum_auto==0) {
+		if ($cs_goalsum > -1 and $cs_goalsum_auto==0) {			
+			$gt3_value = $_POST['gt3_'.$res->mid];
 			if (array_key_exists('gt3_'.$res->mid,$errlist)) {
 				$errclass = " cs_inputerror ";
-				$gt3_value = $_POST['gt3_'.$res->mid]; // alten eingabewert anzeigen
 			} else {
 				$errclass="";
-				$gt3_value = ($_POST['gt3_'.$res->mid]==-1 ? "-" : $_POST['gt3_'.$res->mid]);
 			}
+			
 			if ($res->result2 != -1 or $blog_now > $match_start)
 				$out .= "<td>".$_POST['gt3_'.$res->mid]."</td>";
 			else

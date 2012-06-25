@@ -121,11 +121,11 @@ function calc_points($new=false)
 
 
 	// torsummen tipp prüfen und ggf addieren
-	if ($cs_goalsum > 0) {
+	if ($cs_goalsum > -1) {
 		if ($cs_goalsum_auto==0)
-	 $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1+a.result2 <= b.result3 and a.result1+a.result2 > $cs_goalsum ) set points=points+$cs_pts_goalsum where b.result1>-1 and b.result2>-1;";
+	 $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1+a.result2 = b.result3 and a.result1+a.result2 > $cs_goalsum ) set points=points+$cs_pts_goalsum where b.result1>-1 and b.result2>-1;";
 	 else
-	 $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1+a.result2 <= b.result1+b.result2 and a.result1+a.result2 > $cs_goalsum ) set points=points+$cs_pts_goalsum where b.result1>-1 and b.result2>-1;";
+	 $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1+a.result2 = b.result1+b.result2 and a.result1+a.result2 > $cs_goalsum ) set points=points+$cs_pts_goalsum where b.result1>-1 and b.result2>-1;";
 	 $res = $wpdb->query($sql);
 	}
 
@@ -711,13 +711,13 @@ function get_team_stats($teamid)
 	$sql1= "select count(*) as anz1 from $cs_match where round='V' and (tid1=$teamid or tid2=$teamid) and winner <> -1; ";
 
 	// anzahl siege
-	$sql2= "select count(*) as anz2 from $cs_match where round='V' and ( tid1=$teamid and winner=1) or (tid2=$teamid and winner = 2); ";
+	$sql2= "select count(*) as anz2 from $cs_match where round='V' and (( tid1=$teamid and winner=1) or (tid2=$teamid and winner = 2)); ";
 
 	// anzahl unentschieden
 	$sql3= "select count(*) as anz3 from $cs_match where round='V' and ( tid1=$teamid or tid2=$teamid ) and winner = 0; ";
 
 	// anzahl niederlagen
-	$sql4= "select count(*) as anz4 from $cs_match where round='V' and ( tid1=$teamid and winner=2) or (tid2=$teamid and winner = 1); ";
+	$sql4= "select count(*) as anz4 from $cs_match where round='V' and (( tid1=$teamid and winner=2) or (tid2=$teamid and winner = 1)); ";
 
 	$res1 = $wpdb->get_row($sql1);
 	$res2 = $wpdb->get_row($sql2);

@@ -27,11 +27,12 @@ function wpc_stats1_update() {
 /* get the data for the new location */
 function wpc_stats4_update() {
     
-    var username  = document.getElementById("wpc_stats4_selector").value;
-    var siteuri = document.getElementById("wpc_selector_site4").value; 
+    var username  = document.getElementById("wpc_stats4_selector").value; 
+    var match     = document.getElementById("wpc_stats4_selector2").value;
+    var siteuri   = document.getElementById("wpc_selector_site4").value; 
     
     jQuery.get(siteuri + "/cs_stats.php", 
-	       { username: username, header: "0" , selector: "1" },
+	       { username: username, match: match, header: "0" , selector: "1" },
 	       function(data){
 		   jQuery("div#wpc-stats4-res").html(data);
 	       });
