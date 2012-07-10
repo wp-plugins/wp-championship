@@ -54,6 +54,18 @@ function wpc_stats5_update() {
 	       });
 }
 
+function wpc_stats6_update() {
+    
+    var team       = document.getElementById("wpc_stats6_selector").value;
+    var tippgroup  = document.getElementById("wpc_stats6_tippgroup").value;
+    var siteuri    = document.getElementById("wpc_selector_site").value; 
+    
+    jQuery.get(siteuri + "/cs_stats.php", 
+	       { team: team, tippgroup: tippgroup, header: "0" , selector: "1" },
+	       function(data){
+		   jQuery("div#wpc-stats6-res").html(data);
+	       });
+}
 
 /* to work around IE problems */
 

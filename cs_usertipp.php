@@ -576,9 +576,9 @@ function show_UserTippForm()
 	// match loop
 	// hole match daten
 	if (get_option("cs_modus")==1)
-		$sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round in ('V','F') order by origtime;";
+		$sql="select a.mid as mid,b.groupid as groupid,b.tid as tid1, b.name as team1,b.icon as icon1, c.tid as tid2, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round in ('V','F') order by origtime;";
 	else
-		$sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round = 'V' order by spieltag,origtime;";
+		$sql="select a.mid as mid,b.groupid as groupid,b.tid as tid1, b.name as team1,b.icon as icon1, c.tid as tid2, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round = 'V' order by spieltag,origtime;";
 	$results = $wpdb->get_results($sql);
 
 	// hole tipps des users
@@ -669,9 +669,24 @@ function show_UserTippForm()
 			else
 				$out .= "<td>&nbsp;</td>";
 		}
-		if (!$cs_col_match)
-			$out .= "<td style='text-align:center'>".($res->round=='V' ? $res->team1:team2text($res->team1)) . " - " . ($res->round=='V' ? $res->team2:team2text($res->team2)). "</td>";
-
+		if (!$cs_col_match) {
+			$out .= "<td style='text-align:center'>";
+			if (get_option('cs_hovertable') == 1) { 
+				$hid = "cs_hovertable_" . $hovertable_count;
+				$hovertable_count++;
+				$hlink = plugins_url('cs_matchstats.php',__FILE__)."?teamid=".$res->tid1;
+				$out .= "<a href='$hlink' id='$hid'  >".($res->round=='V' ? $res->team1:team2text($res->team1)) . "</a> - ";
+			} else
+				$out .= ($res->round=='V' ? $res->team1:team2text($res->team1)) . " - ";
+			
+			if (get_option('cs_hovertable') == 1) {
+				$hid = "cs_hovertable_" . $hovertable_count;
+				$hovertable_count++;
+				$hlink = plugins_url('cs_matchstats.php',__FILE__)."?teamid=".$res->tid2;
+				$out .= "<a href='$hlink' id='$hid'  >".($res->round=='V' ? $res->team2:team2text($res->team2)) . "</a></td>";
+			} else
+				$out .= ($res->round=='V' ? $res->team2:team2text($res->team2)) . "</td>";
+		}
 		if (!$cs_col_icon2) {
 			if ($res->icon2!="" and !$cs_col_icon2)
 				$out .= "<td style='text-align:center'><img class='csicon' alt='icon2' src='".$iconpath . $res->icon2."' /></td>";

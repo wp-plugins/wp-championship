@@ -4,7 +4,7 @@ Donate link: http://www.tuxlog.de/
 Tags: championship,guessing, game, soccer, world, 2012, wordpress, plugin
 Requires at least: 2.7
 Tested up to: 3.4
-Stable tag: 3.6
+Stable tag: 3.7
 
 wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer 
 
@@ -65,6 +65,13 @@ There are several resources to visit:
 2. wp-championship tipp dialog
 
 == Changelog ==
+
+= 2012-07-06 v3.7 =
+* added new option for goalsum tip you only hit if your tipp is euqal goalsum not equal or greater
+* added sql and icons for Bundesliga 2012/2013
+* added columnd points to stats4
+* added stats6 to show all matches from one team
+* extended tipp-aids in tippdialog with stats6 when hovering over the teamname
 
 = 2012-06-25 v3.6 =
 * fixed the widget display name 

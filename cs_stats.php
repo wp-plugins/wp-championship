@@ -33,14 +33,36 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 	$newday5  = (isset($_GET['newday5'])?esc_attr($_GET['newday5']):"");
 	$username = (isset($_GET['username'])?esc_attr($_GET['username']):"");
 	$match    = (isset($_GET['match'])?esc_attr($_GET['match']):"");
+	$team     = (isset($_GET['team'])?esc_attr($_GET['team']):"");
 	$args=array();
 	$out = "";
 
 	// set character set in case of wrong collation in cs tables
 	$sql0="SET CHARACTER SET $wpdb->charset;";
 	$r0= $wpdb->query($sql0);
-
-	if (isset($newday) and $newday !="") {
+	if (isset($team) and $team !="") {
+		// Stats 6
+	
+		// nothing special for tipgroup on this
+		//$stats6_tippgroup   = (isset($_GET['tippgroup'])?esc_attr($_GET['tippgroup']):"");
+		//$tippgroup_sql="";
+		
+		$iconpath = get_option("siteurl") . "/wp-content/plugins/wp-championship/icons/";
+		$matches = get_team_matches($team);
+		
+		$out .= "<p>&nbsp;</p>";
+		$out .= "<table border='1' >\n";
+		$out .= "<tr><th>" . __("Datum","wpcs") . "</th><th>&nbsp;</th><th>" . __("Begegnung","wpcs") . "</th><th>&nbsp;</th><th>" . __("Ergebnis","wpcs") . "</th></tr>";
+		
+		foreach ($matches as $m) {			
+			$out .= "<tr><td>" . $m['date']."</td>";
+			$out .= "<td><img src='" . $iconpath . $m['icon1'] . "' width='30'></td>";
+			$out .= "<td style='text-align:center'>" . $m['name1'] . " - " . $m['name2'] . "</td>";
+			$out .= "<td><img src='" . $iconpath . $m['icon2'] . "' width='30'></td>";
+			$out .= "<td style='text-align:center'>" . $m['res1'] . ":" . $m['res2'] . "</td></tr>\n";
+		}
+		$out .= "</table>\n";
+	} else if (isset($newday) and $newday !="") {
 		// Stats 1
 
 		$stats1_tippgroup   = (isset($_GET['tippgroup'])?esc_attr($_GET['tippgroup']):"");
@@ -144,9 +166,9 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 
 		// hole tipps des users
 		if ( $username != "?") {
-			$sql="select mid,userid, result1,result2 from  $cs_tipp inner join $wp_users on ID=userid where result1<>-1 and user_nicename='".$username."' order by mid";
+			$sql="select mid,userid, result1,result2,points from  $cs_tipp inner join $wp_users on ID=userid where result1<>-1 and user_nicename='".$username."' order by mid";
 		} else {
-			$sql="select mid,userid, user_nicename,result1,result2 from  $cs_tipp inner join $wp_users on ID=userid where $tippgroup_sql result1<>-1 order by mid";
+			$sql="select mid,userid, user_nicename,result1,result2,points from  $cs_tipp inner join $wp_users on ID=userid where $tippgroup_sql result1<>-1 order by mid";
 		}
 		$r2 = $wpdb->get_results($sql);
 
@@ -173,7 +195,7 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 		$out .= "<table border='1' ><tr><th>" . __("Begegnung","wpcs") . "</th>";
 		if ($username == "?" )
 			$out .= "<th>" . __("Mitspieler","wpcs") . "</th>"; 
-		$out .= "<th>" . __("Ergebnis","wpcs") . "</th><th>" . __("Tipp","wpcs") . "</th></tr>";
+		$out .= "<th>" . __("Ergebnis","wpcs") . "</th><th>" . __("Tipp","wpcs") . "</th><th>" . __("Punkte","wpcs")  . "</th></tr>";
 
 		if (empty($r2)) {
 			$out .=  "<tr><td colspan='3'>" . __('Es sind noch keine Tipps abgegeben worden.',"wpcs") ."</td></tr>";
@@ -196,7 +218,8 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 						if ($username == "?" )
 							$out .= "<td style='text-align:center'>" . $ctipp->user_nicename . "</td>\n";
 						$out .= "<td style='text-align:center'>" . $rr1 . ":" . $rr2 . "</td>\n";
-						$out .= "<td style='text-align:center'>" . $tr1 . ":" . $tr2 . "</td></tr>\n";
+						$out .= "<td style='text-align:center'>" . $tr1 . ":" . $tr2 . "</td>\n";
+						$out .= "<td style='text-align:center'>" . $ctipp->points . "</td></tr>\n";
 					}
 				}
 			}
@@ -633,5 +656,70 @@ function show_Stats5($atts)
 
 	return $out;
 }
+// -----------------------------------------------------------------------------------
+// Funktion zur Ausgabe der Statistik 6: Spiele einer Mannschaft
+// -----------------------------------------------------------------------------------
+function show_Stats6($atts)
+{
+	include("globals.php");
+	global $wpdb,$userdata,$wpcs_demo;
+
+	// initialisiere ausgabe variable
+	$out = "";
+
+	// pruefe ob anwender angemeldet ist, wenn nicht gebe hinweis aus
+	// und beende die funktion
+	if ( !is_user_logged_in() and $wpcs_demo <=0){
+		$out .= __("Sie sind nicht angemeldet.","wpcs")."<br />";
+		$out .= __("Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website","wpcs")."<br />";
+		return $out;
+	}
+
+	// parameter holen dabei übersteuert tippgruppe, tippgroup
+	$tippgroup = (isset($atts['tippgroup'])?$atts['tippgroup']:"");
+	$tippgroup = (isset($atts['tippgruppe'])?$atts['tippgruppe']:"");
+
+	// for debugging
+	//$wpdb->show_errors(true);
+
+	// lese anwenderdaten ein
+	get_currentuserinfo();
+	// merke die userid
+	$uid = $userdata->ID;
+
+	// userdaten lesen
+	$sql0="select * from $cs_users where userid=$uid";
+	$r0= $wpdb->get_results($sql0);
+
+	// admin flag setzen
+	$is_admin=false;
+	if ( $r0[0]->admin == 1 )
+		$is_admin=true;
+
+	// ermittle aktuelle uhrzeit
+	$currtime=date("Y-m-d H:i:s");
+
+	$out .= "<h2>" . __("Mannschaftsstatistik","wpcs") . "</h2>";
+
+	$out .= "<div class='wpc-stats6-sel'><form action='#'>" . __("Mannschaft","wpcs").":";
+	$out .= "<input id='wpc_stats6_tippgroup' type='hidden' value='$tippgroup' />";
+	$out .= "<select id='wpc_stats6_selector' size='1' onchange='wpc_stats6_update();' >";
+	$sql1 = "SELECT tid, name, shortname FROM $cs_team where substring(name,1,1) <> '#' order by name;";
+
+	$r1= $wpdb->get_results($sql1);
+
+	foreach ($r1 as $r)
+		$out .= "<option value='" . $r->tid. "'>" . $r->name . " ($r->shortname)</option>";
+
+	$out .= "</select>";
+	$out .= "<input id='wpc_selector_site' type='hidden' value='" . site_url("/wp-content/plugins/wp-championship")."' />";
+	$out .= "</form>";
+	$out .= "<script type='text/javascript'>window.onDomReady(wpc_stats6_update);</script>";
+	$out .= "</div>";
+	$out .= "<div id='wpc-stats6-res'></div>";
+
+	return $out;
+}
+
 
 ?>

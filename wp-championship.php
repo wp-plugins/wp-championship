@@ -3,7 +3,7 @@
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de/wp-championship
 Description: wp-championship is championship plugin for wordpress designed for the WM 2010.
-Version: 3.6
+Version: 3.7
 Author: tuxlog 
 Author URI: http://www.tuxlog.de
 */
@@ -121,6 +121,7 @@ function wp_championship_init()
   	add_shortcode('cs-stats3',   'show_Stats3');
   	add_shortcode('cs-stats4',   'show_Stats4');
   	add_shortcode('cs-stats5',   'show_Stats5');
+  	add_shortcode('cs-stats6',   'show_Stats6');
   }
 
   // javascript hinzufügen für tablesorter / floating menu und statistik ajaxeffekt

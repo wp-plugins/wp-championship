@@ -97,6 +97,7 @@ function cs_admin()
 	update_option( "cs_xmlrpc_news", $_POST['cs_xmlrpc_news'] );
 	update_option( "cs_newuser_auto", $_POST['cs_newuser_auto'] );
 	update_option( "cs_hovertable", $_POST['cs_hovertable'] );
+	update_option( "cs_goalsum_equal", $_POST['cs_goalsum_equal'] );
 	
 	admin_message( __('Einstellungen erfolgreich gespeichert.',"wpcs") );
     }
@@ -175,6 +176,7 @@ function cs_admin()
   $cs_xmlrpc_news= get_option("cs_xmlrpc_news");
   $cs_newuser_auto= get_option("cs_newuser_auto");
   $cs_hovertable= get_option("cs_hovertable");
+  $cs_goalsum_equal= get_option("cs_goalsum_equal");
   
   // build form
   $out = "";
@@ -314,8 +316,14 @@ $out.= '/><br /></th>'."\n";
  $out .= '<input name="cs_goalsum_auto" id="cs_goalsum_auto" type="checkbox" value="1" ';
  if ($cs_goalsum_auto > 0)
      $out .= " checked='checked' ";
- $out.= '/><br /></th>'."\n"; 
+ $out.= '/>'."\n"; 
 
+ $out .= '<br /><label style="font-size: 9px;" for="cs_goalsum_euqal">'.__('nur Gleichheit zieht',"wpcs").':</label>'."\n";
+ $out .= '<input name="cs_goalsum_equal" id="cs_goalsum_equal" type="checkbox" value="1" ';
+ if ($cs_goalsum_equal > 0)
+ 	$out .= " checked='checked' ";
+ $out.= '/><br /></th>'."\n";
+ 
  $out .= '<td ><input name="cs_goalsum" id="cs_goalsum" type="text" value="'.$cs_goalsum.'" size="3" /></td>'."\n"; 
 
  // switch to activate/deactivate ranking trend
@@ -339,7 +347,7 @@ $out.= '/><br /></th>'."\n";
 
  // switch to activate/deactivate bubble group table when hovering over the group id
  $out .= '<tr><td colspan="2">&nbsp;</td>';
- $out .= '<th scope="row" ><label for="cs_hovertable">'.__('Gruppentabelle auf Tippseite einblenden',"wpcs").':</label></th>'."\n";
+ $out .= '<th scope="row" ><label for="cs_hovertable">'.__('Tipphilfen auf Tippseite einblenden',"wpcs").':</label></th>'."\n";
  $out .= '<td ><input name="cs_hovertable" id="cs_hovertable" type="checkbox" value="1"  ';
  if ($cs_hovertable > 0 )
  	$out .= " checked='checked' ";
