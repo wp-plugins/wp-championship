@@ -17,7 +17,7 @@ function wpc_stats1_update() {
     var siteuri    = document.getElementById("wpc_selector_site").value; 
     
     jQuery.get(siteuri + "/cs_stats.php", 
-	       { newday: newday, tippgroup: tippgroup, header: "0" , selector: "1" },
+	       { newday: newday, tippgroup: tippgroup, header: "0" , selector: "1", statsnum: "1" },
 	       function(data){
 		   jQuery("div#wpc-stats1-res").html(data);
 	       });
@@ -32,7 +32,7 @@ function wpc_stats4_update() {
     var siteuri   = document.getElementById("wpc_selector_site4").value; 
     
     jQuery.get(siteuri + "/cs_stats.php", 
-	       { username: username, match: match, header: "0" , selector: "1" },
+	       { username: username, match: match, header: "0" , selector: "1", statsnum: "4" },
 	       function(data){
 		   jQuery("div#wpc-stats4-res").html(data);
 	       });
@@ -48,7 +48,7 @@ function wpc_stats5_update() {
     var siteuri = document.getElementById("wpc_selector_site").value; 
     
     jQuery.get(siteuri + "/cs_stats.php", 
-	       { newday5: newday, tippgroup: tippgroup, header: "0", selector: "1" },
+	       { newday5: newday, tippgroup: tippgroup, header: "0", selector: "1", statsnum: "5" },
 	       function(data){
 		   jQuery("div#wpc-stats5-res").html(data);
 	       });
@@ -61,9 +61,22 @@ function wpc_stats6_update() {
     var siteuri    = document.getElementById("wpc_selector_site").value; 
     
     jQuery.get(siteuri + "/cs_stats.php", 
-	       { team: team, tippgroup: tippgroup, header: "0" , selector: "1" },
+	       { team: team, tippgroup: tippgroup, header: "0" , selector: "1", statsnum: "6" },
 	       function(data){
 		   jQuery("div#wpc-stats6-res").html(data);
+	       });
+}
+
+function wpc_stats7_update() {
+    
+    var newday     = document.getElementById("wpc_stats7_selector").value;
+    var tippgroup  = document.getElementById("wpc_stats7_tippgroup").value;
+    var siteuri    = document.getElementById("wpc_selector_site").value; 
+    
+    jQuery.get(siteuri + "/cs_stats.php", 
+	       { newday: newday, tippgroup: tippgroup, header: "0" , selector: "1", statsnum: "7" },
+	       function(data){
+		   jQuery("div#wpc-stats7-res").html(data);
 	       });
 }
 

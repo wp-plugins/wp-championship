@@ -29,6 +29,7 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 	include("globals.php");
 	global $wpdb,$userdata,$wpcs_demo;
 
+	$statsnum = (isset($_GET['statsnum'])?esc_attr($_GET['statsnum']):"");
 	$newday   = (isset($_GET['newday'])?esc_attr($_GET['newday']):"");
 	$newday5  = (isset($_GET['newday5'])?esc_attr($_GET['newday5']):"");
 	$username = (isset($_GET['username'])?esc_attr($_GET['username']):"");
@@ -40,7 +41,49 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 	// set character set in case of wrong collation in cs tables
 	$sql0="SET CHARACTER SET $wpdb->charset;";
 	$r0= $wpdb->query($sql0);
-	if (isset($team) and $team !="") {
+	
+	
+	if (isset($statsnum) and $statsnum =="7") {
+		// Stats 7
+	
+		$stats7_tippgroup   = (isset($_GET['tippgroup'])?esc_attr($_GET['tippgroup']):"");
+		$tippgroup_sql="";
+		if ($stats7_tippgroup !="")
+			$tippgroup_sql=" where a.tippgroup='$stats7_tippgroup' ";
+			
+		$sql1=<<<EOD
+		SELECT b.user_nicename,date_format(matchtime,'%Y%m') as ym, sum(c.points) as mp, 
+			   min(f.gp) as gp, count(c.points) as nt
+		from $cs_users a 
+		inner join $wp_users b on a.userid = b.ID
+		inner join $cs_tipp c on a.userid = c.userid
+		inner join $cs_match d on d.mid = c.mid
+		inner join (select e.userid,sum(e.points) as gp 
+					from $cs_tipp e 
+					where e.points > -1 
+					group by e.userid) f on f.userid = c.userid
+		where c.points > -1 and d.winner > -1 and date_format(matchtime,'%Y%m')=$newday
+		group by  b.user_nicename,date_format(matchtime,'%Y%m')
+		order by sum(c.points) desc;
+EOD;
+		
+		$r1= $wpdb->get_results($sql1);
+		if (empty($r1)) {
+			$out .= __("Keine Ergebnisse gefunden.","wpcs");	
+		} else {	
+			$out .= "<p>&nbsp;</p>";
+			$out .= "<table border='1' ><tr><th>" . __("Spieler","wpcs") . "</th><th>" . __("Gesamtpunkte","wpcs") . "</th>\n";
+			$out .= "<th>" . __("Anzahl Tipps","wpcs") . "</th><th>" . __("Punkte (Monat)","wpcs") . "</th></tr>\n";
+	
+			foreach ($r1 as $r) {
+				$out .= "<tr><td>" . $r->user_nicename . "</td><td style='text-align:right'>" . ($r->gp== NULL?0:$r->gp) . "</td>\n";
+				$out .= "<td style='text-align:right'>" . $r->nt . "</td><td style='text-align:right'>" . ($r->mp== NULL?0:$r->mp) . "</td></tr>\n";
+			}
+			$out .= "</table>\n";
+		}
+	}
+		
+	if (isset($statsnum) and $statsnum =="6") {
 		// Stats 6
 	
 		// nothing special for tipgroup on this
@@ -62,7 +105,7 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 			$out .= "<td style='text-align:center'>" . $m['res1'] . ":" . $m['res2'] . "</td></tr>\n";
 		}
 		$out .= "</table>\n";
-	} else if (isset($newday) and $newday !="") {
+	} else if (isset($statsnum) and $statsnum =="1") {
 		// Stats 1
 
 		$stats1_tippgroup   = (isset($_GET['tippgroup'])?esc_attr($_GET['tippgroup']):"");
@@ -83,7 +126,7 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 		$out .= "<tr><td>" . $r->user_nicename . "</td><td style='text-align:right'>" . ($r->punkte== NULL?0:$r->punkte) . "</td></tr>\n";
 
 		$out .= "</table>\n";
-	} else if (isset($newday5) and $newday5 !="") {
+	} else if (isset($statsnum) and $statsnum =="5") {
 		// Stats 5
 		
 		
@@ -145,7 +188,7 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 			}
 		}
 		$out .="</table>";
-	} else {
+	}  else if (isset($statsnum) and $statsnum =="4") {
 		// Stats 4
 		$stats4_tippgroup   = (isset($_GET['wpc_stats4_tippgroup'])?esc_attr($_GET['wpc_stats4_tippgroup']):"");
 		$tippgroup_sql="";
@@ -720,6 +763,76 @@ function show_Stats6($atts)
 
 	return $out;
 }
+
+// -----------------------------------------------------------------------------------
+// Funktion zur Ausgabe der Statistik 7 Tipper des Monats
+// -----------------------------------------------------------------------------------
+function show_Stats7($atts)
+{
+	include("globals.php");
+	global $wpdb,$userdata,$wpcs_demo;
+
+	// initialisiere ausgabe variable
+	$out = "";
+
+	// pruefe ob anwender angemeldet ist, wenn nicht gebe hinweis aus
+	// und beende die funktion
+	if ( !is_user_logged_in() and $wpcs_demo <=0){
+		$out .= __("Sie sind nicht angemeldet.","wpcs")."<br />";
+		$out .= __("Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website","wpcs")."<br />";
+		return $out;
+	}
+
+	// parameter holen dabei übersteuert tippgruppe, tippgroup
+	$tippgroup = (isset($atts['tippgroup'])?$atts['tippgroup']:"");
+	$tippgroup = (isset($atts['tippgruppe'])?$atts['tippgruppe']:"");
+
+	// for debugging
+	//$wpdb->show_errors(true);
+
+	// lese anwenderdaten ein
+	get_currentuserinfo();
+	// merke die userid
+	$uid = $userdata->ID;
+
+	// userdaten lesen
+	$sql0="select * from $cs_users where userid=$uid";
+	$r0= $wpdb->get_results($sql0);
+
+	// admin flag setzen
+	$is_admin=false;
+	if ( $r0[0]->admin == 1 )
+		$is_admin=true;
+
+	// ermittle aktuelle uhrzeit
+	$currtime=date("Y-m-d H:i:s");
+
+	$out .= "<h2>" . __("Tipper des Monats","wpcs") . "</h2>";
+
+	$out .= "<div class='wpc-stats7-sel'><form action='#'>" . __("Monat","wpcs").":";
+	$out .= "<input id='wpc_stats7_tippgroup' type='hidden' value='$tippgroup' />";
+	$out .= "<select id='wpc_stats7_selector' size='1' onchange='wpc_stats7_update();' >";
+	
+	$sql1 = "SELECT year(matchtime) as year, lpad(month(matchtime),2,'0') as month FROM $cs_match group by year(matchtime), month(matchtime) order by year(matchtime), month(matchtime);";
+
+	$r1= $wpdb->get_results($sql1);
+
+	foreach ($r1 as $r) {
+		$sel="";
+		if ($r->year == date("Y") and $r->month == date("m"))
+			$sel = "selected='selected'";
+		$out .= "<option value='" . $r->year.$r->month. "' $sel>" . $r->year . "-" . $r->month . "</option>\n";
+	}
+	$out .= "</select>";
+	$out .= "<input id='wpc_selector_site' type='hidden' value='" . site_url("/wp-content/plugins/wp-championship")."' />";
+	$out .= "</form>";
+	$out .= "<script type='text/javascript'>window.onDomReady(wpc_stats7_update);</script>";
+	$out .= "</div>";
+	$out .= "<div id='wpc-stats7-res'></div>";
+
+	return $out;
+}
+
 
 
 ?>

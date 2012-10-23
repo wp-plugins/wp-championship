@@ -2,8 +2,8 @@
 /*
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de/wp-championship
-Description: wp-championship is championship plugin for wordpress designed for the WM 2010.
-Version: 3.7
+Description: wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer.
+Version: 3.8
 Author: tuxlog 
 Author URI: http://www.tuxlog.de
 */
@@ -28,9 +28,6 @@ Author URI: http://www.tuxlog.de
 // globale konstanten einlesen / Parameter
 include ("globals.php");
 // include setup functions
-//$plugin_prefix_root = plugin_dir_path( __FILE__ );
-//$plugin_prefix_filename = "{$plugin_prefix_root}/setup.php";
-//include_once $plugin_prefix_filename;
 require_once("setup.php");
 
 // admin dialog
@@ -104,15 +101,8 @@ add_action('admin_head', 'wpcs_css');
 function wp_championship_init()
 {
   // get translation 
-  $locale = get_locale(); 
-  if ( empty($locale) )
-    $locale = 'en_US';
-  if(function_exists('load_textdomain') and $locale != "de_DE") { 
-  	//load_plugin_textdomain("wpcs",false,"wp-championship/lang");
-  	load_textdomain("wpcs",ABSPATH . "wp-content/plugins/wp-championship/lang/".$locale.".mo");
-  }
-  
-  
+  load_plugin_textdomain('wpcs',false,dirname( plugin_basename( __FILE__ ) ) . "/lang/");
+    
   if (function_exists('add_shortcode')) {
   	add_shortcode('cs-usertipp', 'show_UserTippForm');
     add_shortcode('cs-userstats','show_UserStats');
@@ -122,28 +112,40 @@ function wp_championship_init()
   	add_shortcode('cs-stats4',   'show_Stats4');
   	add_shortcode('cs-stats5',   'show_Stats5');
   	add_shortcode('cs-stats6',   'show_Stats6');
+  	add_shortcode('cs-stats7',   'show_Stats7');
   }
 
   // javascript hinzufügen für tablesorter / floating menu und statistik ajaxeffekt
-  wp_enqueue_script('cs_tablesort', '/' . PLUGINDIR . '/wp-championship/jquery.tablesorter.min.js',
+  if ( ! is_admin()) {
+  wp_enqueue_script('cs_tablesort', plugins_url('jquery.tablesorter.min.js', __FILE__),
 		    array('jquery'), "2.0.3",true);
-  wp_enqueue_script('cs_dimensions', '/' . PLUGINDIR . '/wp-championship/jquery.dimensions.js',
+  wp_enqueue_script('cs_dimensions', plugins_url('jquery.dimensions.js', __FILE__),
 		    array('jquery'), "1.2"); 
-  wp_enqueue_script('cs_stats', '/' . PLUGINDIR . '/wp-championship/cs_stats.js',
+  wp_enqueue_script('cs_stats', plugins_url('cs_stats.js', __FILE__),
 		    array('jquery'), "9999"); 
-  wp_enqueue_script('cs_hovertable', '/' . PLUGINDIR . '/wp-championship/jquery.tooltip.js',
+  wp_enqueue_script('cs_hovertable', plugins_url('jquery.tooltip.js', __FILE__),
 		    array('jquery'), "9999");
-
+  }
 }
 
 function wp_championship_admin_init()
 {
     // javascript hinzufügen für tablesorter / floating menu und statistik ajaxeffekt
-    wp_enqueue_script('cs_admin', '/' . PLUGINDIR . '/wp-championship/cs_admin.js',
-		      array(), "9999");
+    //wp_enqueue_script('cs_admin', '/' . PLUGINDIR . '/wp-championship/cs_admin.js',
+	//	      array(), "9999");
+	//wp_enqueue_script('jquery');
+    //wp_enqueue_script('jquery-ui-core');
+    //wp_enqueue_script('jquery-ui-tabs');  
+}
+
+function wpcs_add_adminjs()
+{
+	// javascript hinzufügen für tablesorter / floating menu und statistik ajaxeffekt
+	wp_enqueue_script('cs_admin', plugins_url('cs_admin.js', __FILE__),
+			array(), "9999");
 	wp_enqueue_script('jquery');
-    wp_enqueue_script('jquery-ui-core');
-    wp_enqueue_script('jquery-ui-tabs');  
+	wp_enqueue_script('jquery-ui-core');
+	wp_enqueue_script('jquery-ui-tabs');
 }
 
 // adds the admin menustructure
@@ -153,8 +155,9 @@ function add_menus() {
 
   add_menu_page('wp-champion',__('Tippspiel',"wpcs"), 'manage_options', $PPATH."cs_admin.php","cs_admin",	site_url("/wp-content/plugins/wp-championship") . '/worldcup-icon.png');
 
-  add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Teams',"wpcs"), __('Mannschaften', "wpcs"), 'manage_options', $PPATH."cs_admin_team.php", "cs_admin_team") ;
-
+  $jspage = add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Teams',"wpcs"), __('Mannschaften', "wpcs"), 'manage_options', $PPATH."cs_admin_team.php", "cs_admin_team") ;
+  add_action('admin_print_styles-' . $jspage, 'wpcs_add_adminjs');
+  
   add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Matches',"wpcs"), __('Vorrunde', "wpcs"), 'manage_options', $PPATH."cs_admin_match.php", "cs_admin_match") ; 
  
   add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Finals',"wpcs"), __('Finalrunde', "wpcs"), 'manage_options', $PPATH."cs_admin_finals.php", "cs_admin_finals") ; 
@@ -163,10 +166,7 @@ function add_menus() {
 
   add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Stats',"wpcs"), __('Statistiken', "wpcs"), 'manage_options', $PPATH."cs_admin_stats.php", "cs_admin_stats") ;
 
-  add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Bezeichungen',"wpcs"), __('Bezeichnungen', "wpcs"), 'manage_options', $PPATH."cs_admin_labels.php", "cs_admin_labels") ;
-
+  $jspage = add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Bezeichungen',"wpcs"), __('Bezeichnungen', "wpcs"), 'manage_options', $PPATH."cs_admin_labels.php", "cs_admin_labels") ;
+  add_action('admin_print_styles-' . $jspage, 'wpcs_add_adminjs');
  }
-  
-
-
 ?>
