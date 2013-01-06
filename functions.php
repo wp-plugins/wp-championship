@@ -204,7 +204,7 @@ function get_team_clification($groupid='', $count=0)
          select groupid,name,tid,icon,qualified,
 	 sum(result1) as tore,
 	 sum(result2) as gegentore, 
-	 sum( case winner when 0 then $cs_pts_deuce when 1 then $cs_pts_winner else $cs_pts_looser end)  as points
+	 sum( case winner when 0 then $cs_pts_deuce when 1 then $cs_pts_winner else $cs_pts_looser end) as points
 	 from $cs_match 
 	 inner join $cs_team 
 	 on tid=tid1
@@ -214,7 +214,7 @@ function get_team_clification($groupid='', $count=0)
          select groupid,name,tid,icon,qualified,
 	 sum(result2) as tore,
 	 sum(result1) as gegentore, 
-	 sum( case winner when 0 then $cs_pts_deuce when 2 then $cs_pts_winner else $cs_pts_looser end)  as points
+	 sum( case winner when 0 then $cs_pts_deuce when 2 then $cs_pts_winner else $cs_pts_looser end) as points
 	 from $cs_match 
 	 inner join $cs_team 
 	 on tid=tid2
@@ -222,22 +222,30 @@ function get_team_clification($groupid='', $count=0)
          group by groupid,name,icon,qualified
 	 UNION ALL
          select distinct groupid,name,tid,icon,qualified, 
-         0 as tore,0 as gegentore,0 as points
+         0 as tore,0 as gegentore, 0 as points
 	 from $cs_match inner join $cs_team on tid=tid1
 	 where winner =-1 and tid1<>0 and round ='V'
 	 UNION ALL
          select distinct groupid,name,tid,icon, qualified,
-         0 as tore,0 as gegentore,0 as points
+         0 as tore,0 as gegentore, 0 as points
 	 from $cs_match inner join $cs_team on tid=tid2
-	 where winner =-1 and tid2<>0 and round='V';
+	 where winner =-1 and tid2<>0 and round='V'
+	 UNION ALL
+         select distinct groupid,name,tid,icon, qualified,
+         0 as tore,0 as gegentore, -1*penalty as points
+	 from $cs_team where penalty <> 0;
 EOD;
 
-	$sql2= "select groupid, name,tid,icon,qualified, sum(tore) as store,sum(gegentore) as sgegentore, sum(points) as spoints, (sum(tore)-sum(gegentore)) as tdiff from cs_tt ";
-
+	$sql2= <<<EOD
+	select groupid, name,tid,icon,qualified, 
+		   sum(tore) as store,sum(gegentore) as sgegentore, sum(points) as spoints, 
+		   (sum(tore)-sum(gegentore)) as tdiff 
+		   from cs_tt 
+EOD;
 	if ($groupid !="")
-	$sql2.=" where groupid = '$groupid' ";
+		$sql2.=" where groupid = '$groupid' ";
 
-	$sql2 .= "group by groupid,name,icon order by groupid,qualified,spoints DESC,tdiff DESC, store DESC";
+	$sql2 .= " group by groupid,name,icon order by groupid,qualified,spoints DESC,tdiff DESC, store DESC";
 
 	if ($count !=0)
 	$sql2 .= " limit 0,$count";
@@ -278,7 +286,6 @@ EOD;
 			$points1=$points2; $diff1=$diff2; $tore1=$tore2; $tid1=$tid2;
 		}
 	}
-
 	return $results;
 }
 
@@ -833,5 +840,21 @@ function get_team_matches($teamid)
 	}
 	
 	return $erg;
+}
+
+// liefert die strafpunkte je Team zurück
+// ermittelt wird: Teamname und anzahl Strafpunkte
+//
+function get_team_penalty()
+{
+	include("globals.php");
+	global $wpdb;
+
+	//$wpdb->show_errors(true);
+	// hole penalties
+	$sql1= "select name,penalty from $cs_team where penalty <>0; ";
+	$res1 = $wpdb->get_results($sql1);
+
+	return $res1;
 }
 ?>

@@ -64,6 +64,8 @@ function cs_admin_team()
       $_POST['team_icon']="default.ico";
     if ( $_POST['qualified']=="" )
       $_POST['qualified']=0;
+ 	if ( $_POST['penalty']=="" )
+      $_POST['penalty']=0;      
     
     
     // send a message about mandatory data
@@ -79,7 +81,7 @@ function cs_admin_team()
     
     // insert new team into database
     if ( $errflag==0 and $action == "savenew" ) {
-      $sql = "insert into ". $cs_table_prefix ."team values (0,'" . $_POST['team_name'] . "','" . $_POST['team_shortname'] . "','" . $_POST['team_icon'] . "','" . $_POST['group'] . "'," . $_POST['qualified'] . ");";
+      $sql = "insert into ". $cs_table_prefix ."team values (0,'" . $_POST['team_name'] . "','" . $_POST['team_shortname'] . "','" . $_POST['team_icon'] . "','" . $_POST['group'] . "'," . $_POST['qualified'] . ", " . $POST_['penalty'] .");";
       $results = $wpdb->query($sql);
       if ( $results == 1 )
 	admin_message ( __('Mannschaft erfolgreich angelegt.',"wpcs") );
@@ -89,7 +91,7 @@ function cs_admin_team()
     
     // update team 
     if ( $errflag==0 and $action == "update" ) {
-      $sql = "update ".$cs_table_prefix."team set name='" . $_POST['team_name'] . "', shortname='" . $_POST['team_shortname'] . "', icon='" . $_POST['team_icon'] . "',groupid='" . $_POST['group'] . "',qualified=" . $_POST['qualified'] . " where tid=".$_POST['tid'].";";
+      $sql = "update ".$cs_table_prefix."team set name='" . $_POST['team_name'] . "', shortname='" . $_POST['team_shortname'] . "', icon='" . $_POST['team_icon'] . "',groupid='" . $_POST['group'] . "',qualified=" . $_POST['qualified'] . ", penalty=" . $_POST['penalty'] . " where tid=".$_POST['tid'].";";
       $results = $wpdb->query($sql);
       if ( $results == 1 )
 	admin_message( __('Mannschaft erfolgreich gespeichert.',"wpcs") );
@@ -110,7 +112,7 @@ function cs_admin_team()
 
  
   // output teams add/modify form
-  $resed=array('name'=>"", 'shortname'=>"",'icon'=>"",'groupid'=>"",'qualified'=>"");
+  $resed=array('name'=>"", 'shortname'=>"",'icon'=>"",'groupid'=>"",'qualified'=>"", 'penalty'=>0);
   if ( $action == 'edit' ) {
     // select data to modify
     $sql= "select * from  $cs_team where tid=".$_GET['tid'].";";
@@ -163,7 +165,16 @@ function cs_admin_team()
     $out .= '>'.$i.'</option>';
   }
 
-  $out .= '</select></td></tr></table>'."\n";
+  $out .= '</select></td></tr>';
+
+   // Penalty feld
+  $out .= '<tr><th scope="row" ><label for="penalty">'.__('Strafpunkte','wpcs').':</label></th>'."\n";
+  
+  $out .= '<td><input name="penalty" id="penalty" class="postform" tyoe="text" size="3" maxlength="3" value="'.$resed['penalty'].'">'."\n";
+  $out .= '</td></tr>';
+  
+  
+  $out .= '</table>'."\n";
 
   // add submit button to form
   if ( $action == 'edit' ) 
@@ -186,6 +197,7 @@ function cs_admin_team()
   $out .= '<th scope="col">'.__("Symbol / Wappen","wpcs").'</th>'."\n";
   $out .= '<th scope="col" style="text-align: center;width:90px">'.__('Gruppe',"wpcs").'</th>'."\n";
   $out .= '<th scope="col" style="text-align: center;width:90px">'.__('Platzierung',"wpcs").'</th>'."\n";
+  $out .= '<th scope="col" style="text-align: center;width:90px">'.__('Strafpunkte',"wpcs").'</th>'."\n";
   $out .= '<th scope="col" style="text-align: center">'.__('Aktion',"wpcs").'</th>'."</tr></thead>\n";
   // teams loop
   $iconpath = get_option("siteurl") . "/wp-content/plugins/wp-championship/icons/";
@@ -196,6 +208,7 @@ function cs_admin_team()
     $out .= "<td>".$res->shortname."</td>";
     $out .= "<td><img src='".$iconpath. $res->icon."' alt='icon' />".$res->icon."</td><td style='text-align:center'>&nbsp;".$res->groupid."</td>";
     $out .= "<td style='text-align:center'>".$res->qualified."</td>";
+    $out .= "<td style='text-align:center'>".$res->penalty."</td>";
     $out .= "<td style='text-align:center'><a href=\"".$thisform."&amp;action=modify&amp;tid=".$res->tid."\">".__("Ändern","wpcs")."</a>&nbsp;&nbsp;&nbsp;";
     $out .= "<a href=\"".$thisform."&amp;action=remove&amp;tid=".$res->tid."\">".__("Löschen","wpcs")."</a></td></tr>\n";
 

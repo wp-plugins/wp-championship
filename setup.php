@@ -49,6 +49,7 @@ function wp_championship_install()
             icon varchar(40) NOT NULL,
             groupid varchar(2) NOT NULL,
             qualified boolean NOT NULL,
+            penalty integer NOT NULL,
             primary key(tid)
           ) $charset_collate;";
 
@@ -207,6 +208,21 @@ function wp_championship_install()
       $results = $wpdb->query($sql);
       
       $sql="update $cs_users set tippgroup='';";
+      $results = $wpdb->query($sql);
+  } 
+  
+  // -----------------------------------------------------------------
+  // U P D A T E - table structure v3.9
+  // -----------------------------------------------------------------
+  $sql="select penalty from $cs_team;";
+  $results = $wpdb->query($sql);  
+  
+  if ($results == 0) {
+      // add columns for penalty
+      $sql="alter table $cs_team add column penalty integer NOT NULL after qualified";
+      $results = $wpdb->query($sql);
+      
+      $sql="update $cs_team set penalty=0;";
       $results = $wpdb->query($sql);
   } 
   

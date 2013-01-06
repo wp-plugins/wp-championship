@@ -172,7 +172,18 @@ function show_UserStats($atts)
  }
  $out .= '</table>'."<p>&nbsp;</p>\n";
 
-
+ // Übersicht Strafpunkte ausgeben
+ $penalties = get_team_penalty();
+ if (is_array($penalties) && sizeof($penalties)>0) {
+ 	$out .= "<div id='cs_stattab_p'>";
+ 	$out .= "<h2>".__("Strafpunkte","wpcs")."</h2>\n";
+ 
+ 	foreach($penalties as $k => $val ) {
+ 		$out .= $val->name . ":   " . $val->penalty . " $cs_label_spoint<br/>";
+	}
+ 	$out .="<br/></div>";
+ }
+ 
  // Spielübersicht Vorrunde
  $iconpath = get_option("siteurl") . "/wp-content/plugins/wp-championship/icons/";
 
