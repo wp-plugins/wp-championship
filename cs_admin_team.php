@@ -81,7 +81,7 @@ function cs_admin_team()
     
     // insert new team into database
     if ( $errflag==0 and $action == "savenew" ) {
-      $sql = "insert into ". $cs_table_prefix ."team values (0,'" . $_POST['team_name'] . "','" . $_POST['team_shortname'] . "','" . $_POST['team_icon'] . "','" . $_POST['group'] . "'," . $_POST['qualified'] . ", " . $POST_['penalty'] .");";
+      $sql = "insert into ". $cs_table_prefix ."team values (0,'" . $_POST['team_name'] . "','" . $_POST['team_shortname'] . "','" . $_POST['team_icon'] . "','" . $_POST['group'] . "'," . $_POST['qualified'] . "," . $_POST['penalty'] .");";
       $results = $wpdb->query($sql);
       if ( $results == 1 )
 	admin_message ( __('Mannschaft erfolgreich angelegt.',"wpcs") );
