@@ -24,7 +24,8 @@ function wp_championship_install()
 {
   include("globals.php");
   global $wpdb;
-
+  $wpdb->show_errors(false);
+  
   // add charset & collate like wp db class
   $charset_collate = '';
   
@@ -104,7 +105,7 @@ function wp_championship_install()
       $resadmin = $wpdb->get_row($sql); 
       if ($resadmin->c == 0) {
 	  $sql = "insert into ".$cs_table_prefix."users values
-          ( 1, 1,0,0,0,'0000-00-00 00:00:00',-1);";
+          ( 1, 1, 0, 0, 0, '0000-00-00 00:00:00');";
 	  $results = $wpdb->query($sql);  
       }
     }
