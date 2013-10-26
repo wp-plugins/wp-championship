@@ -160,22 +160,30 @@ EOD;
 		foreach($r2 as $r) {
 			// fetch results per day and user
 			if (get_option("cs_modus")==1)
-				$sql="select a.result1 as res1, a.result2 as res2, a.points as points, b.matchtime as origtime from $cs_match b left outer join $cs_tipp a on a.mid=b.mid and a.userid=$r->userid where date(matchtime)='$newday5' and b.result1>-1 and b.result2>-1 and b.round in ('V','F') order by origtime;";
+				$sql="select a.mid,a.result1 as res1, a.result2 as res2, a.points as points, b.matchtime as origtime from $cs_match b left outer join $cs_tipp a on a.mid=b.mid and a.userid=$r->userid where date(matchtime)='$newday5' and b.result1>-1 and b.result2>-1 and b.round in ('V','F') order by origtime;";
 			else
-				$sql="select a.result1 as res1, a.result2 as res2, a.points as points, b.matchtime as origtime from $cs_match b left outer join $cs_tipp a on a.mid=b.mid and a.userid=$r->userid where spieltag=$newday5  and b.result1>-1 and b.result2>-1 and b.round ='V' order by spieltag,origtime;";
+				$sql="select a.mid,a.result1 as res1, a.result2 as res2, a.points as points, b.matchtime as origtime from $cs_match b left outer join $cs_tipp a on a.mid=b.mid and a.userid=$r->userid where spieltag=$newday5  and b.result1>-1 and b.result2>-1 and b.round ='V' order by spieltag,origtime;";
 
 			$r3 = $wpdb->get_results($sql);
-			if ($r3) {
+			// sort it into an array with the matchday as index
+			$r4 = array();
+			foreach ($r3 as $t) {
+				$r4[$t->mid]=$t;
+			}
+			
+			if ($r4) {
 
 				$out .= "<tr><td>" . $r->user_nicename . "</td>";
 				$anz = 0;
 				$sum = 0;
-				foreach ($r3 as $s) {
-					if ( $s->res1 ==-1 or $s->res1 == NULL )
+				foreach ($r1 as $s) {
+					$mday = $s->mid;
+					
+					if ( $r4[$mday]->res1 ==-1 or $r4[$mday]->res1 == NULL )
 						$out .= "<td>-:-<sub>-</sub></td>";
 					else {
-						$out .= "<td>" . $s->res1 . ":" . $s->res2 . "<sub>" . $s->points . "</sub></td>";
-						$sum += $s->points;
+						$out .= "<td>" . $r4[$mday]->res1 . ":" . $r4[$mday]->res2 . "<sub>" . $r4[$mday]->points . "</sub></td>";
+						$sum += $r4[$mday]->points;
 						$anz += 1;
 					}
 				}

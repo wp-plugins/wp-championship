@@ -83,7 +83,7 @@ function cs_admin_finals()
     $sql="select count(*) as anz from $cs_team where name='#".$team1."';";
     $r0 = $wpdb->get_row($sql);
     if ( $r0->anz == 0) {
-      $sql="insert into  $cs_team values (0,'#$team1','','','',1);";
+      $sql="insert into  $cs_team values (0,'#$team1','','','',1,0);";
       $results = $wpdb->query($sql);
  
       if ( $results == 1 )
@@ -95,7 +95,7 @@ function cs_admin_finals()
     $sql="select count(*) as anz from $cs_team where name='#".$team2."';";
     $r0 = $wpdb->get_row($sql);
     if ( $r0->anz == 0) {
-      $sql="insert into  $cs_team values (0,'#$team2','','','',1);";
+      $sql="insert into  $cs_team values (0,'#$team2','','','',1,0);";
       $results = $wpdb->query($sql);
       if ( $results == 1 )
 	admin_message ( __('Mannschaft 2 automatisch hinzugefügt.',"wpcs") );

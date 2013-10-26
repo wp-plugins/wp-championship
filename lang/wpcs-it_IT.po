@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-championship\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-19 10:13+0200\n"
+"POT-Creation-Date: 2013-10-23 11:01+0200\n"
 "PO-Revision-Date: 2010-02-14 15:56+0100\n"
 "Last-Translator: Davide Brognoli <davide.brognoli@gmail.com>\n"
 "Language-Team: hans matzen <webmaster ät tuxlog dot de>\n"
@@ -18,55 +18,55 @@ msgstr ""
 "X-Poedit-Language: English\n"
 "X-Poedit-Country: UNITED KINGDOM\n"
 
-#: class_cs_widget.php:49 cs_admin_team.php:135 cs_admin_team.php:184
+#: class_cs_widget.php:48 cs_admin_team.php:137 cs_admin_team.php:195
 #: cs_admin_users.php:189
 msgid "Name"
 msgstr "Nome"
 
-#: class_cs_widget.php:97
+#: class_cs_widget.php:112
 msgid "Es sind noch keine Spielergebnisse vorhanden."
 msgstr ""
 
-#: class_cs_widget.php:156
+#: class_cs_widget.php:171
 msgid "Title"
 msgstr ""
 
-#: class_cs_widget.php:159
+#: class_cs_widget.php:177
 msgid "Durchschnitt anzeigen?"
 msgstr ""
 
-#: class_cs_widget.php:160 class_cs_widget.php:165 class_cs_widget.php:170
-#: class_cs_widget.php:179
+#: class_cs_widget.php:182 class_cs_widget.php:195 class_cs_widget.php:208
+#: class_cs_widget.php:228
 msgid "Ja"
 msgstr ""
 
-#: class_cs_widget.php:161 class_cs_widget.php:166 class_cs_widget.php:171
-#: class_cs_widget.php:180
+#: class_cs_widget.php:187 class_cs_widget.php:200 class_cs_widget.php:213
+#: class_cs_widget.php:233
 msgid "Nein"
 msgstr ""
 
-#: class_cs_widget.php:164
+#: class_cs_widget.php:190
 #, fuzzy
 msgid "Anzahl der Tipps?"
 msgstr "Numero di consigli"
 
-#: class_cs_widget.php:169
+#: class_cs_widget.php:203
 msgid "Tendenz anzeigen?"
 msgstr ""
 
-#: class_cs_widget.php:174
+#: class_cs_widget.php:216
 msgid "Anzahl der angezeigten Mitspieler"
 msgstr ""
 
-#: class_cs_widget.php:178
+#: class_cs_widget.php:223
 msgid "Link anzeigen?"
 msgstr ""
 
-#: class_cs_widget.php:183
+#: class_cs_widget.php:236
 msgid "Link URL"
 msgstr ""
 
-#: class_cs_widget.php:187
+#: class_cs_widget.php:243
 #, fuzzy
 msgid "Link Bezeichnung"
 msgstr "Partita"
@@ -75,193 +75,201 @@ msgstr "Partita"
 msgid "Bitte alle Felder füllen."
 msgstr "Compila tutti i campi"
 
-#: cs_admin.php:100 cs_admin_labels.php:71 cs_admin_labels.php:79
+#: cs_admin.php:102 cs_admin_labels.php:71 cs_admin_labels.php:79
 msgid "Einstellungen erfolgreich gespeichert."
 msgstr "Configurazione salvata con successo"
 
-#: cs_admin.php:110
+#: cs_admin.php:112
 msgid "Alle Tipps wurden gelöscht"
 msgstr "Tutti i consigli sono stati cancellati"
 
-#: cs_admin.php:123
+#: cs_admin.php:125
 msgid "Alle Ergebnisse wurden gelöscht"
 msgstr "Tutti i risultati sono stati cancellati"
 
-#: cs_admin.php:131
+#: cs_admin.php:133
 msgid "Alle wp-championship Tabellen wurden gelöscht"
 msgstr "Tutte le tabelle di wp-championship sono state cancellate"
 
-#: cs_admin.php:137
+#: cs_admin.php:139
 msgid "Die Mails wurden verschickt."
 msgstr "E-mail inviate"
 
-#: cs_admin.php:145
+#: cs_admin.php:147
 msgid "Die Neuberechnung wurde durchgeführt."
 msgstr "Ricalcolo eseguito"
 
-#: cs_admin.php:181
+#: cs_admin.php:185
 msgid "wp-championship Einstellungen"
 msgstr "Configurazione di wp-championship"
 
-#: cs_admin.php:184
+#: cs_admin.php:188
 msgid "Anzahl Gruppen Vorrunde"
 msgstr "Numero di gruppi nei preliminari"
 
-#: cs_admin.php:197
+#: cs_admin.php:201
 msgid "Platzierung und Punkte neu berechnen?"
 msgstr "Ricalcolare punti e posizioni?"
 
-#: cs_admin.php:200
+#: cs_admin.php:204
 msgid "Neuberechnung durchführen"
 msgstr "Ricalcolare"
 
-#: cs_admin.php:203
+#: cs_admin.php:207
 msgid "Punkt für den Gewinner einer Begegnung"
 msgstr "Punti per la squadra vincente"
 
-#: cs_admin.php:207
+#: cs_admin.php:211
 msgid "Mailservice einmal auslösen?"
 msgstr "Manda una sola email"
 
-#: cs_admin.php:210
+#: cs_admin.php:214
 msgid "Mailservice auslösen"
 msgstr "Manda le email"
 
-#: cs_admin.php:213
+#: cs_admin.php:217
 msgid "Punkte für den Verlierer einer Begegnung"
 msgstr "Punti per la squadra perdente"
 
-#: cs_admin.php:217
+#: cs_admin.php:221
 msgid "Alle Tipps löschen?"
 msgstr "Cancellare tutti i consigli?"
 
-#: cs_admin.php:220
+#: cs_admin.php:224
 msgid "Tipps löschen"
 msgstr "Cancella i consigli"
 
-#: cs_admin.php:223
+#: cs_admin.php:227
 msgid "Punkte bei Unentschieden"
 msgstr "Punti per il pareggio"
 
-#: cs_admin.php:227
+#: cs_admin.php:231
 msgid "Alle Ergebnisse löschen?"
 msgstr "Cancellare tutti i risultati?"
 
-#: cs_admin.php:230
+#: cs_admin.php:234
 msgid "Ergebnisse löschen"
 msgstr "Cancella i risultati"
 
-#: cs_admin.php:233
+#: cs_admin.php:237
 msgid "Anzahl der Teams pro Gruppe, die sich für die Finalrunde qualifizieren"
 msgstr "Numero di squadre per gruppo che si qualificano per la finale"
 
-#: cs_admin.php:237
+#: cs_admin.php:241
 msgid "Alle Tabellen aus der Datenbank entfernen?"
 msgstr "Cancellare tutte le tabelle di wp-chmpionship dal database?"
 
-#: cs_admin.php:240
+#: cs_admin.php:244
 msgid "Tabellen entfernen"
 msgstr "Cancella tutte le tabelle"
 
-#: cs_admin.php:243
+#: cs_admin.php:247
 msgid "Punkt für korrekten Tipp"
 msgstr "Punti per un consiglio esatto"
 
-#: cs_admin.php:247
+#: cs_admin.php:251
 #, fuzzy
 msgid "Neue User zum Tippspiel hinzufügen"
 msgstr "Aggiungi giocatore"
 
-#: cs_admin.php:254
+#: cs_admin.php:258
 msgid "Punkt bei richtiger Tendenz"
 msgstr "Punti per la corretta tendenza"
 
-#: cs_admin.php:258
+#: cs_admin.php:262
 msgid "Deaktiveren der Stellvertreterfunktion"
 msgstr "Disattivare la funzione sostituzioni"
 
-#: cs_admin.php:265
+#: cs_admin.php:269
 msgid "Punkt bei richtiger Tendenz und richtiger Tordifferenz"
 msgstr "Punti per la corretta tendenza e la differenza reti"
 
-#: cs_admin.php:269
+#: cs_admin.php:273
 msgid "Turniermodus"
 msgstr "Tipologia di torneo"
 
-#: cs_admin.php:274
+#: cs_admin.php:278
 msgid "Standard"
 msgstr "Standard"
 
-#: cs_admin.php:278
+#: cs_admin.php:282
 msgid "Deutsche Bundesliga"
 msgstr "Bundesliga tedesca"
 
-#: cs_admin.php:282
+#: cs_admin.php:286
 msgid "Punkte für richtigen Sieger-Tipp"
 msgstr "Punti per il corretto vincitre del campionato"
 
-#: cs_admin.php:286
+#: cs_admin.php:290
 #, fuzzy
 msgid "Tipp-Erinnerung per Mailservice"
 msgstr "Servizio e-mail del gioco"
 
-#: cs_admin.php:293
+#: cs_admin.php:297
 #, fuzzy
 msgid "Punkte für einseitig richtigen Tipp"
 msgstr "Punti per il corretto vincitre del campionato"
 
-#: cs_admin.php:296
+#: cs_admin.php:300
 msgid "Einseitiger Tipp zieht nur mit Tendenz"
 msgstr ""
 
-#: cs_admin.php:305
+#: cs_admin.php:309
 msgid "Stunden bis zum Spiel (Tipp-Erinnerung)"
 msgstr ""
 
-#: cs_admin.php:309
+#: cs_admin.php:313
 msgid "Schwellwert für Summe der Tore"
 msgstr ""
 
-#: cs_admin.php:311
+#: cs_admin.php:315
 msgid "kein separater Tortipp"
 msgstr ""
 
-#: cs_admin.php:320
+#: cs_admin.php:321
+msgid "nur Gleichheit zieht"
+msgstr ""
+
+#: cs_admin.php:330
 #, fuzzy
 msgid "Platzierungstrend berechnen"
 msgstr "Ricalcolare punti e posizioni?"
 
-#: cs_admin.php:328
+#: cs_admin.php:338
 msgid "Punkte für Summe der Tore größer als Schwellwert"
 msgstr ""
 
-#: cs_admin.php:332
+#: cs_admin.php:342
 msgid "Floating Link einschalten"
 msgstr ""
 
-#: cs_admin.php:339
+#: cs_admin.php:350
+msgid "Tipphilfen auf Tippseite einblenden"
+msgstr ""
+
+#: cs_admin.php:357
 #, fuzzy
 msgid "Vorrunden-Tipps sperren"
 msgstr "Prliminare"
 
-#: cs_admin.php:346
+#: cs_admin.php:364
 msgid "Aktivieren der XMLRPC Erweiterung"
 msgstr ""
 
-#: cs_admin.php:348
+#: cs_admin.php:366
 msgid "Tipps aller Spieler anzeigen"
 msgstr ""
 
-#: cs_admin.php:353
+#: cs_admin.php:371
 #, fuzzy
 msgid "Kurzbezeichnung verwenden"
 msgstr "Partita"
 
-#: cs_admin.php:364
+#: cs_admin.php:382
 msgid "News über XMLRPC abrufbar"
 msgstr ""
 
-#: cs_admin.php:371 cs_admin_labels.php:197 cs_admin_labels.php:291
+#: cs_admin.php:389 cs_admin_labels.php:197 cs_admin_labels.php:291
 msgid "Einstellungen speichern"
 msgstr "Salva la configurazione"
 
@@ -297,7 +305,7 @@ msgstr "Partita finale creata con successo"
 
 #: cs_admin_finals.php:127 cs_admin_finals.php:146 cs_admin_finals.php:157
 #: cs_admin_match.php:81 cs_admin_match.php:91 cs_admin_match.php:102
-#: cs_admin_team.php:87 cs_admin_team.php:97 cs_admin_team.php:108
+#: cs_admin_team.php:89 cs_admin_team.php:99 cs_admin_team.php:110
 msgid "Datenbankfehler; Vorgang abgebrochen"
 msgstr "Errore del Database"
 
@@ -327,8 +335,8 @@ msgid "Mannschaft 2"
 msgstr "Squadra 2"
 
 #: cs_admin_finals.php:241 cs_admin_finals.php:266 cs_admin_match.php:148
-#: cs_admin_match.php:178 cs_userstats.php:264 cs_usertipp.php:427
-#: cs_xmlrpc.php:439
+#: cs_admin_match.php:178 cs_userstats.php:276 cs_usertipp.php:434
+#: cs_xmlrpc.php:441
 msgid "Ort"
 msgstr "Lugo"
 
@@ -349,17 +357,17 @@ msgstr "Partita finale"
 msgid "Mannschaft 1"
 msgstr "Squadra 1"
 
-#: cs_admin_finals.php:268 cs_admin_match.php:182 cs_admin_team.php:189
+#: cs_admin_finals.php:268 cs_admin_match.php:182 cs_admin_team.php:201
 #: cs_admin_users.php:196
 msgid "Aktion"
 msgstr "Azione"
 
-#: cs_admin_finals.php:276 cs_admin_match.php:192 cs_admin_team.php:199
+#: cs_admin_finals.php:276 cs_admin_match.php:192 cs_admin_team.php:212
 #: cs_admin_users.php:208
 msgid "Ändern"
 msgstr "Aggiorna"
 
-#: cs_admin_finals.php:277 cs_admin_match.php:193 cs_admin_team.php:200
+#: cs_admin_finals.php:277 cs_admin_match.php:193 cs_admin_team.php:213
 #: cs_admin_users.php:209
 msgid "Löschen"
 msgstr "Cancella"
@@ -369,12 +377,12 @@ msgstr "Cancella"
 msgid "wp-championship Web-Bezeichnungen"
 msgstr "Configurazione di wp-championship"
 
-#: cs_admin_labels.php:115 cs_admin_labels.php:209 cs_usertipp.php:549
+#: cs_admin_labels.php:115 cs_admin_labels.php:209 cs_usertipp.php:557
 msgid "Vorrundenspiele"
 msgstr "Prliminare"
 
-#: cs_admin_labels.php:115 cs_admin_labels.php:209 cs_userstats.php:256
-#: cs_usertipp.php:614 cs_xmlrpc.php:432 wp-championship.php:154
+#: cs_admin_labels.php:115 cs_admin_labels.php:209 cs_userstats.php:268
+#: cs_usertipp.php:622 cs_xmlrpc.php:434 wp-championship.php:163
 msgid "Finalrunde"
 msgstr "Finali"
 
@@ -430,7 +438,7 @@ msgid "Standardsortierung nach Spalte"
 msgstr ""
 
 #: cs_admin_labels.php:152 cs_admin_labels.php:246 cs_admin_stats.php:54
-#: cs_userstats.php:130 functions.php:490
+#: cs_userstats.php:130 functions.php:503
 msgid "Aktueller Punktestand"
 msgstr "Stato corrente"
 
@@ -450,7 +458,7 @@ msgstr ""
 msgid "Bezeichnung Spalte 4 (Trend)"
 msgstr ""
 
-#: cs_admin_labels.php:169 cs_admin_labels.php:263 wp-championship.php:158
+#: cs_admin_labels.php:169 cs_admin_labels.php:263 wp-championship.php:167
 msgid "Statistiken"
 msgstr "Statistiche"
 
@@ -512,8 +520,8 @@ msgstr "Partita aggiornata"
 msgid "Begegnung hinzufügen"
 msgstr "Aggiungi partita"
 
-#: cs_admin_match.php:154 cs_admin_match.php:181 cs_stats.php:247
-#: cs_stats.php:590
+#: cs_admin_match.php:154 cs_admin_match.php:181 cs_stats.php:331
+#: cs_stats.php:688
 #, fuzzy
 msgid "Spieltag"
 msgstr "Partite"
@@ -530,12 +538,12 @@ msgstr "Partite"
 msgid "Der Gewinner des Turniers heißt:"
 msgstr "Il vincitore del campionato è:"
 
-#: cs_admin_stats.php:58 cs_userstats.php:102 cs_xmlrpc.php:260
-#: cs_xmlrpc.php:344 functions.php:494
+#: cs_admin_stats.php:58 cs_groupstats.php:64 cs_userstats.php:102
+#: cs_xmlrpc.php:260 cs_xmlrpc.php:344 functions.php:507
 msgid "Punktestand"
 msgstr "Stato"
 
-#: cs_admin_stats.php:59
+#: cs_admin_stats.php:59 cs_stats.php:76
 msgid "Anzahl Tipps"
 msgstr "Numero di consigli"
 
@@ -543,60 +551,64 @@ msgstr "Numero di consigli"
 msgid "Champion-Tipp"
 msgstr "Consiglio sul campionato"
 
-#: cs_admin_team.php:71
+#: cs_admin_team.php:73
 msgid "Der Name der Mannschaft darf nicht leer sein."
 msgstr "Il nome della squadra non può essere vuoto"
 
-#: cs_admin_team.php:74
+#: cs_admin_team.php:76
 msgid "Der Name der Mannschaft darf nicht mit # beginnen."
 msgstr "Il nome della squadra non può cominciare con #"
 
-#: cs_admin_team.php:85
+#: cs_admin_team.php:87
 msgid "Mannschaft erfolgreich angelegt."
 msgstr "Squadra aggiunta con successo"
 
-#: cs_admin_team.php:95
+#: cs_admin_team.php:97
 msgid "Mannschaft erfolgreich gespeichert."
 msgstr "Squadra salvata con successo"
 
-#: cs_admin_team.php:106
+#: cs_admin_team.php:108
 msgid "Mannschaft gelöscht."
 msgstr "Squadra cancellata"
 
-#: cs_admin_team.php:127
+#: cs_admin_team.php:129
 msgid "Mannschaft ändern"
 msgstr "Squadra aggiornata"
 
-#: cs_admin_team.php:130 cs_admin_team.php:172
+#: cs_admin_team.php:132 cs_admin_team.php:183
 msgid "Mannschaft hinzufügen"
 msgstr "Aggiungi una squadra"
 
-#: cs_admin_team.php:137 cs_admin_team.php:185
+#: cs_admin_team.php:139 cs_admin_team.php:196
 msgid "Shortname"
 msgstr ""
 
-#: cs_admin_team.php:139 cs_admin_team.php:186
+#: cs_admin_team.php:141 cs_admin_team.php:197
 msgid "Symbol / Wappen"
 msgstr "Simbolo / Logo"
 
-#: cs_admin_team.php:141 cs_admin_team.php:187 cs_userstats.php:197
-#: cs_usertipp.php:423 cs_xmlrpc.php:375
+#: cs_admin_team.php:143 cs_admin_team.php:198 cs_groupstats.php:101
+#: cs_userstats.php:209 cs_usertipp.php:430 cs_xmlrpc.php:376
 msgid "Gruppe"
 msgstr "Gruppo"
 
-#: cs_admin_team.php:153
+#: cs_admin_team.php:155
 msgid "Platzierung der Vorrunde"
 msgstr "Stato preliminare"
 
-#: cs_admin_team.php:170
+#: cs_admin_team.php:171 cs_admin_team.php:200 cs_userstats.php:179
+msgid "Strafpunkte"
+msgstr ""
+
+#: cs_admin_team.php:181
 msgid "Mannschaft speichern"
 msgstr "Salva la squadra"
 
-#: cs_admin_team.php:181 wp-championship.php:150
+#: cs_admin_team.php:192 wp-championship.php:158
 msgid "Mannschaften"
 msgstr "Squadre"
 
-#: cs_admin_team.php:188
+#: cs_admin_team.php:199
 msgid "Platzierung"
 msgstr "Stati"
 
@@ -632,8 +644,8 @@ msgstr "Aggiona il giocatore"
 msgid "Mitspieler hinzufügen"
 msgstr "Aggiungi giocatore"
 
-#: cs_admin_users.php:155 cs_admin_users.php:186 cs_stats.php:168
-#: wp-championship.php:156
+#: cs_admin_users.php:155 cs_admin_users.php:186 cs_stats.php:248
+#: wp-championship.php:165
 msgid "Mitspieler"
 msgstr "Giocatore"
 
@@ -641,7 +653,7 @@ msgstr "Giocatore"
 msgid "Mailservice"
 msgstr "Servizio E-mail"
 
-#: cs_admin_users.php:159 cs_admin_users.php:192 cs_usertipp.php:517
+#: cs_admin_users.php:159 cs_admin_users.php:192 cs_usertipp.php:524
 msgid "Mailbestätigung"
 msgstr ""
 
@@ -653,7 +665,7 @@ msgstr "Amministratore del gioco"
 msgid "Stellvertreter"
 msgstr "Sostituzione"
 
-#: cs_admin_users.php:165 cs_admin_users.php:194 cs_usertipp.php:520
+#: cs_admin_users.php:165 cs_admin_users.php:194 cs_usertipp.php:527
 msgid "Sieger-Tipp"
 msgstr "Vincitore - consiglio"
 
@@ -666,80 +678,156 @@ msgstr "Gruppo"
 msgid "Mitspieler speichern"
 msgstr "Salva il giocatore"
 
-#: cs_stats.php:57 cs_stats.php:431 cs_stats.php:525 cs_userstats.php:101
-#: cs_xmlrpc.php:259 cs_xmlrpc.php:343 cs_xmlrpc.php:489 cs_xmlrpc.php:532
-#: functions.php:493
-msgid "Spieler"
-msgstr "Giocatore"
-
-#: cs_stats.php:57 cs_stats.php:82 cs_userstats.php:111 cs_usertipp.php:430
-#: cs_xmlrpc.php:269 cs_xmlrpc.php:353 cs_xmlrpc.php:489 cs_xmlrpc.php:579
-msgid "Punkte"
-msgstr "Punti"
-
-#: cs_stats.php:75 cs_xmlrpc.php:572
-msgid "Benutzername"
-msgstr ""
-
-#: cs_stats.php:165
-msgid "Die Tipps von"
-msgstr ""
-
-#: cs_stats.php:166 cs_userstats.php:262 cs_usertipp.php:425 cs_xmlrpc.php:437
-#: cs_xmlrpc.php:530
-msgid "Begegnung"
-msgstr "Partita"
-
-#: cs_stats.php:169 cs_userstats.php:266 cs_xmlrpc.php:441 cs_xmlrpc.php:533
-msgid "Ergebnis"
-msgstr "Risultato"
-
-#: cs_stats.php:169 cs_xmlrpc.php:533 functions.php:633
-msgid "Tipp"
-msgstr "Consiglio"
-
-#: cs_stats.php:172 cs_stats.php:339 cs_stats.php:428
-msgid "Es sind noch keine Tipps abgegeben worden."
-msgstr ""
-
-#: cs_stats.php:216 cs_stats.php:284 cs_stats.php:370 cs_stats.php:488
-#: cs_stats.php:558 cs_userstats.php:38 cs_usertipp.php:49
+#: cs_groupstats.php:38 cs_matchstats.php:36 cs_stats.php:300 cs_stats.php:368
+#: cs_stats.php:454 cs_stats.php:572 cs_stats.php:656 cs_stats.php:724
+#: cs_stats.php:789 cs_userstats.php:38 cs_usertipp.php:52
 msgid "Sie sind nicht angemeldet."
 msgstr "Non sei loggato"
 
-#: cs_stats.php:217 cs_stats.php:285 cs_stats.php:371 cs_stats.php:489
-#: cs_stats.php:559 cs_userstats.php:39
+#: cs_groupstats.php:39 cs_matchstats.php:37 cs_stats.php:301 cs_stats.php:369
+#: cs_stats.php:455 cs_stats.php:573 cs_stats.php:657 cs_stats.php:725
+#: cs_stats.php:790 cs_userstats.php:39
 msgid "Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website"
 msgstr "Per partecipare al gioco devi avere un account"
 
-#: cs_stats.php:245
+#: cs_groupstats.php:62 cs_userstats.php:100 cs_xmlrpc.php:258
+#: cs_xmlrpc.php:342 functions.php:364 functions.php:505
+msgid "Platz"
+msgstr "Posizione"
+
+#: cs_groupstats.php:63 cs_stats.php:75 cs_stats.php:123 cs_stats.php:515
+#: cs_stats.php:616 cs_userstats.php:101 cs_xmlrpc.php:259 cs_xmlrpc.php:343
+#: cs_xmlrpc.php:491 cs_xmlrpc.php:534 functions.php:506
+msgid "Spieler"
+msgstr "Giocatore"
+
+#: cs_groupstats.php:65 cs_userstats.php:103 cs_xmlrpc.php:261
+#: cs_xmlrpc.php:345 functions.php:509
+msgid "Trend"
+msgstr ""
+
+#: cs_groupstats.php:67 cs_stats.php:755 cs_userstats.php:105
+#: cs_xmlrpc.php:263 cs_xmlrpc.php:347
+msgid "Mannschaft"
+msgstr "Squadra"
+
+#: cs_groupstats.php:68 cs_userstats.php:106 cs_xmlrpc.php:264
+#: cs_xmlrpc.php:348
+msgid "Spiele"
+msgstr "Partite"
+
+#: cs_groupstats.php:69 cs_userstats.php:107 cs_xmlrpc.php:265
+#: cs_xmlrpc.php:349
+msgid "Siege"
+msgstr "Vittorie"
+
+#: cs_groupstats.php:70 cs_userstats.php:108 cs_xmlrpc.php:266
+#: cs_xmlrpc.php:350
+msgid "Unentschieden"
+msgstr "Parggio"
+
+#: cs_groupstats.php:71 cs_userstats.php:109 cs_xmlrpc.php:267
+#: cs_xmlrpc.php:351
+msgid "Niederlagen"
+msgstr "Sconfitta"
+
+#: cs_groupstats.php:72 cs_userstats.php:110 cs_xmlrpc.php:268
+#: cs_xmlrpc.php:352
+msgid "Tore"
+msgstr "Reti"
+
+#: cs_groupstats.php:73 cs_stats.php:123 cs_stats.php:148 cs_stats.php:249
+#: cs_userstats.php:111 cs_usertipp.php:437 cs_xmlrpc.php:269
+#: cs_xmlrpc.php:353 cs_xmlrpc.php:491 cs_xmlrpc.php:581
+msgid "Punkte"
+msgstr "Punti"
+
+#: cs_matchstats.php:55 cs_stats.php:98
+#, fuzzy
+msgid "Datum"
+msgstr "Data / Ora"
+
+#: cs_matchstats.php:55 cs_stats.php:98 cs_stats.php:246 cs_userstats.php:274
+#: cs_usertipp.php:432 cs_xmlrpc.php:439 cs_xmlrpc.php:532
+msgid "Begegnung"
+msgstr "Partita"
+
+#: cs_matchstats.php:55 cs_stats.php:98 cs_stats.php:249 cs_userstats.php:278
+#: cs_xmlrpc.php:443 cs_xmlrpc.php:535
+msgid "Ergebnis"
+msgstr "Risultato"
+
+#: cs_stats.php:72
+msgid "Keine Ergebnisse gefunden."
+msgstr ""
+
+#: cs_stats.php:75
+msgid "Gesamtpunkte"
+msgstr ""
+
+#: cs_stats.php:76
+#, fuzzy
+msgid "Punkte (Monat)"
+msgstr "Punti"
+
+#: cs_stats.php:141 cs_xmlrpc.php:574
+msgid "Benutzername"
+msgstr ""
+
+#: cs_stats.php:249 cs_xmlrpc.php:535 functions.php:645
+msgid "Tipp"
+msgstr "Consiglio"
+
+#: cs_stats.php:252 cs_stats.php:423 cs_stats.php:512
+msgid "Es sind noch keine Tipps abgegeben worden."
+msgstr ""
+
+#: cs_stats.php:329
 #, fuzzy
 msgid "Spieltagstatistik"
 msgstr "Statistiche"
 
-#: cs_stats.php:336
+#: cs_stats.php:420
 msgid "Tipph&auml;ufigkeit"
 msgstr ""
 
-#: cs_stats.php:425
+#: cs_stats.php:509
 msgid "Tipph&auml;ufigkeit im Detail"
 msgstr ""
 
-#: cs_stats.php:523
+#: cs_stats.php:614
 #, fuzzy
 msgid "Spielertipps"
 msgstr "Giocatore"
 
-#: cs_stats.php:529
+#: cs_stats.php:620 cs_stats.php:627
 msgid "All"
 msgstr ""
 
-#: cs_stats.php:587
+#: cs_stats.php:625 functions.php:644
+#, fuzzy
+msgid "Spiel"
+msgstr "Partite"
+
+#: cs_stats.php:685
 #, fuzzy
 msgid "Spieltagsübersicht"
 msgstr "Statistiche"
 
-#: cs_userstats.php:74 cs_usertipp.php:111
+#: cs_stats.php:753
+#, fuzzy
+msgid "Mannschaftsstatistik"
+msgstr "Squadra"
+
+#: cs_stats.php:818
+msgid "Tipper des Monats"
+msgstr ""
+
+#: cs_stats.php:820
+msgid "Monat"
+msgstr ""
+
+#: cs_userstats.php:74 cs_usertipp.php:114
 msgid "Willkommen "
 msgstr "Benvenuto"
 
@@ -749,73 +837,40 @@ msgid ""
 "Tippspiels."
 msgstr "Questa pagina mostra lo stato del gioco"
 
-#: cs_userstats.php:100 cs_xmlrpc.php:258 cs_xmlrpc.php:342 functions.php:351
-#: functions.php:492
-msgid "Platz"
-msgstr "Posizione"
-
-#: cs_userstats.php:103 cs_xmlrpc.php:261 cs_xmlrpc.php:345 functions.php:496
-msgid "Trend"
-msgstr ""
-
-#: cs_userstats.php:105 cs_xmlrpc.php:263 cs_xmlrpc.php:347
-msgid "Mannschaft"
-msgstr "Squadra"
-
-#: cs_userstats.php:106 cs_xmlrpc.php:264 cs_xmlrpc.php:348
-msgid "Spiele"
-msgstr "Partite"
-
-#: cs_userstats.php:107 cs_xmlrpc.php:265 cs_xmlrpc.php:349
-msgid "Siege"
-msgstr "Vittorie"
-
-#: cs_userstats.php:108 cs_xmlrpc.php:266 cs_xmlrpc.php:350
-msgid "Unentschieden"
-msgstr "Parggio"
-
-#: cs_userstats.php:109 cs_xmlrpc.php:267 cs_xmlrpc.php:351
-msgid "Niederlagen"
-msgstr "Sconfitta"
-
-#: cs_userstats.php:110 cs_xmlrpc.php:268 cs_xmlrpc.php:352
-msgid "Tore"
-msgstr "Reti"
-
-#: cs_userstats.php:120 cs_usertipp.php:463
+#: cs_userstats.php:120 cs_usertipp.php:470
 msgid "Du bist Tippspiel-Administrator."
 msgstr "Sei l'amministratore del gioco"
 
-#: cs_userstats.php:184 cs_xmlrpc.php:364 wp-championship.php:152
+#: cs_userstats.php:196 cs_xmlrpc.php:365 wp-championship.php:161
 msgid "Vorrunde"
 msgstr "Preliminare"
 
-#: cs_userstats.php:260 cs_usertipp.php:617 cs_xmlrpc.php:435
-#: functions.php:349
+#: cs_userstats.php:272 cs_usertipp.php:625 cs_xmlrpc.php:437
+#: functions.php:362
 msgid "Spielnr."
 msgstr "Partita n."
 
-#: cs_userstats.php:265 cs_usertipp.php:428 cs_xmlrpc.php:440
+#: cs_userstats.php:277 cs_usertipp.php:435 cs_xmlrpc.php:442
 msgid "Datum<br />Zeit"
 msgstr "Data<br />Ora"
 
-#: cs_usertipp.php:50
+#: cs_usertipp.php:53
 msgid ""
 "Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website."
 msgstr "Per partecipare al gioco devi avere un account"
 
-#: cs_usertipp.php:82
+#: cs_usertipp.php:85
 msgid "Du bist als Stellvertreter aktiv für "
 msgstr "Sei il sostituto di"
 
-#: cs_usertipp.php:83
+#: cs_usertipp.php:86
 #, fuzzy
 msgid ""
 "Um wieder Deine eigenen Tipps zu bearbeiten, rufe diese Seite einfach neu "
 "auf."
 msgstr "Per aggiornare ancora il tuo consiglio, ricarica la pagina"
 
-#: cs_usertipp.php:112
+#: cs_usertipp.php:115
 msgid ""
 "auf dieser Seite siehst du deine Tippspielübersicht, kannst neue Tipps "
 "abgeben oder abgegebene Tipps bis Spielbeginn verändern, sowie deine "
@@ -825,83 +880,83 @@ msgstr ""
 "consigli o aggiornare quelli già inseriti fino all'inizio del match e puoi "
 "modificare la tua configurazione."
 
-#: cs_usertipp.php:118
+#: cs_usertipp.php:121
 msgid "Du bist als Stellvertreter eingetragen worden von:"
 msgstr "Sei il sostituto di:"
 
-#: cs_usertipp.php:134 cs_usertipp.php:502 cs_usertipp.php:755
+#: cs_usertipp.php:137 cs_usertipp.php:509
 msgid "Änderungen speichern"
 msgstr "Salva i cambiamenti"
 
-#: cs_usertipp.php:178
+#: cs_usertipp.php:181
 #, fuzzy
 msgid "Championtipp kann nicht mehr verändert werden."
 msgstr "Il consiglio non può essere modificato"
 
-#: cs_usertipp.php:200
+#: cs_usertipp.php:203
 msgid "Ungueltiger Tipp, Wert:"
 msgstr "Consiglio non valido:"
 
-#: cs_usertipp.php:213
+#: cs_usertipp.php:217
 msgid "Der Tipp kann nicht mehr angenommen werden."
 msgstr "Il consiglio non può essere modificato"
 
-#: cs_usertipp.php:220
+#: cs_usertipp.php:225
 msgid "Die Summe der Tore muss größer als der Schwellwert sein"
 msgstr ""
 
-#: cs_usertipp.php:235
+#: cs_usertipp.php:240
 msgid "Es fehlt eine Seite des Tipps oder eine Eingabe ist fehlerhaft."
 msgstr "Il consiglio è incompleto o non valido"
 
-#: cs_usertipp.php:272
+#: cs_usertipp.php:277
 msgid "Die Tipps wurden erfolgreich gespeichert."
 msgstr "Consiglio salvato con successo"
 
-#: cs_usertipp.php:294
+#: cs_usertipp.php:299
 msgid "Ungueltiges Ergebnis, Wert:"
 msgstr "Risultato non valido"
 
-#: cs_usertipp.php:312
+#: cs_usertipp.php:317
 msgid "Es fehlt eine Seite des Ergebnisses oder eine Eingabe ist fehlerhaft."
 msgstr "Il risultato è incompleto o non valido"
 
-#: cs_usertipp.php:349
+#: cs_usertipp.php:354
 msgid "Die Ergebnisse wurden erfolgreich gespeichert."
 msgstr "Risultati salvati con successo"
 
-#: cs_usertipp.php:401
+#: cs_usertipp.php:407
 msgid "Nach oben"
 msgstr ""
 
-#: cs_usertipp.php:429
+#: cs_usertipp.php:436
 #, fuzzy
 msgid "Tipp<br/>Ergebnis"
 msgstr "Consiglio<br />Risultato"
 
-#: cs_usertipp.php:480
+#: cs_usertipp.php:487
 msgid "Du hast insgesamt"
 msgstr "Tu hai"
 
-#: cs_usertipp.php:480
+#: cs_usertipp.php:487
 msgid "Punkte und bist aktuell auf Platz"
 msgstr "Il punteggio e la tua posizione sono:"
 
-#: cs_usertipp.php:505
+#: cs_usertipp.php:512
 #, fuzzy
 msgid "Einstellungen"
 msgstr "Salva la configurazione"
 
-#: cs_usertipp.php:510
+#: cs_usertipp.php:517
 msgid "Stellvertreter:"
 msgstr "Sostituto:"
 
-#: cs_usertipp.php:515
+#: cs_usertipp.php:522
 #, fuzzy
 msgid "Mailerinnerung"
 msgstr "Servizio E-mail"
 
-#: cs_usertipp.php:561 cs_usertipp.php:625
+#: cs_usertipp.php:569 cs_usertipp.php:633
 #, fuzzy
 msgid "Summe<br />Tore"
 msgstr "Data<br />Ora"
@@ -914,100 +969,95 @@ msgstr ""
 msgid "Alle"
 msgstr ""
 
-#: functions.php:349
+#: functions.php:362
 msgid "Gewinner"
 msgstr "Vincitore"
 
-#: functions.php:349
+#: functions.php:362
 msgid "Verlierer"
 msgstr "Perdente"
 
-#: functions.php:351
+#: functions.php:364
 msgid "Gruppe "
 msgstr "Gruppo"
 
-#: functions.php:489 functions.php:594 functions.php:629
+#: functions.php:502 functions.php:606 functions.php:641
 #, fuzzy
 msgid "Tippspiel Mailservice"
 msgstr "Servizio e-mail del gioco"
 
-#: functions.php:537 functions.php:539
+#: functions.php:550 functions.php:552
 msgid "Die email an "
 msgstr "E-mail a"
 
-#: functions.php:537 functions.php:608 functions.php:664
+#: functions.php:550 functions.php:620 functions.php:676
 #, fuzzy
 msgid " wurde versendet."
 msgstr "è stata mandata.<br />"
 
-#: functions.php:539 functions.php:610 functions.php:666
+#: functions.php:552 functions.php:622 functions.php:678
 #, fuzzy
 msgid " konnte <b>nicht</b> versendet werden"
 msgstr "<b>non può</b> essere inviata."
 
-#: functions.php:595
+#: functions.php:607
 msgid "Möchtest du noch tippen? Das folgende Spiel beginnt bald: "
 msgstr ""
 
-#: functions.php:608 functions.php:610
+#: functions.php:620 functions.php:622
 #, fuzzy
 msgid "Die Erinnerungsemail an "
 msgstr "E-mail a"
 
-#: functions.php:630
+#: functions.php:642
 msgid "Tippbestätigung"
 msgstr ""
 
-#: functions.php:632
-#, fuzzy
-msgid "Spiel"
-msgstr "Partite"
-
-#: functions.php:634
+#: functions.php:646
 #, fuzzy
 msgid "Datum/Zeit"
 msgstr "Data / Ora"
 
-#: functions.php:645 functions.php:647
+#: functions.php:657 functions.php:659
 msgid "n/a"
 msgstr ""
 
-#: functions.php:664 functions.php:666
+#: functions.php:676 functions.php:678
 #, fuzzy
 msgid "Die Bestätigungsemail an "
 msgstr "E-mail a"
 
-#: wp-championship.php:148
+#: wp-championship.php:156
 #, fuzzy
 msgid "Tippspiel"
 msgstr "Amministratore del gioco"
 
-#: wp-championship.php:150
+#: wp-championship.php:158
 msgid "wp-championship Teams"
 msgstr "Squadre wp-championship"
 
-#: wp-championship.php:152
+#: wp-championship.php:161
 msgid "wp-championship Matches"
 msgstr "Partite wp-championship"
 
-#: wp-championship.php:154
+#: wp-championship.php:163
 msgid "wp-championship Finals"
 msgstr "Finali wp-championship"
 
-#: wp-championship.php:156
+#: wp-championship.php:165
 msgid "wp-championship Users"
 msgstr "Utenti wp-championship"
 
-#: wp-championship.php:158
+#: wp-championship.php:167
 msgid "wp-championship Stats"
 msgstr "Statistiche wp-championship"
 
-#: wp-championship.php:160
+#: wp-championship.php:169
 #, fuzzy
 msgid "wp-championship Bezeichungen"
 msgstr "Configurazione di wp-championship"
 
-#: wp-championship.php:160
+#: wp-championship.php:169
 #, fuzzy
 msgid "Bezeichnungen"
 msgstr "Partita"
