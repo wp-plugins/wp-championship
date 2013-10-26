@@ -385,19 +385,20 @@ function show_UserTippForm()
 	// die ip adresse für localhost wird dabei ausgesteuert
 	//
 	$timediff = 0;
-	if ( $_SERVER['REMOTE_ADDR'] == "127.0.0.1" )
-		$geores="";
-	else {
-		$geo_uri = "http://ipinfodb.com/ip_query.php?ip=".$_SERVER['REMOTE_ADDR']."&timezone=true";
-		$geores  = file_get_contents_utf8($geo_uri);
-	}
-	if ($geores != "" ) {
-		$spos = strpos($geores, "Gmtoffset") + 10;
-		$epos = strpos($geores,">",$spos);
-		$cltimezone = substr($geores,$spos,$epos-$spos+1);
-		$setimezone = get_option('gmt_offset') * 3600;
-		$timediff = -1 * $setimezone + $cltimezone;
-	}
+	$geores="";
+	//if ( $_SERVER['REMOTE_ADDR'] == "127.0.0.1" )
+	//	$geores="";
+	//else {
+	//	$geo_uri = "http://ipinfodb.com/ip_query.php?ip=".$_SERVER['REMOTE_ADDR']."&timezone=true";
+	//	$geores  = file_get_contents_utf8($geo_uri);
+	//}
+	//if ($geores != "" ) {
+	//	$spos = strpos($geores, "Gmtoffset") + 10;
+	//	$epos = strpos($geores,">",$spos);
+	//	$cltimezone = substr($geores,$spos,$epos-$spos+1);
+	//	$setimezone = get_option('gmt_offset') * 3600;
+	//	$timediff = -1 * $setimezone + $cltimezone;
+	//}
 
 	//
 	// ausgabe des floating links
@@ -506,7 +507,7 @@ function show_UserTippForm()
 		$out .= "<input type='hidden' name='cs_stellv' value='$uid' />";
 
 	$out .= "<input type='submit' class='wpcs-button' name='update' value='".__("Änderungen speichern","wpcs")."' /></div>";
-
+	
 	// persönliche Einstellungen
 	$out .= "<h2>".__("Einstellungen","wpcs")."</h2>\n";
 	$out .= "<table>\n";
@@ -780,9 +781,7 @@ function show_UserTippForm()
 		$bl_lastspieltag = $res->spieltag;
 	}
 	$out .= '</tbody></table>'."\n&nbsp;";
-
-	$out .= "<div class='submit' style='text-align:right'><input type='submit' class='wpcs-button' name='update' value='".__("Änderungen speichern","wpcs")."' /></div></form>";
-
+	$out .="</form>";
 	//
 	// ausgabe javascript fuer hovertable funktion
 	//
