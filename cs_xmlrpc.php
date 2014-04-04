@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2011  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2011-2014  Hans Matzen  (email : webmaster at tuxlog.de)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,7 +20,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 require_once(ABSPATH . "wp-includes/class-IXR.php");
 require_once(ABSPATH . "wp-includes/class-wp-xmlrpc-server.php");
-require_once("cs_stats.php");
+if (file_exists(  get_stylesheet_directory() . '/wp-championship/cs_stats.php' )){
+	require_once( get_stylesheet_directory() . '/wp-championship/cs_stats.php' );
+} else {
+	require_once("cs_stats.php");
+}
 //require_once("cs_userstats.php");
 
 //
@@ -49,14 +53,19 @@ class WPC_XMLRPC extends wp_xmlrpc_server {
 	protected function html_header() {
 		$def  = "xwp-championship-default.css";
     	$user = "xwp-championship.css";
-    	$plugin_url = plugins_url("wp-championship/");
+    	$plugin_url = plugins_url( '/' , __FILE__ );
     
-    	if (file_exists( WP_PLUGIN_DIR . "/wp-championship/" . $user))
+    	if (file_exists( plugin_dir_path( __FILE__ ) . $user))
 			$def =$user;
     
 		// das css wird in den header mit rein geschrieben, denn da wir über xmlrpc
 		// aufgerufen werden kann der browser realtive urls nicht auflösen
-		$csstext = file_get_contents( WP_PLUGIN_DIR . "/wp-championship/" . $def);
+		if (file_exists(  get_stylesheet_directory() . '/wp-championship/xwp-championship.css' )){
+			$csstext = file_get_contents( get_stylesheet_directory() . '/wp-championship/xwp-championship.css' );
+		} else {
+			$csstext = file_get_contents( plugin_dir_path( __FILE__ ) . $def);
+		}
+		
 		// jetzt ersetzen wir noch die url(..) image angaben mit der absoluten url
 		$pattern = "/url\((.*)\)/i";
 		$matches=array();
@@ -270,7 +279,7 @@ EOL;
 
 		$out = "";
 		// ausgabe des aktuellen punktestandes und des ranges
-		$rank = get_ranking();
+		$rank = cs_get_ranking();
 		//$out .= "<div><h3 class='xwpc_head'>".__("Aktueller Punktestand","wpcs")."</h3>\n";
 		$out .= "<table class='xwpc_table'><tr>\n";
 		if (!$csx_col_place)
@@ -353,11 +362,15 @@ EOL;
 		if ($csx_label_spoint=="") $csx_label_spoint= __("Punkte","wpcs");
 
 		// Spielübersicht Vorrunde
-		$iconpath = get_option("siteurl") . "/wp-content/plugins/wp-championship/icons/";
+		if (file_exists(  get_stylesheet_directory() . '/wp-championship/icons/' )){
+			$iconpath = get_stylesheet_directory_uri() . '/wp-championship/icons/';
+		} else {
+			$iconpath = plugins_url( 'icons/' , __FILE__ );
+		}
 
 		// tabellen loop
 		// hole tabellen daten
-		$results = get_team_clification();
+		$results = cs_get_team_clification();
 
 		$groupid_old = "";
 
@@ -387,7 +400,7 @@ EOL;
 			 
 			// hole statistiken des teams
 			$stats=array();
-			$stats=get_team_stats($res->tid);
+			$stats=cs_get_team_stats($res->tid);
 			 
 			// zeile ausgeben
 			$out .= "<tr>";
@@ -452,7 +465,7 @@ EOD;
 			$out .= "<td class='xwpc_td' ><img class='csicon' alt='icon1' width='15' src='".$iconpath.$res->icon1."' /></td>";
 			else
 			$out .= "<td class='xwpc_td' >&nbsp;</td>";
-			$out .= "<td  class='xwpc_td' align='center'><font size='-1'>".team2text($res->name1) . " - " . team2text($res->name2)."</font></td>";
+			$out .= "<td  class='xwpc_td' align='center'><font size='-1'>".cs_team2text($res->name1) . " - " . cs_team2text($res->name2)."</font></td>";
 			if ($res->icon2 != "")
 			$out .= "<td class='xwpc_td' ><img class='csicon' alt='icon2' width='15' src='".$iconpath.$res->icon2."' /></td>";
 			else

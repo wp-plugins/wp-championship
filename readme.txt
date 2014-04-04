@@ -1,10 +1,10 @@
 === wp-championship ===
 Contributors: tuxlog
 Donate link: http://www.tuxlog.de/
-Tags: championship,guessing, game, soccer, world, 2012, wordpress, plugin
+Tags: championship,guessing, game, soccer, world, 2014, wordpress, plugin
 Requires at least: 2.7
-Tested up to: 3.6.1
-Stable tag: 4.1
+Tested up to: 3.8.1
+Stable tag: 4.2
 
 wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer 
 
@@ -25,6 +25,7 @@ Features:
  + sql for the EM2012 championship in ukraine/polen
  + sql for German Bundesliga 2012/2013
  + sql for German Bundesliga 2013/2014
+ + sql for the WM2014 championship in brazil
  
 Credits:
 Thanks go to all who support this plugin, with  hints and suggestions for improv
@@ -67,6 +68,15 @@ There are several resources to visit:
 2. wp-championship tipp dialog
 
 == Changelog ==
+
+= 2014-02-15 v4.2 =
+* added teams andmatches for the soccer-world-championship 2014 (Thanks to Dieter Pfenning for all your work)
+* made many functions pluggable (you can overwrite them from within e.g. functions.php)
+* you can now store icons in YourThemefolder/wp-championship/icons
+* you can now store xwp-championship.css in YourThemefolder/wp-championship/ too
+* you can now override cs_stats.php ,cs_groupstats.php and cs_matchstats.php if you place a file with the same name in YourThemefolder/wp-championship/
+* removed jquery.dimensions enqueue since it is part of jquery now
+* removed old icons
 
 = 2013-10-23 v4.1 =
 * fixed adding a match to the final round
