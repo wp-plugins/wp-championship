@@ -18,7 +18,7 @@ if ( !class_exists('cs_widget') )
 
 
 			 
-			include ( ABSPATH . 'wp-content/plugins/wp-championship/globals.php' );
+			include ( plugin_dir_path( __FILE__ ) . 'globals.php');
 			global $wpdb;
 			extract($args);
 			 
@@ -38,7 +38,7 @@ if ( !class_exists('cs_widget') )
 
 			//Query User and Points
 			$limit = $AmountUsers;
-			$res = get_ranking();
+			$res = cs_get_ranking();
 
 			if (!empty($res)) {
 				//Table Head

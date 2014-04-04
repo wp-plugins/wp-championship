@@ -3,7 +3,7 @@
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de/wp-championship
 Description: wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer.
-Version: 3.9
+Version: 4.2
 Author: tuxlog 
 Author URI: http://www.tuxlog.de
 */
@@ -54,7 +54,7 @@ static $wpcs_demo=0;
 // activating deactivating the plugin
 register_activation_hook(__FILE__,'wp_championship_install');
 // aktion fuer erinnerungsmails hinzufügen
-add_action('cs_mailreminder', 'mailservice2');
+add_action('cs_mailreminder', 'cs_mailservice2');
 
 // uncomment this to loose everything when deactivating the plugin
 register_deactivation_hook(__FILE__,'wp_championship_deinstall');
@@ -80,13 +80,17 @@ if (get_option("cs_newuser_auto")==1) {
 //
 function wpcs_css() 
 {
+    $plugin_url = plugins_url( '/' , __FILE__ );
     $def  = "wp-championship-default.css";
     $user = "wp-championship.css";
     
-    if (file_exists( WP_PLUGIN_DIR . "/wp-championship/" . $user))
-	$def =$user;
-    
-    $plugin_url = plugins_url("wp-championship/");
+    if (file_exists( plugin_dir_path( __FILE__ ) . $user))
+	    $def =$user;
+
+    if (file_exists(  get_stylesheet_directory() . '/wp-championship/wp-championship.css' ))
+    {
+        $plugin_url = get_stylesheet_directory_uri() . '/wp-championship/';
+    }
     
     echo '<link rel="stylesheet" id="wp-championship-css" href="'. 
 	$plugin_url . $def . '" type="text/css" media="screen" />' ."\n";
@@ -119,10 +123,13 @@ function wp_championship_init()
   if ( ! is_admin()) {
   wp_enqueue_script('cs_tablesort', plugins_url('jquery.tablesorter.min.js', __FILE__),
 		    array('jquery'), "2.0.3",true);
-  wp_enqueue_script('cs_dimensions', plugins_url('jquery.dimensions.js', __FILE__),
-		    array('jquery'), "1.2"); 
-  wp_enqueue_script('cs_stats', plugins_url('cs_stats.js', __FILE__),
-		    array('jquery'), "9999"); 
+  //wp_enqueue_script('cs_dimensions', plugins_url('jquery.dimensions.js', __FILE__),
+  //	    array('jquery'), "1.2"); 
+  if (file_exists(  get_stylesheet_directory() . '/wp-championship/cs_stats.js' )){
+    wp_enqueue_script('cs_stats', get_stylesheet_directory_uri() . '/wp-championship/cs_stats.js', array('jquery'), "9999"); 
+  } else {
+	wp_enqueue_script('cs_stats', plugins_url('cs_stats.js', __FILE__), array('jquery'), "9999"); 
+		}
   wp_enqueue_script('cs_hovertable', plugins_url('jquery.tooltip.js', __FILE__),
 		    array('jquery'), "9999");
   }
@@ -151,9 +158,9 @@ function wpcs_add_adminjs()
 // adds the admin menustructure
 function add_menus() {
 
-  $PPATH=ABSPATH.PLUGINDIR."/wp-championship/";
+  $PPATH = plugin_dir_path( __FILE__ );
 
-  add_menu_page('wp-champion',__('Tippspiel',"wpcs"), 'manage_options', $PPATH."cs_admin.php","cs_admin",	site_url("/wp-content/plugins/wp-championship") . '/worldcup-icon.png');
+  add_menu_page('wp-champion',__('Tippspiel',"wpcs"), 'manage_options', $PPATH."cs_admin.php","cs_admin",	plugin_dir_url( __FILE__ ) . '/worldcup-icon.png');
 
   $jspage = add_submenu_page( $PPATH."cs_admin.php", __('wp-championship Teams',"wpcs"), __('Mannschaften', "wpcs"), 'manage_options', $PPATH."cs_admin_team.php", "cs_admin_team") ;
   add_action('admin_print_styles-' . $jspage, 'wpcs_add_adminjs');

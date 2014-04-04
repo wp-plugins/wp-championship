@@ -90,8 +90,12 @@ EOD;
 		//$stats6_tippgroup   = (isset($_GET['tippgroup'])?esc_attr($_GET['tippgroup']):"");
 		//$tippgroup_sql="";
 		
-		$iconpath = get_option("siteurl") . "/wp-content/plugins/wp-championship/icons/";
-		$matches = get_team_matches($team);
+		if (file_exists(  get_stylesheet_directory() . '/wp-championship/icons/' )){
+			$iconpath = get_stylesheet_directory_uri() . '/wp-championship/icons/';
+		} else {
+			$iconpath = plugins_url( 'icons/' , __FILE__ );
+		}
+		$matches = cs_get_team_matches($team);
 		
 		$out .= "<p>&nbsp;</p>";
 		$out .= "<table border='1' >\n";
@@ -160,22 +164,30 @@ EOD;
 		foreach($r2 as $r) {
 			// fetch results per day and user
 			if (get_option("cs_modus")==1)
-				$sql="select a.result1 as res1, a.result2 as res2, a.points as points, b.matchtime as origtime from $cs_match b left outer join $cs_tipp a on a.mid=b.mid and a.userid=$r->userid where date(matchtime)='$newday5' and b.result1>-1 and b.result2>-1 and b.round in ('V','F') order by origtime;";
+				$sql="select a.mid,a.result1 as res1, a.result2 as res2, a.points as points, b.matchtime as origtime from $cs_match b left outer join $cs_tipp a on a.mid=b.mid and a.userid=$r->userid where date(matchtime)='$newday5' and b.result1>-1 and b.result2>-1 and b.round in ('V','F') order by origtime;";
 			else
-				$sql="select a.result1 as res1, a.result2 as res2, a.points as points, b.matchtime as origtime from $cs_match b left outer join $cs_tipp a on a.mid=b.mid and a.userid=$r->userid where spieltag=$newday5  and b.result1>-1 and b.result2>-1 and b.round ='V' order by spieltag,origtime;";
+				$sql="select a.mid,a.result1 as res1, a.result2 as res2, a.points as points, b.matchtime as origtime from $cs_match b left outer join $cs_tipp a on a.mid=b.mid and a.userid=$r->userid where spieltag=$newday5  and b.result1>-1 and b.result2>-1 and b.round ='V' order by spieltag,origtime;";
 
 			$r3 = $wpdb->get_results($sql);
-			if ($r3) {
+			// sort it into an array with the matchday as index
+			$r4 = array();
+			foreach ($r3 as $t) {
+				$r4[$t->mid]=$t;
+			}
+			
+			if ($r4) {
 
 				$out .= "<tr><td>" . $r->user_nicename . "</td>";
 				$anz = 0;
 				$sum = 0;
-				foreach ($r3 as $s) {
-					if ( $s->res1 ==-1 or $s->res1 == NULL )
+				foreach ($r1 as $s) {
+					$mday = $s->mid;
+					
+					if ( $r4[$mday]->res1 ==-1 or $r4[$mday]->res1 == NULL )
 						$out .= "<td>-:-<sub>-</sub></td>";
 					else {
-						$out .= "<td>" . $s->res1 . ":" . $s->res2 . "<sub>" . $s->points . "</sub></td>";
-						$sum += $s->points;
+						$out .= "<td>" . $r4[$mday]->res1 . ":" . $r4[$mday]->res2 . "<sub>" . $r4[$mday]->points . "</sub></td>";
+						$sum += $r4[$mday]->points;
 						$anz += 1;
 					}
 				}
@@ -334,7 +346,7 @@ function show_Stats1($atts)
 	$out .= "<option value='" . $r->sday. "'>" . $r->sday . "</option>";
 
 	$out .= "</select>";
-	$out .= "<input id='wpc_selector_site' type='hidden' value='" . site_url("/wp-content/plugins/wp-championship")."' />";
+	$out .= "<input id='wpc_selector_site' type='hidden' value='" . plugins_url( '' , __FILE__ ) ."' />";
 	$out .= "</form>";
 	$out .= "<script type='text/javascript'>window.onDomReady(wpc_stats1_update);</script>";
 	$out .= "</div>";
@@ -621,7 +633,7 @@ function show_Stats4($atts)
 		$out .= "<option value='" . $r->mid. "'>" . $r->team1 . " - " . $r->team2 . "</option>";
 	$out .= "</select>";
 	
-	$out .= "<input id='wpc_selector_site4' type='hidden' value='" . site_url("/wp-content/plugins/wp-championship")."' />";
+	$out .= "<input id='wpc_selector_site4' type='hidden' value='" . plugins_url( '' , __FILE__ ) ."' />";
 	$out .= "</form>";
 	$out .= "<script type='text/javascript'>window.onDomReady(wpc_stats4_update);</script>";
 	$out .= "</div>";
@@ -691,7 +703,7 @@ function show_Stats5($atts)
 	$out .= "<option value='" . $r->sday. "'>" . $r->sday . "</option>";
 
 	$out .= "</select>";
-	$out .= "<input id='wpc_selector_site' type='hidden' value='" . site_url("/wp-content/plugins/wp-championship")."' />";
+	$out .= "<input id='wpc_selector_site' type='hidden' value='" . plugins_url( '' , __FILE__ ) ."' />";
 	$out .= "</form>";
 	$out .= "<script type='text/javascript'>window.onDomReady(wpc_stats5_update);</script>";
 	$out .= "</div>";
@@ -755,7 +767,7 @@ function show_Stats6($atts)
 		$out .= "<option value='" . $r->tid. "'>" . $r->name . " ($r->shortname)</option>";
 
 	$out .= "</select>";
-	$out .= "<input id='wpc_selector_site' type='hidden' value='" . site_url("/wp-content/plugins/wp-championship")."' />";
+	$out .= "<input id='wpc_selector_site' type='hidden' value='" . plugins_url( '' , __FILE__ )."' />";
 	$out .= "</form>";
 	$out .= "<script type='text/javascript'>window.onDomReady(wpc_stats6_update);</script>";
 	$out .= "</div>";
@@ -824,7 +836,7 @@ function show_Stats7($atts)
 		$out .= "<option value='" . $r->year.$r->month. "' $sel>" . $r->year . "-" . $r->month . "</option>\n";
 	}
 	$out .= "</select>";
-	$out .= "<input id='wpc_selector_site' type='hidden' value='" . site_url("/wp-content/plugins/wp-championship")."' />";
+	$out .= "<input id='wpc_selector_site' type='hidden' value='" . plugins_url( '' , __FILE__ )."' />";
 	$out .= "</form>";
 	$out .= "<script type='text/javascript'>window.onDomReady(wpc_stats7_update);</script>";
 	$out .= "</div>";

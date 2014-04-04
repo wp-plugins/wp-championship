@@ -1,10 +1,10 @@
 === wp-championship ===
 Contributors: tuxlog
 Donate link: http://www.tuxlog.de/
-Tags: championship,guessing, game, soccer, world, 2012, wordpress, plugin
+Tags: championship,guessing, game, soccer, world, 2014, wordpress, plugin
 Requires at least: 2.7
-Tested up to: 3.4
-Stable tag: 3.9
+Tested up to: 3.8.1
+Stable tag: 4.2
 
 wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer 
 
@@ -23,7 +23,9 @@ Features:
  + sql for the EM2008 championship in switzerland and austria
  + sql for the WM2010 championship in south-africa
  + sql for the EM2012 championship in ukraine/polen
- + sql for German Bundesliga 2012/13
+ + sql for German Bundesliga 2012/2013
+ + sql for German Bundesliga 2013/2014
+ + sql for the WM2014 championship in brazil
  
 Credits:
 Thanks go to all who support this plugin, with  hints and suggestions for improv
@@ -59,13 +61,32 @@ There are several resources to visit:
 
 [german15]: http://www.tuxlog.de/wordpress/2010/wp-championship-v1-5-fur-die-wm2010/ "German wp-championship post v1.5"
 [german14]: http://www.tuxlog.de/wordpress/2008/wp-championship/ "wp-championship post up to v1.4"
-[wpcsref]:  http://www.tuxlog.de/wordpress/2010/wp-championship-v1-5-quickreferenz/ "quick reference for wp-championship"
+[wpcsref]:  http://www.tuxlog.de/wordpress/2013/wp-championship-quickreference-english/ "quick reference for wp-championship"
 
 == Screenshots ==
 1. wp-championship stats
 2. wp-championship tipp dialog
 
 == Changelog ==
+
+= 2014-02-15 v4.2 =
+* added teams andmatches for the soccer-world-championship 2014 (Thanks to Dieter Pfenning for all your work)
+* made many functions pluggable (you can overwrite them from within e.g. functions.php)
+* you can now store icons in YourThemefolder/wp-championship/icons
+* you can now store xwp-championship.css in YourThemefolder/wp-championship/ too
+* you can now override cs_stats.php ,cs_groupstats.php and cs_matchstats.php if you place a file with the same name in YourThemefolder/wp-championship/
+* removed jquery.dimensions enqueue since it is part of jquery now
+* removed old icons
+
+= 2013-10-23 v4.1 =
+* fixed adding a match to the final round
+* fixed cs-stats5 results were shifted when player did not enter a tip for every match
+* removed timezone calc for client side due to geoip service was shut down
+* added english quickreference guide
+
+= 2013-08-04 v4.0 =
+* fixed setup because default admin entry was not correct
+* added icons and sql for Bundesliga 2013/2014
 
 = 2012-11-24 v3.9 =
 * add the possibility to give each team a penalty in points

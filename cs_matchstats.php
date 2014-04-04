@@ -47,8 +47,13 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 	// ausgabe alle spiele des teams
 	// -------------------------------------------------------------------
 
-	$iconpath = get_option("siteurl") . "/wp-content/plugins/wp-championship/icons/";
-	$matches = get_team_matches($teamid);
+	if (file_exists(  get_stylesheet_directory() . '/wp-championship/icons/' )){
+		$iconpath = get_stylesheet_directory_uri() . '/wp-championship/icons/';
+	} else {
+		$iconpath = plugins_url( 'icons/' , __FILE__ );
+	}
+	
+	$matches = cs_get_team_matches($teamid);
 	
 	$out .= "<p>&nbsp;</p>";
 	$out .= "<table border='1' >\n";
