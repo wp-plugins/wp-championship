@@ -203,17 +203,17 @@ if( ! function_exists('cs_admin_finals') ) {//make it pluggable
 		$match2_select_html='<option value="-1">-</option>';
 		$sql="select mid from  $cs_match where round='F' order by mid;";
 		$results1 = $wpdb->get_results($sql);
+
 		foreach($results1 as $res) {
-		$match1_select_html .= "<option value='".$res->mid."' ";
-		if ($res->mid == $m1)
-		  $match1_select_html .="selected='selected'";
-		$match1_select_html .=">".$res->mid."</option>\n";
+		  $match1_select_html .= "<option value='".$res->mid."' ";
+		  if ($res->mid == $m1)
+		    $match1_select_html .="selected='selected'";
+		  $match1_select_html .=">".$res->mid."</option>\n";
 		
-		$match2_select_html .= "<option value='".$res->mid."' ";
-		if ($res->mid == $m2)
-		  $match2_select_html .="selected='selected'";
-		$match2_select_html .=">".$res->mid."</option>\n";
-		
+		  $match2_select_html .= "<option value='".$res->mid."' ";
+		  if ($res->mid == $m2)
+		    $match2_select_html .="selected='selected'";
+		  $match2_select_html .=">".$res->mid."</option>\n";
 		}
 		// build the selection boxes
 		$groupsel1_html=cs_get_group_selector(get_option("cs_groups"),'fgroup1',$g1);

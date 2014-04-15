@@ -103,7 +103,7 @@ if( ! function_exists('cs_admin_team') ) {//make it pluggable
 		
 		// remove data from database
 		if ( $action == 'remove' ) {
-		$sql= "delete from ".$cs_team."team where tid=".$_GET['tid'].";";
+		$sql= "delete from ".$cs_team." where tid=".$_GET['tid'].";";
 		$results = $wpdb->query($sql);
 		if ( $results == 1 )
 		  admin_message( __('Mannschaft gelöscht.',"wpcs") );

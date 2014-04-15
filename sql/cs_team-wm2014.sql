@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.4
+-- version 4.0.9
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 11. Feb 2014 um 12:39
--- Server Version: 5.1.72-0ubuntu0.10.04.1
--- PHP-Version: 5.4.14-1~lucid+1
+-- Erstellungszeit: 13. Apr 2014 um 15:30
+-- Server Version: 5.5.33a-MariaDB
+-- PHP-Version: 5.5.5
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -104,7 +104,8 @@ INSERT INTO `cs_team` (`tid`, `name`, `shortname`, `icon`, `groupid`, `qualified
 (60, '#V61', '', '', '', 1, 0),
 (61, '#V62', '', '', '', 1, 0),
 (62, '#W61', '', '', '', 1, 0),
-(63, '#W62', '', '', '', 1, 0);
+(63, '#W62', '', '', '', 1, 0),
+(64, '#W51', '', '', '', 1, 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
