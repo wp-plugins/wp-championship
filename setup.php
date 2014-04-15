@@ -24,7 +24,8 @@ function wp_championship_install()
 {
   include("globals.php");
   global $wpdb;
-
+  $wpdb->show_errors(false);
+  
   // add charset & collate like wp db class
   $charset_collate = '';
   
@@ -42,7 +43,7 @@ function wp_championship_install()
     {
       // create tables
       // team table
-      $sql = "create table ".$cs_table_prefix."team 
+      $sql = "create table ".$cs_team." 
           (
             tid integer not null auto_increment,
             name varchar(40) NOT NULL,
@@ -56,7 +57,7 @@ function wp_championship_install()
       $results = $wpdb->query($sql);
      
       // match table
-      $sql = "create table ".$cs_table_prefix."match 
+      $sql = "create table ".$cs_match." 
           (
             mid integer not null auto_increment,
             round char(1),
@@ -73,7 +74,7 @@ function wp_championship_install()
       $results = $wpdb->query($sql);
    
       // tipp table
-      $sql = "create table ".$cs_table_prefix."tipp 
+      $sql = "create table ".$cs_tipp." 
           (
             userid integer not null,
             mid integer not null,
@@ -87,7 +88,7 @@ function wp_championship_install()
       $results = $wpdb->query($sql);
 
       // users table
-      $sql = "create table ".$cs_table_prefix."users 
+      $sql = "create table ".$cs_users." 
           (
             userid integer not null,
             admin bool not null,
@@ -100,11 +101,11 @@ function wp_championship_install()
       $results = $wpdb->query($sql); 
 
       // add admin as tippspiel admin if necessary
-      $sql = "select count(*) as c from ".$cs_table_prefix."users where userid=1;";
+      $sql = "select count(*) as c from ".$cs_users." where userid=1;";
       $resadmin = $wpdb->get_row($sql); 
       if ($resadmin->c == 0) {
-	  $sql = "insert into ".$cs_table_prefix."users values
-          ( 1, 1,0,0,0,'0000-00-00 00:00:00',-1);";
+	  $sql = "insert into ".$cs_users." values
+          ( 1, 1, 0, 0, 0, '0000-00-00 00:00:00');";
 	  $results = $wpdb->query($sql);  
       }
     }
@@ -388,16 +389,16 @@ function wp_championship_deinstall()
     {
       // drop tables
       // team table
-      $sql = "drop table ".$cs_table_prefix."team;";
+      $sql = "drop table ".$cs_team.";";
       $results = $wpdb->query($sql);
       // match table
-      $sql = "drop table ".$cs_table_prefix."match;";
+      $sql = "drop table ".$cs_match.";";
       $results = $wpdb->query($sql);
       // tipp table
-      $sql = "drop table ".$cs_table_prefix."tipp;";
+      $sql = "drop table ".$cs_tipp.";";
       $results = $wpdb->query($sql); 
       // users table
-      $sql = "drop table ".$cs_table_prefix."users;";
+      $sql = "drop table ".$cs_users.";";
       $results = $wpdb->query($sql);
     } 
   
