@@ -3,7 +3,7 @@ Contributors: tuxlog
 Donate link: http://www.tuxlog.de/
 Tags: championship,guessing, game, soccer, world, 2014, wordpress, plugin
 Requires at least: 2.7
-Tested up to: 3.8.2
+Tested up to: 3.9
 Stable tag: 4.3
 
 wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer 
