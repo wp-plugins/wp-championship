@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2007-2011  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2007-2014  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 // generic functions
 require_once("functions.php");
+require_once("supp/supp.php");
 
 //
 // function to show and maintain the set of teams for the championship
@@ -127,10 +128,12 @@ if( ! function_exists('cs_admin_team') ) {//make it pluggable
 		
 		// select header for update or add team
 		if ( $action == 'edit' ) {
-		$out .= '<div class="wrap"><h2>'.__('Mannschaft ändern',"wpcs").'</h2><div id="ajax-response"></div>'."\n"; 
+		$out .= '<div class="wrap"><h2>'.__('Mannschaft ändern',"wpcs").'</h2><div id="ajax-response"></div>'."\n";
+		$out .= tl_add_supp(); 
 		$out .= '<form name="modifyteam" id="modifyteam" method="post" action="#"><input type="hidden" name="action" value="modifyteam" /><input type="hidden" name="tid" value="'.$resed['tid'].'" />'."\n";
 		} else {
-		$out .= '<div class="wrap"><h2>'.__('Mannschaft hinzufügen',"wpcs").'</h2><div id="ajax-response"></div>'."\n";
+		$out .= '<div class="wrap"><h2>'.__('Mannschaft hinzufügen',"wpcs").'</h2><div id="ajax-response"></div>'."\n";	
+		$out .= tl_add_supp(); 
 		$out .= '<form name="addteam" id="addteam" method="post" action="#"><input type="hidden" name="action" value="addteam" />'."\n";
 		}
 		
@@ -189,7 +192,7 @@ if( ! function_exists('cs_admin_team') ) {//make it pluggable
 		// output teams table
 		//
 		$out = "";
-		$out = "<div class=\"wrap\">";
+		$out .= "<div class=\"wrap\">";
 		$out .= "<h2>".__("Mannschaften","wpcs")."</h2>\n"; 
 		$out .= "<table class=\"widefat\"><thead><tr>\n";
 		$out .= '<th scope="col" style="text-align: center">ID</th>'."\n";

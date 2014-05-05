@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2007-2011  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2007-2014  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 // generic functions
 require_once("functions.php");
-
+require_once("supp/supp.php");
 //
 // function to show and maintain the set of teams for the championship
 //
@@ -90,7 +90,8 @@ if( ! function_exists('cs_admin_labels') ) {//make it pluggable
 		
 		// build form
 		$out = "";
-		
+		$out .= tl_add_supp();
+
 		// tabs header
 		$out .= '<script type="text/javascript">jQuery(function() { jQuery( "#tabs" ).tabs(); });</script>';
 		$out .= '<div id="tabs" class="atabsbody">';

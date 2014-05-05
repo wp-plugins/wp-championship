@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2007-2012  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2007-2014  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 // generic functions
 require_once("functions.php");
-
+require_once("supp/supp.php");
 //
 // function to show and maintain the set of matches for the championship
 //
@@ -227,9 +227,11 @@ if( ! function_exists('cs_admin_finals') ) {//make it pluggable
 		// select header for update or add match
 		if ( $action == 'edit' ) {
 		$out .= '<div class="wrap"><h2>'.__('Finalbegegnung ändern',"wpcs").'</h2><div id="ajax-response"></div>'."\n"; 
+		$out .= tl_add_supp(); 
 		$out .= '<form name="modifymatch" id="modifymatch" method="post" action="#"><input type="hidden" name="action" value="modifymatch" /><input type="hidden" name="mid" value="'.$results->mid.'" />'."\n";
 		} else {
 		$out .= '<div class="wrap"><h2>'.__('Finalbegegnung hinzufügen',"wpcs").'</h2><div id="ajax-response"></div>'."\n";
+		$out .= tl_add_supp(); 
 		$out .= '<form name="addmatch" id="addmatch" method="post" action="#"><input type="hidden" name="action" value="addmatch" />'."\n";
 		}
 		

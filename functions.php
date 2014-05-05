@@ -300,7 +300,7 @@ EOD;
 					$results[$key - 1] = $temp;
 				}
 				// vergleichswerte aktualisieren
-				$points1=$points2; $diff1=$diff2; $tore1=$tore2; $tid1=$tid2;
+				$points2=$points1; $diff2=$diff1; $tore2=$tore1; $tid2=$tid1;
 			}
 		}
 		return $results;
@@ -610,7 +610,7 @@ if( ! function_exists('cs_mailservice2') ) {//make it pluggable
 		$mnow  = gmdate( 'Y-m-d H:i:s', $now );
 		$mthen = gmdate( 'Y-m-d H:i:s', $then );
 	
-		$sql = "select mid from cs_match where matchtime > '$mnow' and matchtime <= '$mthen';";
+		$sql = "select mid from $cs_match where matchtime > '$mnow' and matchtime <= '$mthen';";
 		$res_mid = $wpdb->get_results($sql);
 	
 	
@@ -621,7 +621,7 @@ if( ! function_exists('cs_mailservice2') ) {//make it pluggable
 		$mids .= "-9999)";
 	
 		// holen der userids, die fuer diese match ids noch nicht getippt haben
-		$sql ="select a.userid, b.mid from cs_users a, cs_match b where b.mid in $mids and not exists ( select userid, mid from cs_tipp where userid=a.userid and mid=b.mid and result1!=-1) order by a.userid, b.mid;";
+		$sql ="select a.userid, b.mid from $cs_users a, $cs_match b where b.mid in $mids and not exists ( select userid, mid from $cs_tipp where userid=a.userid and mid=b.mid and result1!=-1) order by a.userid, b.mid;";
 		$res_user = $wpdb->get_results($sql);
 	
 		// fuer jeden user mit fehlendem tipp email zusammenstellen und senden
@@ -632,7 +632,7 @@ if( ! function_exists('cs_mailservice2') ) {//make it pluggable
 			$res_email=$wpdb->get_results($sql);
 	
 			// match daten adresse holen
-			$sql="select b.name name1,c.name name2,a.matchtime,a.location from cs_match a inner join cs_team b on a.tid1 = b.tid inner join cs_team c on a.tid2=c.tid where mid=$u->mid;";
+			$sql="select b.name name1,c.name name2,a.matchtime,a.location from $cs_match a inner join $cs_team b on a.tid1 = b.tid inner join $cs_team c on a.tid2=c.tid where mid=$u->mid;";
 			$res_match=$wpdb->get_results($sql);
 	
 	
@@ -685,7 +685,7 @@ if( ! function_exists('cs_mailservice3') ) {//make it pluggable
 		$msg .= '</tr></thead>';
 	
 		foreach ($tipps as $key=>$val) {
-			$sql="select b.name as name1, c.name as name2, a.matchtime as matchtime from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join cs_team c on a.tid2=c.tid where mid=$key;";
+			$sql="select b.name as name1, c.name as name2, a.matchtime as matchtime from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where mid=$key;";
 			$resm=$wpdb->get_row($sql);
 			$t1 = $resm->name1;
 			$t2 = $resm->name2;
@@ -923,4 +923,61 @@ if( ! function_exists('cs_get_team_penalty') ) {//make it pluggable
 		return $res1;
 	}
 }//make it pluggable
+
+// this function returns the contextual help 
+if (!function_exists("wpc_contextual_help")) {
+  function wpc_contextual_help($contextual_help, $screen_id) {
+
+    if(function_exists('load_plugin_textdomain')) {
+      load_plugin_textdomain("wpcs", false, dirname( plugin_basename( __FILE__ ) ) . "/lang/");
+    }
+
+    //echo 'Screen ID = '.$screen_id.'<br />';
+    switch( $screen_id ) {
+    case 'toplevel_page_wp-championship/cs_admin' :
+    case 'tippspiel_page_wp-championship/cs_admin_team' :
+    case 'tippspiel_page_wp-championship/cs_admin_match' :
+    case 'tippspiel_page_wp-championship/cs_admin_finals' :
+    case 'tippspiel_page_wp-championship/cs_admin_users' :
+    case 'tippspiel_page_wp-championship/cs_admin_stats' :
+    case 'tippspiel_page_wp-championship/cs_admin_labels' :
+      $contextual_help .= "<p>";
+      $contextual_help .= __( 'Die folgenden Ressourcen geben Hilfestellung zu wp-forecast. Bei Fragen oder Problemen freue ich mich über eine email an:','wpcs');
+      $contextual_help .= ' <a href="mailto:support@tuxlog.de">support@tuxlog.de</a>.';
+      $contextual_help .= "</p>";
+      
+      $contextual_help .= '<ul>';
+      $contextual_help .= '<li><a href="http://www.tuxlog.de/wordpress/2013/wp-championship-quickreference-english/" target="_blank">';
+      $contextual_help .= __('Englisches Handbuch','wpcs');
+      $contextual_help .= '</a></li>';
+
+      $contextual_help .= '<li><a href="http://www.tuxlog.de/wordpress/2010/wp-championship-v1-5-quickreferenz/" target="_blank">';
+      $contextual_help .= __('Deutsches Handbuch','wpcs');
+      $contextual_help .= '</a></li>';
+
+      $contextual_help .= '<li><a href="http://wpcdemo.tuxlog.de" target="_blank">';
+      $contextual_help .= __('Demo-Seite','wpcs');
+      $contextual_help .= '</a></li>';
+
+      $contextual_help .= '<li><a href="http://www.wordpress.org/extend/plugins/wp-championship" target="_blank">';
+      $contextual_help .= __('wp-championship auf WordPress.org', 'wpcs' );
+      $contextual_help .= '</a></li>';
+
+      $contextual_help .= '<li><a href="http://www.tuxlog.de/wp-championship/" target="_blank">';
+      $contextual_help .= __('Deutsche wp-championship Seite', 'wpcs' );
+      $contextual_help .= '</a></li>';
+
+      $contextual_help .= '<li><a href="http://wordpress.org/plugins/wp-championship/changelog/" target="_blank">';
+      $contextual_help .= __('Änderungshistorie', 'wpcs' );
+      $contextual_help .= '</a></li></ul>';
+
+      $contextual_help .= '<p>';
+      $contextual_help .= __('Die Verweise öffnen ein neues Fenster/Tab.', 'wpcs' );
+      $contextual_help .= '</p>';
+      break;
+    }
+    return $contextual_help;
+  }
+add_filter('contextual_help', 'wpc_contextual_help', 10, 2);
+}
 ?>

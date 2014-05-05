@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2006-2012  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2006-2014  Hans Matzen  (email : webmaster at tuxlog.de)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -340,7 +340,7 @@ if( ! function_exists('show_UserTippForm') ) {//make it pluggable
 									$winner = 2;
 								else $winner = 0;
 	
-								$sql4="select count(*) as anz from cs_match where result1=". (int) $_POST['rt1_'.$mid]." and result2=".(int) $_POST['rt2_'.$mid]." and winner=$winner and mid=$mid;";
+								$sql4="select count(*) as anz from $cs_match where result1=". (int) $_POST['rt1_'.$mid]." and result2=".(int) $_POST['rt2_'.$mid]." and winner=$winner and mid=$mid;";
 								$r4 = $wpdb->get_row($sql4);
 								// wenn dieser satz noch nicht aktuell ist, dann speichern wir ihn
 								if ($r4->anz == 0) {

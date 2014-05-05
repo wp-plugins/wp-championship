@@ -20,6 +20,7 @@
 
 // generic functions
 require_once("functions.php");
+require_once("supp/supp.php");
 
 //
 // function to show and maintain the set of teams for the championship
@@ -184,6 +185,7 @@ if( ! function_exists('cs_admin') ) {//make it pluggable
 		
 		// general options form
 		$out .= '<div class="wrap"><h2>'.__('wp-championship Einstellungen',"wpcs").'</h2><div id="ajax-response"></div>'."\n"; 
+		$out .= tl_add_supp();
 		$out .= '<form name="options" id="options" method="post" action="#"><input type="hidden" name="action" value="update" />'."\n";
 		$out .= '<table class="editform" ><tr>';
 		$out .= '<th style="width:30%" scope="row" ><label for="cs_groups">'.__('Anzahl Gruppen Vorrunde',"wpcs").':</label></th>'."\n";

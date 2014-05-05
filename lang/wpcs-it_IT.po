@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-championship\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-23 12:37+0100\n"
+"POT-Creation-Date: 2014-05-05 07:59+0200\n"
 "PO-Revision-Date: 2010-02-14 15:56+0100\n"
 "Last-Translator: Davide Brognoli <davide.brognoli@gmail.com>\n"
 "Language-Team: hans matzen <webmaster ät tuxlog dot de>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "X-Poedit-Language: English\n"
 "X-Poedit-Country: UNITED KINGDOM\n"
 
-#: class_cs_widget.php:48 cs_admin_team.php:138 cs_admin_team.php:196
-#: cs_admin_users.php:191
+#: class_cs_widget.php:48 cs_admin_team.php:141 cs_admin_team.php:199
+#: cs_admin_users.php:194
 msgid "Name"
 msgstr "Nome"
 
@@ -71,209 +71,209 @@ msgstr ""
 msgid "Link Bezeichnung"
 msgstr "Partita"
 
-#: cs_admin.php:68
+#: cs_admin.php:69
 msgid "Bitte alle Felder füllen."
 msgstr "Compila tutti i campi"
 
-#: cs_admin.php:103 cs_admin_labels.php:72 cs_admin_labels.php:80
+#: cs_admin.php:104 cs_admin_labels.php:72 cs_admin_labels.php:80
 msgid "Einstellungen erfolgreich gespeichert."
 msgstr "Configurazione salvata con successo"
 
-#: cs_admin.php:113
+#: cs_admin.php:114
 msgid "Alle Tipps wurden gelöscht"
 msgstr "Tutti i consigli sono stati cancellati"
 
-#: cs_admin.php:126
+#: cs_admin.php:127
 msgid "Alle Ergebnisse wurden gelöscht"
 msgstr "Tutti i risultati sono stati cancellati"
 
-#: cs_admin.php:134
+#: cs_admin.php:135
 msgid "Alle wp-championship Tabellen wurden gelöscht"
 msgstr "Tutte le tabelle di wp-championship sono state cancellate"
 
-#: cs_admin.php:140
+#: cs_admin.php:141
 msgid "Die Mails wurden verschickt."
 msgstr "E-mail inviate"
 
-#: cs_admin.php:148
+#: cs_admin.php:149
 msgid "Die Neuberechnung wurde durchgeführt."
 msgstr "Ricalcolo eseguito"
 
-#: cs_admin.php:186
+#: cs_admin.php:187
 msgid "wp-championship Einstellungen"
 msgstr "Configurazione di wp-championship"
 
-#: cs_admin.php:189
+#: cs_admin.php:191
 msgid "Anzahl Gruppen Vorrunde"
 msgstr "Numero di gruppi nei preliminari"
 
-#: cs_admin.php:202
+#: cs_admin.php:204
 msgid "Platzierung und Punkte neu berechnen?"
 msgstr "Ricalcolare punti e posizioni?"
 
-#: cs_admin.php:205
+#: cs_admin.php:207
 msgid "Neuberechnung durchführen"
 msgstr "Ricalcolare"
 
-#: cs_admin.php:208
+#: cs_admin.php:210
 msgid "Punkt für den Gewinner einer Begegnung"
 msgstr "Punti per la squadra vincente"
 
-#: cs_admin.php:212
+#: cs_admin.php:214
 msgid "Mailservice einmal auslösen?"
 msgstr "Manda una sola email"
 
-#: cs_admin.php:215
+#: cs_admin.php:217
 msgid "Mailservice auslösen"
 msgstr "Manda le email"
 
-#: cs_admin.php:218
+#: cs_admin.php:220
 msgid "Punkte für den Verlierer einer Begegnung"
 msgstr "Punti per la squadra perdente"
 
-#: cs_admin.php:222
+#: cs_admin.php:224
 msgid "Alle Tipps löschen?"
 msgstr "Cancellare tutti i consigli?"
 
-#: cs_admin.php:225
+#: cs_admin.php:227
 msgid "Tipps löschen"
 msgstr "Cancella i consigli"
 
-#: cs_admin.php:228
+#: cs_admin.php:230
 msgid "Punkte bei Unentschieden"
 msgstr "Punti per il pareggio"
 
-#: cs_admin.php:232
+#: cs_admin.php:234
 msgid "Alle Ergebnisse löschen?"
 msgstr "Cancellare tutti i risultati?"
 
-#: cs_admin.php:235
+#: cs_admin.php:237
 msgid "Ergebnisse löschen"
 msgstr "Cancella i risultati"
 
-#: cs_admin.php:238
+#: cs_admin.php:240
 msgid "Anzahl der Teams pro Gruppe, die sich für die Finalrunde qualifizieren"
 msgstr "Numero di squadre per gruppo che si qualificano per la finale"
 
-#: cs_admin.php:242
+#: cs_admin.php:244
 msgid "Alle Tabellen aus der Datenbank entfernen?"
 msgstr "Cancellare tutte le tabelle di wp-chmpionship dal database?"
 
-#: cs_admin.php:245
+#: cs_admin.php:247
 msgid "Tabellen entfernen"
 msgstr "Cancella tutte le tabelle"
 
-#: cs_admin.php:248
+#: cs_admin.php:250
 msgid "Punkt für korrekten Tipp"
 msgstr "Punti per un consiglio esatto"
 
-#: cs_admin.php:252
+#: cs_admin.php:254
 #, fuzzy
 msgid "Neue User zum Tippspiel hinzufügen"
 msgstr "Aggiungi giocatore"
 
-#: cs_admin.php:259
+#: cs_admin.php:261
 msgid "Punkt bei richtiger Tendenz"
 msgstr "Punti per la corretta tendenza"
 
-#: cs_admin.php:263
+#: cs_admin.php:265
 msgid "Deaktiveren der Stellvertreterfunktion"
 msgstr "Disattivare la funzione sostituzioni"
 
-#: cs_admin.php:270
+#: cs_admin.php:272
 msgid "Punkt bei richtiger Tendenz und richtiger Tordifferenz"
 msgstr "Punti per la corretta tendenza e la differenza reti"
 
-#: cs_admin.php:274
+#: cs_admin.php:276
 msgid "Turniermodus"
 msgstr "Tipologia di torneo"
 
-#: cs_admin.php:279
+#: cs_admin.php:281
 msgid "Standard"
 msgstr "Standard"
 
-#: cs_admin.php:283
+#: cs_admin.php:285
 msgid "Deutsche Bundesliga"
 msgstr "Bundesliga tedesca"
 
-#: cs_admin.php:287
+#: cs_admin.php:289
 msgid "Punkte für richtigen Sieger-Tipp"
 msgstr "Punti per il corretto vincitre del campionato"
 
-#: cs_admin.php:291
+#: cs_admin.php:293
 #, fuzzy
 msgid "Tipp-Erinnerung per Mailservice"
 msgstr "Servizio e-mail del gioco"
 
-#: cs_admin.php:298
+#: cs_admin.php:300
 #, fuzzy
 msgid "Punkte für einseitig richtigen Tipp"
 msgstr "Punti per il corretto vincitre del campionato"
 
-#: cs_admin.php:301
+#: cs_admin.php:303
 msgid "Einseitiger Tipp zieht nur mit Tendenz"
 msgstr ""
 
-#: cs_admin.php:310
+#: cs_admin.php:312
 msgid "Stunden bis zum Spiel (Tipp-Erinnerung)"
 msgstr ""
 
-#: cs_admin.php:314
+#: cs_admin.php:316
 msgid "Schwellwert für Summe der Tore"
 msgstr ""
 
-#: cs_admin.php:316
+#: cs_admin.php:318
 msgid "kein separater Tortipp"
 msgstr ""
 
-#: cs_admin.php:322
+#: cs_admin.php:324
 msgid "nur Gleichheit zieht"
 msgstr ""
 
-#: cs_admin.php:331
+#: cs_admin.php:333
 #, fuzzy
 msgid "Platzierungstrend berechnen"
 msgstr "Ricalcolare punti e posizioni?"
 
-#: cs_admin.php:339
+#: cs_admin.php:341
 msgid "Punkte für Summe der Tore größer als Schwellwert"
 msgstr ""
 
-#: cs_admin.php:343
+#: cs_admin.php:345
 msgid "Floating Link einschalten"
 msgstr ""
 
-#: cs_admin.php:351
+#: cs_admin.php:353
 msgid "Tipphilfen auf Tippseite einblenden"
 msgstr ""
 
-#: cs_admin.php:358
+#: cs_admin.php:360
 #, fuzzy
 msgid "Vorrunden-Tipps sperren"
 msgstr "Prliminare"
 
-#: cs_admin.php:365
+#: cs_admin.php:367
 msgid "Aktivieren der XMLRPC Erweiterung"
 msgstr ""
 
-#: cs_admin.php:367
+#: cs_admin.php:369
 msgid "Tipps aller Spieler anzeigen"
 msgstr ""
 
-#: cs_admin.php:372
+#: cs_admin.php:374
 #, fuzzy
 msgid "Kurzbezeichnung verwenden"
 msgstr "Partita"
 
-#: cs_admin.php:383
+#: cs_admin.php:385
 msgid "News über XMLRPC abrufbar"
 msgstr ""
 
-#: cs_admin.php:390 cs_admin_labels.php:198 cs_admin_labels.php:292
+#: cs_admin.php:392 cs_admin_labels.php:199 cs_admin_labels.php:293
 msgid "Einstellungen speichern"
 msgstr "Salva la configurazione"
 
-#: cs_admin_finals.php:64 cs_admin_match.php:63
+#: cs_admin_finals.php:64 cs_admin_match.php:64
 msgid "nowhere"
 msgstr "Da nessua parte"
 
@@ -304,8 +304,8 @@ msgid "Finalbegegnung erfolgreich angelegt."
 msgstr "Partita finale creata con successo"
 
 #: cs_admin_finals.php:128 cs_admin_finals.php:147 cs_admin_finals.php:158
-#: cs_admin_match.php:82 cs_admin_match.php:92 cs_admin_match.php:103
-#: cs_admin_team.php:90 cs_admin_team.php:100 cs_admin_team.php:111
+#: cs_admin_match.php:83 cs_admin_match.php:93 cs_admin_match.php:104
+#: cs_admin_team.php:91 cs_admin_team.php:101 cs_admin_team.php:112
 msgid "Datenbankfehler; Vorgang abgebrochen"
 msgstr "Errore del Database"
 
@@ -321,360 +321,360 @@ msgstr "Partita finale cancellata"
 msgid "Finalbegegnung ändern"
 msgstr "Parita finale aggiornata"
 
-#: cs_admin_finals.php:232 cs_admin_finals.php:253
+#: cs_admin_finals.php:233 cs_admin_finals.php:255
 msgid "Finalbegegnung hinzufügen"
 msgstr "Aggiungi partita finale"
 
-#: cs_admin_finals.php:237 cs_admin_match.php:145
+#: cs_admin_finals.php:239 cs_admin_match.php:148
 msgid "Mannschaft 1 "
 msgstr "Squadra 1"
 
-#: cs_admin_finals.php:239 cs_admin_finals.php:266 cs_admin_match.php:147
-#: cs_admin_match.php:178
+#: cs_admin_finals.php:241 cs_admin_finals.php:268 cs_admin_match.php:150
+#: cs_admin_match.php:181
 msgid "Mannschaft 2"
 msgstr "Squadra 2"
 
-#: cs_admin_finals.php:242 cs_admin_finals.php:267 cs_admin_match.php:149
-#: cs_admin_match.php:179 cs_userstats.php:281 cs_usertipp.php:435
+#: cs_admin_finals.php:244 cs_admin_finals.php:269 cs_admin_match.php:152
+#: cs_admin_match.php:182 cs_userstats.php:281 cs_usertipp.php:435
 #: cs_xmlrpc.php:454
 msgid "Ort"
 msgstr "Lugo"
 
-#: cs_admin_finals.php:244 cs_admin_finals.php:268 cs_admin_match.php:151
-#: cs_admin_match.php:180
+#: cs_admin_finals.php:246 cs_admin_finals.php:270 cs_admin_match.php:154
+#: cs_admin_match.php:183
 msgid "Datum / Zeit"
 msgstr "Data / Ora"
 
-#: cs_admin_finals.php:251
+#: cs_admin_finals.php:253
 msgid "Finalbegegnung speichern"
 msgstr "Salva la partita finale"
 
-#: cs_admin_finals.php:262
+#: cs_admin_finals.php:264
 msgid "Finalbegegnungen"
 msgstr "Partita finale"
 
-#: cs_admin_finals.php:265 cs_admin_match.php:177
+#: cs_admin_finals.php:267 cs_admin_match.php:180
 msgid "Mannschaft 1"
 msgstr "Squadra 1"
 
-#: cs_admin_finals.php:269 cs_admin_match.php:183 cs_admin_team.php:202
-#: cs_admin_users.php:198
+#: cs_admin_finals.php:271 cs_admin_match.php:186 cs_admin_team.php:205
+#: cs_admin_users.php:201
 msgid "Aktion"
 msgstr "Azione"
 
-#: cs_admin_finals.php:277 cs_admin_match.php:193 cs_admin_team.php:217
-#: cs_admin_users.php:210
+#: cs_admin_finals.php:279 cs_admin_match.php:196 cs_admin_team.php:220
+#: cs_admin_users.php:213
 msgid "Ändern"
 msgstr "Aggiorna"
 
-#: cs_admin_finals.php:278 cs_admin_match.php:194 cs_admin_team.php:218
-#: cs_admin_users.php:211
+#: cs_admin_finals.php:280 cs_admin_match.php:197 cs_admin_team.php:221
+#: cs_admin_users.php:214
 msgid "Löschen"
 msgstr "Cancella"
 
-#: cs_admin_labels.php:112
+#: cs_admin_labels.php:113
 #, fuzzy
 msgid "wp-championship Web-Bezeichnungen"
 msgstr "Configurazione di wp-championship"
 
-#: cs_admin_labels.php:116 cs_admin_labels.php:210 cs_usertipp.php:567
+#: cs_admin_labels.php:117 cs_admin_labels.php:211 cs_usertipp.php:567
 msgid "Vorrundenspiele"
 msgstr "Prliminare"
 
-#: cs_admin_labels.php:116 cs_admin_labels.php:210 cs_userstats.php:273
+#: cs_admin_labels.php:117 cs_admin_labels.php:211 cs_userstats.php:273
 #: cs_usertipp.php:632 cs_xmlrpc.php:447 wp-championship.php:170
 msgid "Finalrunde"
 msgstr "Finali"
 
-#: cs_admin_labels.php:118 cs_admin_labels.php:212
+#: cs_admin_labels.php:119 cs_admin_labels.php:213
 msgid "Bezeichnung Spalte 1 (Gruppe)"
 msgstr ""
 
-#: cs_admin_labels.php:120 cs_admin_labels.php:123 cs_admin_labels.php:126
-#: cs_admin_labels.php:129 cs_admin_labels.php:132 cs_admin_labels.php:135
-#: cs_admin_labels.php:138 cs_admin_labels.php:141 cs_admin_labels.php:157
-#: cs_admin_labels.php:160 cs_admin_labels.php:163 cs_admin_labels.php:174
-#: cs_admin_labels.php:177 cs_admin_labels.php:180 cs_admin_labels.php:183
-#: cs_admin_labels.php:186 cs_admin_labels.php:189 cs_admin_labels.php:192
-#: cs_admin_labels.php:214 cs_admin_labels.php:217 cs_admin_labels.php:220
-#: cs_admin_labels.php:223 cs_admin_labels.php:226 cs_admin_labels.php:229
-#: cs_admin_labels.php:232 cs_admin_labels.php:235 cs_admin_labels.php:251
-#: cs_admin_labels.php:254 cs_admin_labels.php:257 cs_admin_labels.php:268
-#: cs_admin_labels.php:271 cs_admin_labels.php:274 cs_admin_labels.php:277
-#: cs_admin_labels.php:280 cs_admin_labels.php:283 cs_admin_labels.php:286
+#: cs_admin_labels.php:121 cs_admin_labels.php:124 cs_admin_labels.php:127
+#: cs_admin_labels.php:130 cs_admin_labels.php:133 cs_admin_labels.php:136
+#: cs_admin_labels.php:139 cs_admin_labels.php:142 cs_admin_labels.php:158
+#: cs_admin_labels.php:161 cs_admin_labels.php:164 cs_admin_labels.php:175
+#: cs_admin_labels.php:178 cs_admin_labels.php:181 cs_admin_labels.php:184
+#: cs_admin_labels.php:187 cs_admin_labels.php:190 cs_admin_labels.php:193
+#: cs_admin_labels.php:215 cs_admin_labels.php:218 cs_admin_labels.php:221
+#: cs_admin_labels.php:224 cs_admin_labels.php:227 cs_admin_labels.php:230
+#: cs_admin_labels.php:233 cs_admin_labels.php:236 cs_admin_labels.php:252
+#: cs_admin_labels.php:255 cs_admin_labels.php:258 cs_admin_labels.php:269
+#: cs_admin_labels.php:272 cs_admin_labels.php:275 cs_admin_labels.php:278
+#: cs_admin_labels.php:281 cs_admin_labels.php:284 cs_admin_labels.php:287
 msgid "ausgeblendet"
 msgstr ""
 
-#: cs_admin_labels.php:121 cs_admin_labels.php:215
+#: cs_admin_labels.php:122 cs_admin_labels.php:216
 msgid "Bezeichnung Spalte 2 (Icon 1)"
 msgstr ""
 
-#: cs_admin_labels.php:124 cs_admin_labels.php:218
+#: cs_admin_labels.php:125 cs_admin_labels.php:219
 msgid "Bezeichnung Spalte 3 (Begegnung)"
 msgstr ""
 
-#: cs_admin_labels.php:127 cs_admin_labels.php:221
+#: cs_admin_labels.php:128 cs_admin_labels.php:222
 msgid "Bezeichnung Spalte 4 (Icon 2)"
 msgstr ""
 
-#: cs_admin_labels.php:130 cs_admin_labels.php:224
+#: cs_admin_labels.php:131 cs_admin_labels.php:225
 msgid "Bezeichnung Spalte 5 (Ort)"
 msgstr ""
 
-#: cs_admin_labels.php:133 cs_admin_labels.php:227
+#: cs_admin_labels.php:134 cs_admin_labels.php:228
 msgid "Bezeichnung Spalte 6 (Datum/Zeit)"
 msgstr ""
 
-#: cs_admin_labels.php:136 cs_admin_labels.php:230
+#: cs_admin_labels.php:137 cs_admin_labels.php:231
 msgid "Bezeichnung Spalte 7 (Tipp/Ergebnis)"
 msgstr ""
 
-#: cs_admin_labels.php:139 cs_admin_labels.php:233
+#: cs_admin_labels.php:140 cs_admin_labels.php:234
 msgid "Bezeichnung Spalte 8 (Punkte)"
 msgstr ""
 
-#: cs_admin_labels.php:143 cs_admin_labels.php:237
+#: cs_admin_labels.php:144 cs_admin_labels.php:238
 msgid "Standardsortierung nach Spalte"
 msgstr ""
 
-#: cs_admin_labels.php:153 cs_admin_labels.php:247 cs_admin_stats.php:55
+#: cs_admin_labels.php:154 cs_admin_labels.php:248 cs_admin_stats.php:58
 #: cs_userstats.php:131 functions.php:533
 msgid "Aktueller Punktestand"
 msgstr "Stato corrente"
 
-#: cs_admin_labels.php:155 cs_admin_labels.php:249
+#: cs_admin_labels.php:156 cs_admin_labels.php:250
 msgid "Bezeichnung Spalte 1 (Platz)"
 msgstr ""
 
-#: cs_admin_labels.php:158 cs_admin_labels.php:252
+#: cs_admin_labels.php:159 cs_admin_labels.php:253
 msgid "Bezeichnung Spalte 2 (Spieler)"
 msgstr ""
 
-#: cs_admin_labels.php:161 cs_admin_labels.php:255
+#: cs_admin_labels.php:162 cs_admin_labels.php:256
 msgid "Bezeichnung Spalte 3 (Punktezahl)"
 msgstr ""
 
-#: cs_admin_labels.php:164 cs_admin_labels.php:258
+#: cs_admin_labels.php:165 cs_admin_labels.php:259
 msgid "Bezeichnung Spalte 4 (Trend)"
 msgstr ""
 
-#: cs_admin_labels.php:170 cs_admin_labels.php:264 wp-championship.php:174
+#: cs_admin_labels.php:171 cs_admin_labels.php:265 wp-championship.php:174
 msgid "Statistiken"
 msgstr "Statistiche"
 
-#: cs_admin_labels.php:172 cs_admin_labels.php:266
+#: cs_admin_labels.php:173 cs_admin_labels.php:267
 msgid "Bezeichnung Spalte 1 (Mannschaft)"
 msgstr ""
 
-#: cs_admin_labels.php:175 cs_admin_labels.php:269
+#: cs_admin_labels.php:176 cs_admin_labels.php:270
 msgid "Bezeichnung Spalte 2 (Spiele)"
 msgstr ""
 
-#: cs_admin_labels.php:178 cs_admin_labels.php:272
+#: cs_admin_labels.php:179 cs_admin_labels.php:273
 msgid "Bezeichnung Spalte 3 (Siege)"
 msgstr ""
 
-#: cs_admin_labels.php:181 cs_admin_labels.php:275
+#: cs_admin_labels.php:182 cs_admin_labels.php:276
 #, fuzzy
 msgid "Bezeichnung Spalte 4 (Unentschieden)"
 msgstr "Punti per il pareggio"
 
-#: cs_admin_labels.php:184 cs_admin_labels.php:278
+#: cs_admin_labels.php:185 cs_admin_labels.php:279
 msgid "Bezeichnung Spalte 5 (Niederlagen)"
 msgstr ""
 
-#: cs_admin_labels.php:187 cs_admin_labels.php:281
+#: cs_admin_labels.php:188 cs_admin_labels.php:282
 msgid "Bezeichnung Spalte 6 (Tore)"
 msgstr ""
 
-#: cs_admin_labels.php:190 cs_admin_labels.php:284
+#: cs_admin_labels.php:191 cs_admin_labels.php:285
 msgid "Bezeichnung Spalte 7 (Punkte)"
 msgstr ""
 
-#: cs_admin_labels.php:206
+#: cs_admin_labels.php:207
 #, fuzzy
 msgid "wp-championship XMLRPC-Bezeichnungen"
 msgstr "Configurazione di wp-championship"
 
-#: cs_admin_match.php:69
+#: cs_admin_match.php:70
 msgid "Datum und Uhrzeit der Begegnung müssen gefüllt sein."
 msgstr "E' necessario inserire sia la data che l'ora"
 
-#: cs_admin_match.php:80
+#: cs_admin_match.php:81
 msgid "Begegnung erfolgreich angelegt."
 msgstr "Partita aggiunta con successo"
 
-#: cs_admin_match.php:90
+#: cs_admin_match.php:91
 msgid "Begegnung erfolgreich gespeichert."
 msgstr "Partita salvata con successo"
 
-#: cs_admin_match.php:101
+#: cs_admin_match.php:102
 msgid "Begegnung gelöscht."
 msgstr "Parita eliminata"
 
-#: cs_admin_match.php:137
+#: cs_admin_match.php:138
 msgid "Begegnung ändern"
 msgstr "Partita aggiornata"
 
-#: cs_admin_match.php:140 cs_admin_match.php:165
+#: cs_admin_match.php:142 cs_admin_match.php:168
 msgid "Begegnung hinzufügen"
 msgstr "Aggiungi partita"
 
-#: cs_admin_match.php:155 cs_admin_match.php:182 cs_stats.php:335
+#: cs_admin_match.php:158 cs_admin_match.php:185 cs_stats.php:335
 #: cs_stats.php:692
 #, fuzzy
 msgid "Spieltag"
 msgstr "Partite"
 
-#: cs_admin_match.php:163
+#: cs_admin_match.php:166
 msgid "Begegnung speichern"
 msgstr "Slava partita"
 
-#: cs_admin_match.php:174
+#: cs_admin_match.php:177
 msgid "Matches"
 msgstr "Partite"
 
-#: cs_admin_stats.php:50 cs_userstats.php:127
+#: cs_admin_stats.php:53 cs_userstats.php:127
 msgid "Der Gewinner des Turniers heißt:"
 msgstr "Il vincitore del campionato è:"
 
-#: cs_admin_stats.php:59 cs_groupstats.php:64 cs_userstats.php:103
+#: cs_admin_stats.php:62 cs_groupstats.php:64 cs_userstats.php:103
 #: cs_xmlrpc.php:269 cs_xmlrpc.php:353 functions.php:537
 msgid "Punktestand"
 msgstr "Stato"
 
-#: cs_admin_stats.php:60 cs_stats.php:76
+#: cs_admin_stats.php:63 cs_stats.php:76
 msgid "Anzahl Tipps"
 msgstr "Numero di consigli"
 
-#: cs_admin_stats.php:61
+#: cs_admin_stats.php:64
 msgid "Champion-Tipp"
 msgstr "Consiglio sul campionato"
 
-#: cs_admin_team.php:74
+#: cs_admin_team.php:75
 msgid "Der Name der Mannschaft darf nicht leer sein."
 msgstr "Il nome della squadra non può essere vuoto"
 
-#: cs_admin_team.php:77
+#: cs_admin_team.php:78
 msgid "Der Name der Mannschaft darf nicht mit # beginnen."
 msgstr "Il nome della squadra non può cominciare con #"
 
-#: cs_admin_team.php:88
+#: cs_admin_team.php:89
 msgid "Mannschaft erfolgreich angelegt."
 msgstr "Squadra aggiunta con successo"
 
-#: cs_admin_team.php:98
+#: cs_admin_team.php:99
 msgid "Mannschaft erfolgreich gespeichert."
 msgstr "Squadra salvata con successo"
 
-#: cs_admin_team.php:109
+#: cs_admin_team.php:110
 msgid "Mannschaft gelöscht."
 msgstr "Squadra cancellata"
 
-#: cs_admin_team.php:130
+#: cs_admin_team.php:131
 msgid "Mannschaft ändern"
 msgstr "Squadra aggiornata"
 
-#: cs_admin_team.php:133 cs_admin_team.php:184
+#: cs_admin_team.php:135 cs_admin_team.php:187
 msgid "Mannschaft hinzufügen"
 msgstr "Aggiungi una squadra"
 
-#: cs_admin_team.php:140 cs_admin_team.php:197
+#: cs_admin_team.php:143 cs_admin_team.php:200
 msgid "Shortname"
 msgstr ""
 
-#: cs_admin_team.php:142 cs_admin_team.php:198
+#: cs_admin_team.php:145 cs_admin_team.php:201
 msgid "Symbol / Wappen"
 msgstr "Simbolo / Logo"
 
-#: cs_admin_team.php:144 cs_admin_team.php:199 cs_groupstats.php:105
+#: cs_admin_team.php:147 cs_admin_team.php:202 cs_groupstats.php:105
 #: cs_userstats.php:214 cs_usertipp.php:431 cs_xmlrpc.php:389
 msgid "Gruppe"
 msgstr "Gruppo"
 
-#: cs_admin_team.php:156
+#: cs_admin_team.php:159
 msgid "Platzierung der Vorrunde"
 msgstr "Stato preliminare"
 
-#: cs_admin_team.php:172 cs_admin_team.php:201 cs_userstats.php:180
+#: cs_admin_team.php:175 cs_admin_team.php:204 cs_userstats.php:180
 msgid "Strafpunkte"
 msgstr ""
 
-#: cs_admin_team.php:182
+#: cs_admin_team.php:185
 msgid "Mannschaft speichern"
 msgstr "Salva la squadra"
 
-#: cs_admin_team.php:193 wp-championship.php:165
+#: cs_admin_team.php:196 wp-championship.php:165
 msgid "Mannschaften"
 msgstr "Squadre"
 
-#: cs_admin_team.php:200
+#: cs_admin_team.php:203
 msgid "Platzierung"
 msgstr "Stati"
 
-#: cs_admin_users.php:76
+#: cs_admin_users.php:77
 msgid "Mitspieler erfolgreich angelegt."
 msgstr "Aggiungi giocatore"
 
-#: cs_admin_users.php:78 cs_admin_users.php:91
+#: cs_admin_users.php:79 cs_admin_users.php:92
 msgid "Datenbankfehler; Vorgang abgebrochen."
 msgstr "Errore del database"
 
-#: cs_admin_users.php:80
+#: cs_admin_users.php:81
 msgid "Mitspieler bereits vorhanden."
 msgstr "Il giocatore è già nel database"
 
-#: cs_admin_users.php:89
+#: cs_admin_users.php:90
 msgid "Mitspieler erfolgreich gespeichert."
 msgstr "Giocatore salvato con successo"
 
-#: cs_admin_users.php:100
+#: cs_admin_users.php:101
 msgid "Mitspieler gelöscht."
 msgstr "Giocatore cancellato"
 
-#: cs_admin_users.php:102
+#: cs_admin_users.php:103
 msgid "Datenbankfehler, Vorgang abgebrochen."
 msgstr "Errore del database"
 
-#: cs_admin_users.php:149
+#: cs_admin_users.php:150
 msgid "Mitspieler ändern"
 msgstr "Aggiona il giocatore"
 
-#: cs_admin_users.php:152 cs_admin_users.php:179
+#: cs_admin_users.php:154 cs_admin_users.php:182
 msgid "Mitspieler hinzufügen"
 msgstr "Aggiungi giocatore"
 
-#: cs_admin_users.php:157 cs_admin_users.php:188 cs_stats.php:252
+#: cs_admin_users.php:160 cs_admin_users.php:191 cs_stats.php:252
 #: wp-championship.php:172
 msgid "Mitspieler"
 msgstr "Giocatore"
 
-#: cs_admin_users.php:159 cs_admin_users.php:193
+#: cs_admin_users.php:162 cs_admin_users.php:196
 msgid "Mailservice"
 msgstr "Servizio E-mail"
 
-#: cs_admin_users.php:161 cs_admin_users.php:194 cs_usertipp.php:524
+#: cs_admin_users.php:164 cs_admin_users.php:197 cs_usertipp.php:524
 msgid "Mailbestätigung"
 msgstr ""
 
-#: cs_admin_users.php:163 cs_admin_users.php:192
+#: cs_admin_users.php:166 cs_admin_users.php:195
 msgid "Tippspiel-Admin"
 msgstr "Amministratore del gioco"
 
-#: cs_admin_users.php:165 cs_admin_users.php:195
+#: cs_admin_users.php:168 cs_admin_users.php:198
 msgid "Stellvertreter"
 msgstr "Sostituzione"
 
-#: cs_admin_users.php:167 cs_admin_users.php:196 cs_usertipp.php:527
+#: cs_admin_users.php:170 cs_admin_users.php:199 cs_usertipp.php:527
 msgid "Sieger-Tipp"
 msgstr "Vincitore - consiglio"
 
-#: cs_admin_users.php:170 cs_admin_users.php:197
+#: cs_admin_users.php:173 cs_admin_users.php:200
 #, fuzzy
 msgid "Tippgruppe"
 msgstr "Gruppo"
 
-#: cs_admin_users.php:177
+#: cs_admin_users.php:180
 msgid "Mitspieler speichern"
 msgstr "Salva il giocatore"
 
@@ -1026,6 +1026,43 @@ msgstr ""
 #, fuzzy
 msgid "Die Bestätigungsemail an "
 msgstr "E-mail a"
+
+#: functions.php:945
+msgid ""
+"Die folgenden Ressourcen geben Hilfestellung zu wp-forecast. Bei Fragen oder "
+"Problemen freue ich mich über eine email an:"
+msgstr ""
+
+#: functions.php:951
+msgid "Englisches Handbuch"
+msgstr ""
+
+#: functions.php:955
+msgid "Deutsches Handbuch"
+msgstr ""
+
+#: functions.php:959
+msgid "Demo-Seite"
+msgstr ""
+
+#: functions.php:963
+#, fuzzy
+msgid "wp-championship auf WordPress.org"
+msgstr "Squadre wp-championship"
+
+#: functions.php:967
+#, fuzzy
+msgid "Deutsche wp-championship Seite"
+msgstr "Statistiche wp-championship"
+
+#: functions.php:971
+#, fuzzy
+msgid "Änderungshistorie"
+msgstr "Salva i cambiamenti"
+
+#: functions.php:975
+msgid "Die Verweise öffnen ein neues Fenster/Tab."
+msgstr ""
 
 #: wp-championship.php:163
 #, fuzzy

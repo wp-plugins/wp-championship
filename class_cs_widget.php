@@ -82,13 +82,13 @@ if ( !class_exists('cs_widget') )
 					echo "<td align='left'>".$row->user_nicename."</td>";
 					echo "<td align='center'>".$row->points. "</td>";
 					if($showAverage == '1') {
-		    			//$sql="select count(*) as anz from cs_tipp where userid='$row->userid' AND result1 != -1 AND result2 != -1";
-		    			$sql="select count(*) as anz from cs_match where result1 != -1 AND result2 != -1";
+		    			//$sql="select count(*) as anz from $cs_tipp where userid='$row->userid' AND result1 != -1 AND result2 != -1";
+		    			$sql="select count(*) as anz from $cs_match where result1 != -1 AND result2 != -1";
 		    			$tipps_count = $wpdb->get_row($sql);
 		    			echo "<td align='center'>".round($row->points/$tipps_count->anz,1)."</td>";
 					}
 					if($showAmountTipps == '1') {
-		    			$sql="select count(*) as anz from cs_tipp where userid='$row->userid' AND result1 != -1 AND result2 != -1";
+		    			$sql="select count(*) as anz from $cs_tipp where userid='$row->userid' AND result1 != -1 AND result2 != -1";
 		    			$tipps_count = $wpdb->get_row($sql);
 		    			echo "<td align='center'>".$tipps_count->anz."</td>";
 					}

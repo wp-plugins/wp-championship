@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2007-2012  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2007-2014  Hans Matzen  (email : webmaster at tuxlog.de)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 // generic functions
 require_once("functions.php");
+require_once("supp/supp.php");
 
 //
 // function to show and maintain the set of matches for the championship
@@ -147,9 +148,11 @@ if( ! function_exists('cs_admin_users') ) {//make it pluggable
 		// select header for update or add match
 		if ( $action == 'edit' ) {
 			$out .= '<div class="wrap"><h2>'.__('Mitspieler ändern',"wpcs").'</h2><div id="ajax-response"></div>'."\n"; 
+			$out .= tl_add_supp(); 
 			$out .= '<form name="modifyuser" id="modifyuser" method="post" action="#"><input type="hidden" name="action" value="modifyuser" /><input type="hidden" name="uid" value="'.$results->userid.'" />'."\n";
 		} else {
 			$out .= '<div class="wrap"><h2>'.__('Mitspieler hinzufügen',"wpcs").'</h2><div id="ajax-response"></div>'."\n";
+			$out .= tl_add_supp(); 
 			$out .= '<form name="adduser" id="adduser" method="post" action="#"><input type="hidden" name="action" value="adduser" />'."\n";
 		}
 	
