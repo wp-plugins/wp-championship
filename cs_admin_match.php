@@ -96,7 +96,7 @@ if( ! function_exists('cs_admin_match') ) {//make it pluggable
 		
 		// remove data from database
 		if ( $action == 'remove' ) {
-		$sql= "delete from ".$cs_match."match where mid=".$_GET['mid'].";";
+		$sql= "delete from ".$cs_match." where mid=".$_GET['mid'].";";
 		$results = $wpdb->query($sql);
 		if ( $results == 1 )
 		  admin_message( __('Begegnung gelöscht.',"wpcs") );

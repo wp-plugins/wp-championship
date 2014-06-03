@@ -139,7 +139,7 @@ if( ! function_exists('cs_admin_finals') ) {//make it pluggable
 		  $r0 = $wpdb->get_row($sql);
 		  $tid2 = $r0->tid2;
 		
-		  $sql = "update ".$cs_match."match set tid1=" . $tid1 . ", tid2=" . $tid2 . ",location='" . $_POST['location'] . "',matchtime='" . $_POST['matchtime'] . "', ptid1=$tid1, ptid2=$tid2 where mid=".$_POST['mid'].";";
+		  $sql = "update ".$cs_match." set tid1=" . $tid1 . ", tid2=" . $tid2 . ",location='" . $_POST['location'] . "',matchtime='" . $_POST['matchtime'] . "', ptid1=$tid1, ptid2=$tid2 where mid=".$_POST['mid'].";";
 		  $results = $wpdb->query($sql);
 		  if ( $results == 1 )
 		admin_message( __('Finalbegegnung erfolgreich gespeichert.',"wpcs") );

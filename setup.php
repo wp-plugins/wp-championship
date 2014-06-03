@@ -30,15 +30,15 @@ function wp_championship_install()
   $charset_collate = '';
   
   if ( version_compare(mysql_get_server_info(), '4.1.0', '>=') ) {
-      if ( ! empty($wpdb->charset) )
-	  $charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
-      if ( ! empty($wpdb->collate) )
-	  $charset_collate .= " COLLATE $wpdb->collate";
+    if ( ! empty($wpdb->charset) )
+      $charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
+    if ( ! empty($wpdb->collate) )
+      $charset_collate .= " COLLATE $wpdb->collate";
   }
   
   $sql = "SHOW TABLES LIKE '$cs_team'";
   $results = ($wpdb->get_var($sql) == $cs_team); 
-
+  
   if ($results == 0)
     {
       // create tables
@@ -53,9 +53,15 @@ function wp_championship_install()
             penalty integer NOT NULL,
             primary key(tid)
           ) $charset_collate;";
-
+      
       $results = $wpdb->query($sql);
-     
+    }
+
+  $sql = "SHOW TABLES LIKE '$cs_match'";
+  $results = ($wpdb->get_var($sql) == $cs_match); 
+
+  if ($results == 0)
+    {   
       // match table
       $sql = "create table ".$cs_match." 
           (
@@ -70,9 +76,15 @@ function wp_championship_install()
             winner bool NOT NULL,
             primary key(mid)
           ) $charset_collate;";
-
+      
       $results = $wpdb->query($sql);
-   
+    }
+
+  $sql = "SHOW TABLES LIKE '$cs_tipp'";
+  $results = ($wpdb->get_var($sql) == $cs_tipp); 
+  
+  if ($results == 0)
+    {  
       // tipp table
       $sql = "create table ".$cs_tipp." 
           (
@@ -84,9 +96,15 @@ function wp_championship_install()
             points integer not null,
             primary key(userid,mid)
           ) $charset_collate;";
-
+      
       $results = $wpdb->query($sql);
+    }
 
+  $sql = "SHOW TABLES LIKE '$cs_users'";
+  $results = ($wpdb->get_var($sql) == $cs_users); 
+
+  if ($results == 0)
+    {
       // users table
       $sql = "create table ".$cs_users." 
           (
@@ -97,16 +115,17 @@ function wp_championship_install()
             champion int NOT NULL,
             championtime datetime NOT NULL
           ) $charset_collate;";
-
+      
       $results = $wpdb->query($sql); 
+    
 
       // add admin as tippspiel admin if necessary
       $sql = "select count(*) as c from ".$cs_users." where userid=1;";
       $resadmin = $wpdb->get_row($sql); 
       if ($resadmin->c == 0) {
-	  $sql = "insert into ".$cs_users." values
+	$sql = "insert into ".$cs_users." values
           ( 1, 1, 0, 0, 0, '0000-00-00 00:00:00');";
-	  $results = $wpdb->query($sql);  
+	$results = $wpdb->query($sql);  
       }
     }
 

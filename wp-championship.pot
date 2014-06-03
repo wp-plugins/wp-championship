@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-05 07:59+0200\n"
+"POT-Creation-Date: 2014-05-29 08:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -96,172 +96,227 @@ msgstr ""
 msgid "Die Neuberechnung wurde durchgeführt."
 msgstr ""
 
-#: cs_admin.php:187
+#: cs_admin.php:188
 msgid "wp-championship Einstellungen"
 msgstr ""
 
-#: cs_admin.php:191
+#: cs_admin.php:192
+msgid "Datenimport"
+msgstr ""
+
+#: cs_admin.php:193
+msgid "Datenexport"
+msgstr ""
+
+#: cs_admin.php:197
 msgid "Anzahl Gruppen Vorrunde"
 msgstr ""
 
-#: cs_admin.php:204
+#: cs_admin.php:210
 msgid "Platzierung und Punkte neu berechnen?"
 msgstr ""
 
-#: cs_admin.php:207
+#: cs_admin.php:213
 msgid "Neuberechnung durchführen"
 msgstr ""
 
-#: cs_admin.php:210
+#: cs_admin.php:216
 msgid "Punkt für den Gewinner einer Begegnung"
 msgstr ""
 
-#: cs_admin.php:214
+#: cs_admin.php:220
 msgid "Mailservice einmal auslösen?"
 msgstr ""
 
-#: cs_admin.php:217
+#: cs_admin.php:223
 msgid "Mailservice auslösen"
 msgstr ""
 
-#: cs_admin.php:220
+#: cs_admin.php:226
 msgid "Punkte für den Verlierer einer Begegnung"
 msgstr ""
 
-#: cs_admin.php:224
+#: cs_admin.php:230
 msgid "Alle Tipps löschen?"
 msgstr ""
 
-#: cs_admin.php:227
+#: cs_admin.php:233
 msgid "Tipps löschen"
 msgstr ""
 
-#: cs_admin.php:230
+#: cs_admin.php:236
 msgid "Punkte bei Unentschieden"
 msgstr ""
 
-#: cs_admin.php:234
+#: cs_admin.php:240
 msgid "Alle Ergebnisse löschen?"
 msgstr ""
 
-#: cs_admin.php:237
+#: cs_admin.php:243
 msgid "Ergebnisse löschen"
 msgstr ""
 
-#: cs_admin.php:240
+#: cs_admin.php:246
 msgid "Anzahl der Teams pro Gruppe, die sich für die Finalrunde qualifizieren"
 msgstr ""
 
-#: cs_admin.php:244
+#: cs_admin.php:250
 msgid "Alle Tabellen aus der Datenbank entfernen?"
 msgstr ""
 
-#: cs_admin.php:247
+#: cs_admin.php:253
 msgid "Tabellen entfernen"
 msgstr ""
 
-#: cs_admin.php:250
+#: cs_admin.php:256
 msgid "Punkt für korrekten Tipp"
 msgstr ""
 
-#: cs_admin.php:254
+#: cs_admin.php:260
 msgid "Neue User zum Tippspiel hinzufügen"
 msgstr ""
 
-#: cs_admin.php:261
+#: cs_admin.php:267
 msgid "Punkt bei richtiger Tendenz"
 msgstr ""
 
-#: cs_admin.php:265
+#: cs_admin.php:271
 msgid "Deaktiveren der Stellvertreterfunktion"
 msgstr ""
 
-#: cs_admin.php:272
+#: cs_admin.php:278
 msgid "Punkt bei richtiger Tendenz und richtiger Tordifferenz"
 msgstr ""
 
-#: cs_admin.php:276
+#: cs_admin.php:282
 msgid "Turniermodus"
 msgstr ""
 
-#: cs_admin.php:281
+#: cs_admin.php:287
 msgid "Standard"
 msgstr ""
 
-#: cs_admin.php:285
+#: cs_admin.php:291
 msgid "Deutsche Bundesliga"
 msgstr ""
 
-#: cs_admin.php:289
+#: cs_admin.php:295
 msgid "Punkte für richtigen Sieger-Tipp"
 msgstr ""
 
-#: cs_admin.php:293
+#: cs_admin.php:299
 msgid "Tipp-Erinnerung per Mailservice"
 msgstr ""
 
-#: cs_admin.php:300
+#: cs_admin.php:306
 msgid "Punkte für einseitig richtigen Tipp"
 msgstr ""
 
-#: cs_admin.php:303
+#: cs_admin.php:309
 msgid "Einseitiger Tipp zieht nur mit Tendenz"
 msgstr ""
 
-#: cs_admin.php:312
+#: cs_admin.php:318
 msgid "Stunden bis zum Spiel (Tipp-Erinnerung)"
 msgstr ""
 
-#: cs_admin.php:316
+#: cs_admin.php:322
 msgid "Schwellwert für Summe der Tore"
 msgstr ""
 
-#: cs_admin.php:318
+#: cs_admin.php:324
 msgid "kein separater Tortipp"
 msgstr ""
 
-#: cs_admin.php:324
+#: cs_admin.php:330
 msgid "nur Gleichheit zieht"
 msgstr ""
 
-#: cs_admin.php:333
+#: cs_admin.php:339
 msgid "Platzierungstrend berechnen"
 msgstr ""
 
-#: cs_admin.php:341
+#: cs_admin.php:347
 msgid "Punkte für Summe der Tore größer als Schwellwert"
 msgstr ""
 
-#: cs_admin.php:345
+#: cs_admin.php:351
 msgid "Floating Link einschalten"
 msgstr ""
 
-#: cs_admin.php:353
+#: cs_admin.php:359
 msgid "Tipphilfen auf Tippseite einblenden"
 msgstr ""
 
-#: cs_admin.php:360
+#: cs_admin.php:366
 msgid "Vorrunden-Tipps sperren"
 msgstr ""
 
-#: cs_admin.php:367
+#: cs_admin.php:373
 msgid "Aktivieren der XMLRPC Erweiterung"
 msgstr ""
 
-#: cs_admin.php:369
+#: cs_admin.php:375
 msgid "Tipps aller Spieler anzeigen"
 msgstr ""
 
-#: cs_admin.php:374
+#: cs_admin.php:380
 msgid "Kurzbezeichnung verwenden"
 msgstr ""
 
-#: cs_admin.php:385
+#: cs_admin.php:391
 msgid "News über XMLRPC abrufbar"
 msgstr ""
 
-#: cs_admin.php:392 cs_admin_labels.php:199 cs_admin_labels.php:293
+#: cs_admin.php:398 cs_admin_labels.php:199 cs_admin_labels.php:293
 msgid "Einstellungen speichern"
+msgstr ""
+
+#: cs_admin_export.php:83
+msgid "'TeamID','Name','Kurzname','Wappen','GruppenID','Qualifiziert','Strafpunkte'\n"
+msgstr ""
+
+#: cs_admin_export.php:102
+msgid "'MatchID','Runde','Spieltag','TeamID1','TeamID2','Ort','DatumZeit','Ergebnis1','Ergebnis2','Gewinner','origTeamID1','origTeamID2'\n"
+msgstr ""
+
+#: cs_admin_export.php:160
+msgid "Export"
+msgstr ""
+
+#: cs_admin_export.php:161
+msgid "Datenexport für"
+msgstr ""
+
+#: cs_admin_export.php:163 cs_admin_import.php:156
+msgid "Teams"
+msgstr ""
+
+#: cs_admin_export.php:164 cs_admin_import.php:157 cs_groupstats.php:68
+#: cs_userstats.php:107 cs_xmlrpc.php:273 cs_xmlrpc.php:357
+msgid "Spiele"
+msgstr ""
+
+#: cs_admin_export.php:168
+msgid "Feldnamen in erster Zeile ausgeben"
+msgstr ""
+
+#: cs_admin_export.php:172
+msgid "Daten als csv Datei herunterladen"
+msgstr ""
+
+#: cs_admin_export.php:179
+msgid "Export starten"
+msgstr ""
+
+#: cs_admin_export.php:182 cs_admin_import.php:195
+msgid "Schliessen"
+msgstr ""
+
+#: cs_admin_export.php:184
+msgid ""
+"Mit STRG+a kann der CSV-Export markiert, mit STRG+c kopiert und mit STRG+v "
+"in einem Tabellenblatt (z.B. LibreOffice) oder Editor eingefügt werden."
 msgstr ""
 
 #: cs_admin_finals.php:64 cs_admin_match.php:64
@@ -361,6 +416,52 @@ msgstr ""
 msgid "Löschen"
 msgstr ""
 
+#: cs_admin_import.php:82
+msgid "Daten gelöscht."
+msgstr ""
+
+#: cs_admin_import.php:108 cs_admin_import.php:129
+msgid " Ignoriert."
+msgstr ""
+
+#: cs_admin_import.php:136
+msgid "Datenbankfehler. Datensatz wurde nicht eingefügt."
+msgstr ""
+
+#: cs_admin_import.php:153
+msgid "Import"
+msgstr ""
+
+#: cs_admin_import.php:154
+msgid "Datenimport für"
+msgstr ""
+
+#: cs_admin_import.php:160
+msgid ""
+"Die CSV-Datei muss im Verzeichnis wp-championship/sql/ abgelegt sein, um sie "
+"als Importdatei zu verwenden."
+msgstr ""
+
+#: cs_admin_import.php:161
+msgid "CSV-Datei auswählen"
+msgstr ""
+
+#: cs_admin_import.php:180
+msgid "Erste Zeile enthält Feldnamen"
+msgstr ""
+
+#: cs_admin_import.php:184
+msgid "Vor dem Import alle vorhandenen Daten löschen"
+msgstr ""
+
+#: cs_admin_import.php:192
+msgid "Starte import"
+msgstr ""
+
+#: cs_admin_import.php:198
+msgid "Import Protokoll"
+msgstr ""
+
 #: cs_admin_labels.php:113
 msgid "wp-championship Web-Bezeichnungen"
 msgstr ""
@@ -370,7 +471,7 @@ msgid "Vorrundenspiele"
 msgstr ""
 
 #: cs_admin_labels.php:117 cs_admin_labels.php:211 cs_userstats.php:273
-#: cs_usertipp.php:632 cs_xmlrpc.php:447 wp-championship.php:170
+#: cs_usertipp.php:632 cs_xmlrpc.php:447 wp-championship.php:173
 msgid "Finalrunde"
 msgstr ""
 
@@ -446,7 +547,7 @@ msgstr ""
 msgid "Bezeichnung Spalte 4 (Trend)"
 msgstr ""
 
-#: cs_admin_labels.php:171 cs_admin_labels.php:265 wp-championship.php:174
+#: cs_admin_labels.php:171 cs_admin_labels.php:265 wp-championship.php:177
 msgid "Statistiken"
 msgstr ""
 
@@ -506,8 +607,8 @@ msgstr ""
 msgid "Begegnung hinzufügen"
 msgstr ""
 
-#: cs_admin_match.php:158 cs_admin_match.php:185 cs_stats.php:335
-#: cs_stats.php:692
+#: cs_admin_match.php:158 cs_admin_match.php:185 cs_stats.php:336
+#: cs_stats.php:694
 msgid "Spieltag"
 msgstr ""
 
@@ -589,7 +690,7 @@ msgstr ""
 msgid "Mannschaft speichern"
 msgstr ""
 
-#: cs_admin_team.php:196 wp-championship.php:165
+#: cs_admin_team.php:196 wp-championship.php:168
 msgid "Mannschaften"
 msgstr ""
 
@@ -629,8 +730,8 @@ msgstr ""
 msgid "Mitspieler hinzufügen"
 msgstr ""
 
-#: cs_admin_users.php:160 cs_admin_users.php:191 cs_stats.php:252
-#: wp-championship.php:172
+#: cs_admin_users.php:160 cs_admin_users.php:191 cs_stats.php:253
+#: wp-championship.php:175
 msgid "Mitspieler"
 msgstr ""
 
@@ -662,15 +763,15 @@ msgstr ""
 msgid "Mitspieler speichern"
 msgstr ""
 
-#: cs_groupstats.php:38 cs_matchstats.php:36 cs_stats.php:304 cs_stats.php:372
-#: cs_stats.php:458 cs_stats.php:576 cs_stats.php:660 cs_stats.php:728
-#: cs_stats.php:793 cs_userstats.php:39 cs_usertipp.php:53
+#: cs_groupstats.php:38 cs_matchstats.php:36 cs_stats.php:305 cs_stats.php:373
+#: cs_stats.php:460 cs_stats.php:578 cs_stats.php:662 cs_stats.php:730
+#: cs_stats.php:795 cs_userstats.php:39 cs_usertipp.php:53
 msgid "Sie sind nicht angemeldet."
 msgstr ""
 
-#: cs_groupstats.php:39 cs_matchstats.php:37 cs_stats.php:305 cs_stats.php:373
-#: cs_stats.php:459 cs_stats.php:577 cs_stats.php:661 cs_stats.php:729
-#: cs_stats.php:794 cs_userstats.php:40
+#: cs_groupstats.php:39 cs_matchstats.php:37 cs_stats.php:306 cs_stats.php:374
+#: cs_stats.php:461 cs_stats.php:579 cs_stats.php:663 cs_stats.php:731
+#: cs_stats.php:796 cs_userstats.php:40
 msgid "Um am Tippspiel teilzunehmen benötigen Sie ein Konto auf dieser Website"
 msgstr ""
 
@@ -679,8 +780,8 @@ msgstr ""
 msgid "Platz"
 msgstr ""
 
-#: cs_groupstats.php:63 cs_stats.php:75 cs_stats.php:127 cs_stats.php:519
-#: cs_stats.php:620 cs_userstats.php:102 cs_xmlrpc.php:268 cs_xmlrpc.php:352
+#: cs_groupstats.php:63 cs_stats.php:75 cs_stats.php:127 cs_stats.php:521
+#: cs_stats.php:622 cs_userstats.php:102 cs_xmlrpc.php:268 cs_xmlrpc.php:352
 #: cs_xmlrpc.php:504 cs_xmlrpc.php:547 functions.php:536
 msgid "Spieler"
 msgstr ""
@@ -690,14 +791,9 @@ msgstr ""
 msgid "Trend"
 msgstr ""
 
-#: cs_groupstats.php:67 cs_stats.php:759 cs_userstats.php:106
+#: cs_groupstats.php:67 cs_stats.php:761 cs_userstats.php:106
 #: cs_xmlrpc.php:272 cs_xmlrpc.php:356
 msgid "Mannschaft"
-msgstr ""
-
-#: cs_groupstats.php:68 cs_userstats.php:107 cs_xmlrpc.php:273
-#: cs_xmlrpc.php:357
-msgid "Spiele"
 msgstr ""
 
 #: cs_groupstats.php:69 cs_userstats.php:108 cs_xmlrpc.php:274
@@ -720,7 +816,7 @@ msgstr ""
 msgid "Tore"
 msgstr ""
 
-#: cs_groupstats.php:73 cs_stats.php:127 cs_stats.php:152 cs_stats.php:253
+#: cs_groupstats.php:73 cs_stats.php:127 cs_stats.php:152 cs_stats.php:254
 #: cs_userstats.php:112 cs_usertipp.php:438 cs_xmlrpc.php:278
 #: cs_xmlrpc.php:362 cs_xmlrpc.php:504 cs_xmlrpc.php:594
 msgid "Punkte"
@@ -730,12 +826,12 @@ msgstr ""
 msgid "Datum"
 msgstr ""
 
-#: cs_matchstats.php:60 cs_stats.php:102 cs_stats.php:250 cs_userstats.php:279
+#: cs_matchstats.php:60 cs_stats.php:102 cs_stats.php:251 cs_userstats.php:279
 #: cs_usertipp.php:433 cs_xmlrpc.php:452 cs_xmlrpc.php:545
 msgid "Begegnung"
 msgstr ""
 
-#: cs_matchstats.php:60 cs_stats.php:102 cs_stats.php:253 cs_userstats.php:283
+#: cs_matchstats.php:60 cs_stats.php:102 cs_stats.php:254 cs_userstats.php:283
 #: cs_xmlrpc.php:456 cs_xmlrpc.php:548
 msgid "Ergebnis"
 msgstr ""
@@ -756,51 +852,51 @@ msgstr ""
 msgid "Benutzername"
 msgstr ""
 
-#: cs_stats.php:253 cs_xmlrpc.php:548 functions.php:683
+#: cs_stats.php:254 cs_xmlrpc.php:548 functions.php:683
 msgid "Tipp"
 msgstr ""
 
-#: cs_stats.php:256 cs_stats.php:427 cs_stats.php:516
+#: cs_stats.php:257 cs_stats.php:428 cs_stats.php:518
 msgid "Es sind noch keine Tipps abgegeben worden."
 msgstr ""
 
-#: cs_stats.php:333
+#: cs_stats.php:334
 msgid "Spieltagstatistik"
 msgstr ""
 
-#: cs_stats.php:424
+#: cs_stats.php:425
 msgid "Tipph&auml;ufigkeit"
 msgstr ""
 
-#: cs_stats.php:513
+#: cs_stats.php:515
 msgid "Tipph&auml;ufigkeit im Detail"
 msgstr ""
 
-#: cs_stats.php:618
+#: cs_stats.php:620
 msgid "Spielertipps"
 msgstr ""
 
-#: cs_stats.php:624 cs_stats.php:631
+#: cs_stats.php:626 cs_stats.php:633
 msgid "All"
 msgstr ""
 
-#: cs_stats.php:629 functions.php:682
+#: cs_stats.php:631 functions.php:682
 msgid "Spiel"
 msgstr ""
 
-#: cs_stats.php:689
+#: cs_stats.php:691
 msgid "Spieltagsübersicht"
 msgstr ""
 
-#: cs_stats.php:757
+#: cs_stats.php:759
 msgid "Mannschaftsstatistik"
 msgstr ""
 
-#: cs_stats.php:822
+#: cs_stats.php:824
 msgid "Tipper des Monats"
 msgstr ""
 
-#: cs_stats.php:824
+#: cs_stats.php:826
 msgid "Monat"
 msgstr ""
 
@@ -818,7 +914,7 @@ msgstr ""
 msgid "Du bist Tippspiel-Administrator."
 msgstr ""
 
-#: cs_userstats.php:201 cs_xmlrpc.php:378 wp-championship.php:168
+#: cs_userstats.php:201 cs_xmlrpc.php:378 wp-championship.php:171
 msgid "Vorrunde"
 msgstr ""
 
@@ -1023,34 +1119,34 @@ msgstr ""
 msgid "Die Verweise öffnen ein neues Fenster/Tab."
 msgstr ""
 
-#: wp-championship.php:163
+#: wp-championship.php:165
 msgid "Tippspiel"
 msgstr ""
 
-#: wp-championship.php:165
+#: wp-championship.php:168
 msgid "wp-championship Teams"
 msgstr ""
 
-#: wp-championship.php:168
+#: wp-championship.php:171
 msgid "wp-championship Matches"
 msgstr ""
 
-#: wp-championship.php:170
+#: wp-championship.php:173
 msgid "wp-championship Finals"
 msgstr ""
 
-#: wp-championship.php:172
+#: wp-championship.php:175
 msgid "wp-championship Users"
 msgstr ""
 
-#: wp-championship.php:174
+#: wp-championship.php:177
 msgid "wp-championship Stats"
 msgstr ""
 
-#: wp-championship.php:176
+#: wp-championship.php:179
 msgid "wp-championship Bezeichungen"
 msgstr ""
 
-#: wp-championship.php:176
+#: wp-championship.php:179
 msgid "Bezeichnungen"
 msgstr ""

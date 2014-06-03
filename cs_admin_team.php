@@ -187,7 +187,7 @@ if( ! function_exists('cs_admin_team') ) {//make it pluggable
 		$out .= '<p class="submit"><input type="submit" name="submit" value="'.__('Mannschaft hinzufügen','wpcs').' &raquo;" /></p></form></div>'."\n";
 		
 		echo $out;
-		
+
 		//
 		// output teams table
 		//

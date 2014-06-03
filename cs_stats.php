@@ -202,6 +202,7 @@ EOD;
 		$out .="</table>";
 	}  else if (isset($statsnum) and $statsnum =="4") {
 		// Stats 4
+
 		$stats4_tippgroup   = (isset($_GET['wpc_stats4_tippgroup'])?esc_attr($_GET['wpc_stats4_tippgroup']):"");
 		$tippgroup_sql="";
 		if ($stats4_tippgroup !="")
@@ -427,6 +428,7 @@ EOS;
 		$out .=  __('Es sind noch keine Tipps abgegeben worden.',"wpcs");
 	} else {
 		$urlparm="?";
+		$tanz=0;
 		// 	anzahl aller tipps ermitteln
 		foreach($r1 as $r)
 			$tanz = $tanz + $r->anzahl;
@@ -614,7 +616,7 @@ function show_Stats4($atts)
 	else
 		$sql="select a.mid as mid,b.groupid as groupid,b.name as team1,b.icon as icon1, c.name as team2,c.icon as icon2,a.location as location,date_format(a.matchtime,'%d.%m<br />%H:%i') as matchtime,a.matchtime as origtime,a.result1 as result1,a.result2 as result2,a.winner as winner,a.round as round, a.spieltag as spieltag from $cs_match a inner join $cs_team b on a.tid1=b.tid inner join $cs_team c on a.tid2=c.tid where a.round = 'V' and matchtime < '$blog_now' order by spieltag,origtime;";
 	$r2 = $wpdb->get_results($sql);
-	
+
 	$out .= "<h2>" . __("Spielertipps","wpcs") . "</h2>";
 	
 	$out .= "<div class='wpc-stats4-sel'><form action='#'>" . __("Spieler","wpcs").":";

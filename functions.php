@@ -951,7 +951,7 @@ if (!function_exists("wpc_contextual_help")) {
       $contextual_help .= __('Englisches Handbuch','wpcs');
       $contextual_help .= '</a></li>';
 
-      $contextual_help .= '<li><a href="http://www.tuxlog.de/wordpress/2010/wp-championship-v1-5-quickreferenz/" target="_blank">';
+      $contextual_help .= '<li><a href="http://www.tuxlog.de/wp-championship-handbuch/" target="_blank">';
       $contextual_help .= __('Deutsches Handbuch','wpcs');
       $contextual_help .= '</a></li>';
 

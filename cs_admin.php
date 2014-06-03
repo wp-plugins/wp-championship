@@ -1,7 +1,7 @@
 <?php
 /* This file is part of the wp-championship plugin for wordpress */
 
-/*  Copyright 2006-2012  Hans Matzen  (email : webmaster at tuxlog.de)
+/*  Copyright 2006-2014  Hans Matzen  (email : webmaster at tuxlog.de)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -182,10 +182,16 @@ if( ! function_exists('cs_admin') ) {//make it pluggable
 		
 		// build form
 		$out = "";
-		
+	
+
 		// general options form
 		$out .= '<div class="wrap"><h2>'.__('wp-championship Einstellungen',"wpcs").'</h2><div id="ajax-response"></div>'."\n"; 
 		$out .= tl_add_supp();
+
+		// add import/export link
+		$out .= '<div style="text-align:right;padding-bottom:10px;"><a class="button-secondary thickbox" href="../wp-content/plugins/wp-championship/cs_admin_import.php?height=700&amp;width=550&amp;fn=match" >'.__("Datenimport","wpcs").'</a>&nbsp;&nbsp;&nbsp;'."\n";
+		$out .= '<a class="button-secondary thickbox" href="../wp-content/plugins/wp-championship/cs_admin_export.php?height=700&amp;width=550&amp;fn=match" >'.__("Datenexport","wpcs").'</a>&nbsp;&nbsp;&nbsp;</div>'."\n";
+
 		$out .= '<form name="options" id="options" method="post" action="#"><input type="hidden" name="action" value="update" />'."\n";
 		$out .= '<table class="editform" ><tr>';
 		$out .= '<th style="width:30%" scope="row" ><label for="cs_groups">'.__('Anzahl Gruppen Vorrunde',"wpcs").':</label></th>'."\n";

@@ -817,7 +817,7 @@ if( ! function_exists('show_UserTippForm') ) {//make it pluggable
 			$out .= "<script type='text/javascript'>";
 			$out .= 'jQuery(document).ready(function() {';
 			for ($i=0;$i<$hovertable_count;$i++) {
-				$out .= 'jQuery("#cs_hovertable_'.$i.'").tooltip({cssClass: "tooltip-red"});'."\n";
+				$out .= 'jQuery("#cs_hovertable_'.$i.'").wpcstooltip({cssClass: "tooltip-red"});'."\n";
 			}
 			$out .= "});</script>";
 		}
