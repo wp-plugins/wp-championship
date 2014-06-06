@@ -11,7 +11,7 @@
 11,Elfenbeinküste,CIV,civ.png,C,0,0
 12,Japan,JPN,jpn.png,C,0,0
 13,Uruguay,URU,uru.png,D,0,0
-14,"Costa Rica",CRC,crc.png,D,0,0
+14,'Costa Rica',CRC,crc.png,D,0,0
 15,England,ENG,eng.png,D,0,0
 16,Italien,ITA,ita.png,D,0,0
 17,Schweiz,SUI,sui.png,E,0,0
@@ -29,7 +29,7 @@
 29,Belgien,BEL,bel.png,H,0,0
 30,Algerien,ALG,alg.png,H,0,0
 31,Russland,RUS,rus.png,H,0,0
-32,"Korea Republik",KOR,kor.png,H,0,0
+32,'Korea Republik',KOR,kor.png,H,0,0
 33,#A1,,,,1,0
 34,#B2,,,,1,0
 35,#C1,,,,1,0
