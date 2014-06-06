@@ -77,11 +77,15 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 	// -------------------------------------------------------------------
 
 	// Spielübersicht Vorrunde
-	$iconpath = get_option("siteurl") . "/wp-content/plugins/wp-championship/icons/";
+	if (file_exists(  get_stylesheet_directory() . '/wp-championship/icons/' )){
+		$iconpath = get_stylesheet_directory_uri() . '/wp-championship/icons/';
+	} else {
+		$iconpath = plugins_url( 'icons/' , __FILE__ );
+	}
 
 	// tabellen loop
 	// hole tabellen daten
-	$results = get_team_clification($groupid);
+	$results = cs_get_team_clification($groupid);
 
 	$groupid_old = "";
 
@@ -114,7 +118,7 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 		 
 		// hole statistiken des teams
 		$stats=array();
-		$stats=get_team_stats($res->tid);
+		$stats=cs_get_team_stats($res->tid);
 		 
 		// zeile ausgeben
 		$out .= "<tr>";
