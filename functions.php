@@ -119,19 +119,19 @@ if( ! function_exists('cs_calc_points') ) {//make it pluggable
 			if ($cs_oneside_tendency > 0) {
 		 		//$sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( (a.result1<a.result2 and b.result1<b.result2) or (a.result1=a.result2 and b.result1=b.result2) or (a.result1>a.result2 and b.result1>b.result2)  ) and ( a.result1=b.result1 or a.result2=b.result2 ) set points= points + $cs_pts_oneside where b.points = $cs_pts_tendency and b.result1>-1 and b.result2>-1;";
 				$sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( (a.result1<a.result2 and b.result1<b.result2) or (a.result1=a.result2 and b.result1=b.result2) or (a.result1>a.result2 and b.result1>b.result2)  ) and ( a.result1=b.result1 or a.result2=b.result2 ) set points= points + $cs_pts_oneside where b.points >= 0 and b.result1>-1 and b.result2>-1;";
-			} else
-		 		$sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1=b.result1 or a.result2=b.result2 ) set points= $cs_pts_oneside where b.points = -1 and b.result1>-1 and b.result2>-1;";
-		 	$res = $wpdb->query($sql);
+                $res = $wpdb->query($sql);
+			} else {
+                $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1=b.result1 or a.result2=b.result2 ) set points= points + $cs_pts_oneside where b.points > -1 and b.result1>-1 and b.result2>-1;";
+		        $res = $wpdb->query($sql);
+		        $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1=b.result1 or a.result2=b.result2 ) set points= $cs_pts_oneside where b.points = -1 and b.result1>-1 and b.result2>-1;";
+                $res = $wpdb->query($sql);
+            }
 		}
 	
-	
 		// falscher tipp (setzt alle restlichen auf 0)
-		// mysql 5.0
-		//$sql= "update  $cs_tipp b set points=0 where mid in ( select a.mid from  a where a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 ) and b.points = -1;";
-		// mysql 4.x
 		$sql= "update $cs_tipp b inner join $cs_match a on  a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1  set points=0 where b.points = -1 and b.result1>-1 and b.result2>-1;";
 		$res = $wpdb->query($sql);
-	
+		
 	
 		// torsummen tipp prüfen und ggf addieren
 		if ($cs_goalsum > -1) {
@@ -604,12 +604,12 @@ if( ! function_exists('cs_mailservice2') ) {//make it pluggable
 		// holen der match ids fuer die spiele die noch nicht angefangen haben aber in
 		// den nächsten stunden anfangen
 		$cs_reminder_hours = get_option("cs_reminder_hours");
-		$now  =  time() + ( get_option( 'gmt_offset' ) * 3600 );
+		$now  =  current_time('timestamp',false);
 		$then =  $now + ( $cs_reminder_hours * 3600 );
 	
 		$mnow  = gmdate( 'Y-m-d H:i:s', $now );
 		$mthen = gmdate( 'Y-m-d H:i:s', $then );
-	
+
 		$sql = "select mid from $cs_match where matchtime > '$mnow' and matchtime <= '$mthen';";
 		$res_mid = $wpdb->get_results($sql);
 	
