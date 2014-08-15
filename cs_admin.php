@@ -100,6 +100,8 @@ if( ! function_exists('cs_admin') ) {//make it pluggable
 		update_option( "cs_newuser_auto", $_POST['cs_newuser_auto'] );
 		update_option( "cs_hovertable", $_POST['cs_hovertable'] );
 		update_option( "cs_goalsum_equal", $_POST['cs_goalsum_equal'] );
+		update_option( "cs_final_winner", $_POST['cs_final_winner'] );
+		
 		
 		admin_message( __('Einstellungen erfolgreich gespeichert.',"wpcs") );
 		}
@@ -179,6 +181,7 @@ if( ! function_exists('cs_admin') ) {//make it pluggable
 		$cs_newuser_auto= get_option("cs_newuser_auto");
 		$cs_hovertable= get_option("cs_hovertable");
 		$cs_goalsum_equal= get_option("cs_goalsum_equal");
+		$cs_final_winner= get_option("cs_final_winner");
 		
 		// build form
 		$out = "";
@@ -306,11 +309,21 @@ if( ! function_exists('cs_admin') ) {//make it pluggable
 		$out .= '<tr><th scope="row" ><label for="cs_pts_oneside">'.__('Punkte für einseitig richtigen Tipp',"wpcs").':</label>'."\n";
 		
 		// oneside tipp hits only if tendency is correct
-		$out .= '<br /><label style="font-size: 9px;" for="cs_oneside_tendency">'.__('Einseitiger Tipp zieht nur mit Tendenz',"wpcs").':</label>'."\n";
-		$out .= '<input name="cs_oneside_tendency" id="cs_oneside_tendency" type="checkbox" value="1" ';
-		if ($cs_oneside_tendency > 0)
-		  $out .= " checked='checked' ";
-		$out.= '/><br /></th>'."\n";  
+		$out .= '<br /><label  style="font-size: 9px;" for="cs_oneside_tendency">'.__('Einseitiger Tipp zieht ',"wpcs").':</label>'."\n";
+		//$out .= '<input name="cs_oneside_tendency" id="cs_oneside_tendency" type="checkbox" value="1" ';
+		$csotsel0 = ($cs_oneside_tendency==0?'selected="selected" ':'');
+		$csotsel1 = ($cs_oneside_tendency==1?'selected="selected" ':'');
+		$csotsel2 = ($cs_oneside_tendency==2?'selected="selected" ':'');
+		$out .= '<select  style="font-size: 9px;" id="cs_oneside_tendency" class="postform" name="cs_oneside_tendency">';
+		$out .= '<option ' . $csotsel0. 'value="0">' . __("immer","wpcs") . '</option>';
+		$out .= '<option ' . $csotsel1. 'value="1">' .__('nur mit Tendenz','wpcs').'</option>';	
+		$out .= '<option ' . $csotsel2. 'value="2">'.__('nur ohne Tendenz','wpcs').'</option>';
+		$out .= '</select>';
+
+		//if ($cs_oneside_tendency > 0)
+		//$out .= " checked='checked' ";
+		//$out.= '/><br /></th>'."\n";  
+		$out.= '<br /></th>'."\n"; 
 		
 		$out .= '<td ><input name="cs_pts_oneside" id="cs_pts_oneside" type="text" value="'.$cs_pts_oneside.'" size="3" /></td>'."\n";
 		
@@ -342,7 +355,24 @@ if( ! function_exists('cs_admin') ) {//make it pluggable
 		 $out .= " checked='checked' ";
 		$out .= '/></td></tr>'."\n"; 
 		
-		
+
+		// Sieger des Finales festlegen (z.B. wenn man nur auf 90 Minuten tippt)
+		// teamliste fuer select aufbauen
+		$team1_select_html="";
+		$sql="select tid,name from  $cs_team where name not like '#%' order by name;";
+		$results1 = $wpdb->get_results($sql);
+		$team1_select_html .= "<option value='-1'>-</option>";
+		foreach($results1 as $res) {
+			$team1_select_html .= "<option value='".$res->tid."' ";
+			if ($res->tid == $cs_final_winner) {
+				$team1_select_html .="selected='selected'";
+			}
+			$team1_select_html .=">".$res->name."</option>\n";
+		}
+		$out .= '<tr><th>&nbsp;</th><td>&nbsp;</td><th scope="row" ><label for="cs_final_winner">'.__('Sieger des Turniers',"wpcs").':</label></th>'."\n";
+		$out .= '<td><select name="cs_final_winner" >'.$team1_select_html.'</select></td></tr>';
+
+
 		// field for high goal sum tipp
 		$out .= '<tr><th scope="row" ><label for="cs_pts_goalsum">'.__('Punkte für Summe der Tore größer als Schwellwert',"wpcs").':</label></th>'."\n";
 		$out .= '<td ><input name="cs_pts_goalsum" id="cs_pts_goalsum" type="text" value="'.$cs_pts_goalsum.'" size="3" /></td>'."\n"; 

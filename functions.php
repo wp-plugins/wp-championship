@@ -116,18 +116,22 @@ if( ! function_exists('cs_calc_points') ) {//make it pluggable
 		// einseitig richtiger tipp ohne und mit tendenz
 		// mysql 4.x
 		if ($cs_pts_oneside > 0) {
-			if ($cs_oneside_tendency > 0) {
-		 		//$sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( (a.result1<a.result2 and b.result1<b.result2) or (a.result1=a.result2 and b.result1=b.result2) or (a.result1>a.result2 and b.result1>b.result2)  ) and ( a.result1=b.result1 or a.result2=b.result2 ) set points= points + $cs_pts_oneside where b.points = $cs_pts_tendency and b.result1>-1 and b.result2>-1;";
-				$sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( (a.result1<a.result2 and b.result1<b.result2) or (a.result1=a.result2 and b.result1=b.result2) or (a.result1>a.result2 and b.result1>b.result2)  ) and ( a.result1=b.result1 or a.result2=b.result2 ) set points= points + $cs_pts_oneside where b.points >= 0 and b.result1>-1 and b.result2>-1;";
-                $res = $wpdb->query($sql);
-			} else {
-                $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1=b.result1 or a.result2=b.result2 ) set points= points + $cs_pts_oneside where b.points > -1 and b.result1>-1 and b.result2>-1;";
-		        $res = $wpdb->query($sql);
-		        $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1=b.result1 or a.result2=b.result2 ) set points= $cs_pts_oneside where b.points = -1 and b.result1>-1 and b.result2>-1;";
-                $res = $wpdb->query($sql);
+		  if ($cs_oneside_tendency == 1) { // nur mit Tendenz
+		    $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( (a.result1<a.result2 and b.result1<b.result2) or (a.result1=a.result2 and b.result1=b.result2) or (a.result1>a.result2 and b.result1>b.result2)  ) and ( a.result1=b.result1 or a.result2=b.result2 ) set points= points + $cs_pts_oneside where b.points >= 0 and b.result1>-1 and b.result2>-1;";
+		    $res = $wpdb->query($sql);
+		  } 
+		  if ($cs_oneside_tendency == 0) { // immer
+		    $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1=b.result1 or a.result2=b.result2 ) set points= points + $cs_pts_oneside where b.points > -1 and b.result1>-1 and b.result2>-1;";
+		    $res = $wpdb->query($sql);
+		    $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1=b.result1 or a.result2=b.result2 ) set points= $cs_pts_oneside where b.points = -1 and b.result1>-1 and b.result2>-1;";
+		    $res = $wpdb->query($sql);
+            } 
+		  if ($cs_oneside_tendency == 2) { // nur ohne Tendenz
+		    $sql= "update $cs_tipp b inner join $cs_match a on a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1 and ( a.result1=b.result1 or a.result2=b.result2 ) set points= $cs_pts_oneside where b.points = -1 and b.result1>-1 and b.result2>-1;";
+		    $res = $wpdb->query($sql);
             }
 		}
-	
+			
 		// falscher tipp (setzt alle restlichen auf 0)
 		$sql= "update $cs_tipp b inner join $cs_match a on  a.mid=b.mid and a.result1 <> -1 and a.result2 <> -1  set points=0 where b.points = -1 and b.result1>-1 and b.result2>-1;";
 		$res = $wpdb->query($sql);
@@ -159,7 +163,13 @@ if( ! function_exists('cs_calc_points') ) {//make it pluggable
 		$sql="select case winner when 1 then tid1 when 2 then tid2 end as winner from $cs_match a where a.round='F' and a.winner <> -1 and matchtime = '$fmatchtime';";
 		$res=$wpdb->get_row($sql);
 		$champion = (isset($res)?$res->winner:-999);
-	
+		
+		// falls turniergewinner uebersteuert wurde nehmen wir den
+		$cs_final_winner=get_option("cs_final_winner");
+		if ($cs_final_winner != -1) {
+		  $champion = $cs_final_winner;
+		}
+
 		if ($champion) {
 			$sql="select userid from $cs_users where champion=$champion;";
 			$res = $wpdb->get_results($sql);
@@ -746,6 +756,14 @@ if( ! function_exists('cs_get_cswinner') ) {//make it pluggable
 		  $r =  cs_get_team_clification('', 1);
 		  $wteamname = $r[0]->name;
 			}
+		}
+
+		// falls uebersteuert wurde lesen wir den Wert aus
+		$cs_final_winner = get_option("cs_final_winner");
+		if ($cs_final_winner != -1) {
+		  $sql2="select name from $cs_team where tid=$cs_final_winner";
+		  $row=$wpdb->get_row($sql2);
+		  $wteamname = $row->name;
 		}
 	
 		return $wteamname;
