@@ -16,7 +16,7 @@ insert into cs_team values (6,'Eintracht Frankfurt','FFM','eintracht-frankfurt-w
 insert into cs_team values (7,'Hamburger SV','HSV','hamburger-sv-wappen.png','A',0,0);
 insert into cs_team values (8,'Bor. Mönchengladbach','BMG','borussia-moenchengladbach-wappen.png','A',0,0);
 insert into cs_team values (9,'Hannover 96','H96','hannover-96-wappen.png','A',0,0);
-insert into cs_team values (10,'SC Paderborn','SCP','padderborn.png','A',0,0);
+insert into cs_team values (10,'SC Paderborn','SCP','paderborn.png','A',0,0);
 insert into cs_team values (11,'VfL Wolfsburg','WOB','vfl-wolfsburg-wappen.png','A',0,0);
 insert into cs_team values (12,'VfB Stuttgart','VFB','vfb-stuttgart-wappen.png','A',0,0);
 insert into cs_team values (13,'1. FSV Mainz 05','M05','fsv-mainz-05-wappen.png','A',0,0);
