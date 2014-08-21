@@ -192,3 +192,37 @@ th.wpc-label {
 	font-weight:bold;
 	z-index:100;
 }
+
+
+* responsive table layout */
+@media only screen and (max-width: 800px) {
+#flip-scroll .cf:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
+#flip-scroll * html .cf {}
+#flip-scroll *:first-child+html .cf { }
+#flip-scroll table { width: 100%; border-collapse: collapse; border-spacing: 0; }
+ 
+#flip-scroll th,
+#flip-scroll td { margin: 0; vertical-align: top; }
+#flip-scroll th { text-align: left; }
+#flip-scroll table { display: block; position: relative; width: 100%; }
+#flip-scroll thead { display: none; float: left; }
+#flip-scroll tbody { display: block; width: auto; position: relative; overflow-x: auto; white-space: nowrap; }
+#flip-scroll thead tr { display: block; }
+#flip-scroll th { display: block; text-align: right; min-height: 2.25em; max-height: 8em;}
+#flip-scroll tbody tr { display: inline-block; vertical-align: top; }
+#flip-scroll td { display: block; min-height: 2.25em; text-align: left; max-height: 8em;}
+#flip-scroll td:nth-child(7) { display: block; min-height: 8em; text-align: left; max-height: 12em;}
+ 
+/* sort out borders */
+#flip-scroll th { border-bottom: 0; border-left: 0; }
+#flip-scroll td { border-left: 0; border-right: 0; border-bottom: 0; }
+#flip-scroll tbody tr { border-left: 1px solid #babcbf; }
+#flip-scroll th:last-child,
+#flip-scroll td:last-child { border-bottom: 1px solid #babcbf; }
+
+/* adopt layout */
+#flip-scroll .csicon {left: 2px; padding: 2px; width:25px;}
+table.tablesorter .header { padding-left: 20px; padding-right: 2px; min-width: 70px; font-size:11px;  min-height: 2.25em; max-height: 8em;}
+table.tablesorter .headerSortUp { background-image: url(asc.png); background-repeat: no-repeat;  min-height: 2.25em; max-height: 8em; }
+table.tablesorter .headerSortDown { background-image: url(desc.png); background-repeat: no-repeat;  min-height: 2.25em; max-height: 8em;}
+}
