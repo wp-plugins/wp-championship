@@ -1,5 +1,5 @@
 <?php
-/* This file is part of the wp-monalisa plugin for wordpress */
+/* This file is part of the wp-championship plugin for wordpress */
 
 /*  Copyright 2010  Hans Matzen  (email : webmaster at tuxlog.de)
 
