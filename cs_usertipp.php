@@ -168,7 +168,7 @@ if( ! function_exists('show_UserTippForm') ) {//make it pluggable
 		      $sql0 = "insert into  $cs_users values ($uid,0,".$_POST['mailservice'].",".$_POST['mailreceipt'].",".$_POST['stellvertreter'].",0,'0000-00-00 00:00:00',-1,'');";
 		    }
 		    $r3 = $wpdb->query($sql0);
-		    
+
 		    // championtipp speichern und auf zulaessigkeit pruefen
 		    $blog_now =  current_time('mysql',0);
 		    
@@ -178,7 +178,7 @@ if( ! function_exists('show_UserTippForm') ) {//make it pluggable
 		    if ( $blog_now <= $mr->mintime ) {
 		      $sql0 = "update  $cs_users set champion= ".$_POST['champion'].",championtime='".$currtime."' where userid=$uid;";
 		      $r2 = $wpdb->query($sql0);
-		    } else {
+		    } else if ($r0[0]->champion != $_POST['champion']) {
 		      $out .= __("Championtipp kann nicht mehr verändert werden.","wpcs")."<br />\n";
 		    }
 		    
