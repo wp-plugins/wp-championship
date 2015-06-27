@@ -138,7 +138,7 @@ if ($dlmode!="") {
     $fh = @fopen( 'php://output', 'w' );
     $results = $wpdb->get_results( $sql, ARRAY_A );
     foreach($results as $res) {
-      fputcsv($fh, $res);
+      fputcsv($fh, $res,",","'");
     }
     
     // Close the file
