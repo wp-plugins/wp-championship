@@ -3,7 +3,7 @@
 Plugin Name: wp-championship
 Plugin URI: http://www.tuxlog.de/wp-championship
 Description: wp-championship is a plugin for wordpress letting you play a guessing game of a tournament e.g. soccer.
-Version: 5.1
+Version: 5.7
 Author: tuxlog 
 Author URI: http://www.tuxlog.de
 */
